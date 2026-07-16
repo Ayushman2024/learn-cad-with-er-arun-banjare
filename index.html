@@ -36,31 +36,76 @@
         .nav-btn.signup-btn { background: #ffc107; color: #333; }
         .nav-btn.signup-btn:hover { background: #e0a800; color: #333; }
 
-        /* Hero Section with photo.png as background */
-        .hero { 
-            position: relative;
-            min-height: 65vh; 
-            background: url('photo.png') no-repeat center center/cover; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        /* Hero Banner (Text Area) */
+        .hero-banner {
+            background: linear-gradient(135deg, #0056b3 0%, #003366 100%);
             color: white;
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
         }
-        .hero::before {
-            content: "";
+        .hero-banner h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 5px; }
+        .hero-banner p { font-size: 1.1rem; color: #ffc107; font-weight: 500; }
+
+        /* --- AUTOMATIC IMAGE SLIDER STYLE --- */
+        .slider-container {
+            position: relative;
+            max-width: 1000px;
+            height: 450px;
+            margin: 30px auto 40px auto;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            background: #000;
+        }
+        .slide {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.65);
-            z-index: 1;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            display: flex;
+            align-items: flex-end;
         }
-        .hero-text { position: relative; z-index: 2; max-width: 800px; }
-        .hero-text h1 { font-size: 3rem; margin-bottom: 15px; font-weight: 700; }
-        .hero-text p { font-size: 1.2rem; margin-bottom: 30px; color: #e0e0e0; }
+        .slide.active { opacity: 1; z-index: 1; }
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #111;
+        }
+        .slide-caption {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(0, 86, 179, 0.85);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            z-index: 2;
+        }
+        /* Slider Buttons */
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 50%;
+            z-index: 10;
+            transition: 0.3s;
+        }
+        .slider-btn:hover { background: #0056b3; }
+        .prev { left: 20px; }
+        .next { right: 20px; }
 
         /* General Container */
-        .container { max-width: 1100px; margin: 50px auto; padding: 0 20px; }
+        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
         .section-title { text-align: center; margin: 40px 0 20px 0; font-size: 2.2rem; color: #0056b3; font-weight: 700; position: relative; }
         .section-title::after { content: ''; display: block; width: 60px; height: 4px; background: #ffc107; margin: 10px auto 0 auto; border-radius: 2px; }
         
@@ -143,6 +188,12 @@
 
         .hidden { display: none; }
         footer { text-align: center; padding: 25px; background: #222; color: #aaa; font-size: 14px; }
+        
+        @media (max-width: 768px) {
+            .slider-container { height: 300px; }
+            .slide-caption { font-size: 0.9rem; padding: 10px; }
+            .slider-btn { padding: 8px 12px; font-size: 14px; }
+        }
     </style>
 </head>
 <body>
@@ -155,27 +206,57 @@
         </div>
         <nav>
             <a href="#">Home</a>
-            <a href="#about">About</a>
+            <a href="#portfolio">Our Portfolio</a>
             <a href="#course">Courses</a>
             <a href="#registration">Registration</a>
-            <!-- Buttons linked to go to the login/signup section below -->
             <a href="#auth" class="nav-btn" onclick="toggleForm('login')">Login</a>
             <a href="#auth" class="nav-btn signup-btn" onclick="toggleForm('signup')">Sign Up</a>
         </nav>
     </header>
 
-    <!-- 2. Hero Section -->
-    <section class="hero">
-        <div class="hero-text">
-            <h1>Learn AutoCAD Like a Professional</h1>
-            <p>Professional AutoCAD Training in Hindi. Learn Basic to Advanced AutoCAD from Civil Engineer Arun Banjare.</p>
-            <a class="btn" href="https://wa.me/917440850479" target="_blank">Enroll Now</a>
-            <a class="btn2" href="https://www.youtube.com/@LearnCADwithErArunBanjare" target="_blank">Watch on YouTube</a>
-        </div>
+    <!-- 2. Top Title Banner -->
+    <section class="hero-banner">
+        <h1>Learn AutoCAD & House Planning</h1>
+        <p>Professional AutoCAD Design and Consultation Services by Civil Engineer Arun Banjare</p>
     </section>
 
+    <!-- 3. AUTOMATIC IMAGE SLIDER WITH YOUR LOGO/PLAN IMAGES -->
+    <div id="portfolio">
+        <h2 class="section-title">Our House Design Portfolio</h2>
+        <div class="slider-container">
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <img src="logo2.png" alt="House Design Plan 1">
+                <div class="slide-caption">Recent 2D House Floor Plan</div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="slide">
+                <img src="logo3.png" alt="House Design Plan 2">
+                <div class="slide-caption">AutoCAD Layout Drawing</div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="slide">
+                <img src="logo4.png" alt="House Design Plan 3">
+                <div class="slide-caption">Modern 3D Front Elevation</div>
+            </div>
+            <!-- Slide 4 -->
+            <div class="slide">
+                <img src="logo5.png" alt="House Design Plan 4">
+                <div class="slide-caption">Premium Exterior Building Design</div>
+            </div>
+
+            <!-- Left and Right Control Arrows -->
+            <button class="slider-btn prev" onclick="changeSlide(-1)">&#10094;</button>
+            <button class="slider-btn next" onclick="changeSlide(1)">&#10095;</button>
+        </div>
+        <div style="text-align: center; margin-bottom: 40px;">
+            <a class="btn" href="https://wa.me/917440850479" target="_blank" style="background: #25d366;">Get Your Own House Plan</a>
+            <a class="btn2" href="https://www.youtube.com/@LearnCADwithErArunBanjare" target="_blank">Watch Tutorials on YouTube</a>
+        </div>
+    </div>
+
     <div class="container">
-        <!-- 3. About Section -->
+        <!-- 4. About Section -->
         <section id="about" class="about-box">
             <h2>About Learn CAD with Arun Banjare</h2>
             <p style="margin-top: 10px;">Welcome to Learn CAD with Arun Banjare. We provide Professional AutoCAD Training in Hindi from Basic to Advanced Level. We also provide complete House Planning and Structural Drawing services for residential buildings.</p>
@@ -185,10 +266,9 @@
                 <li>✅ Completion Certificate</li>
                 <li>✅ Lifetime WhatsApp Support</li>
             </ul>
-            <a href="https://wa.me/917440850479" class="btn-whatsapp btn" target="_blank">Contact on WhatsApp</a>
         </section>
 
-        <!-- 4. Courses Section -->
+        <!-- 5. Courses Section -->
         <h2 class="section-title" id="course">Our AutoCAD Courses</h2>
         <div class="courses-grid">
             <div class="course-card">
@@ -216,7 +296,7 @@
             </div>
         </div>
 
-        <!-- 5. House Plan Section -->
+        <!-- 6. House Plan Pricing Section -->
         <section id="service" class="about-box" style="text-align: center;">
             <h2>House Plan & Structural Drawing</h2>
             <div class="price" style="margin: 15px 0;">₹5 / Sq.ft</div>
@@ -224,25 +304,25 @@
             <a href="https://wa.me/917440850479" class="btn" target="_blank">Book Your Plan</a>
         </section>
 
-        <!-- 6. Student Registration Form -->
+        <!-- 7. Student Registration Form -->
         <h2 class="section-title" id="registration">Student Registration</h2>
         <div class="reg-form">
             <p style="margin-bottom: 25px; font-weight: bold; color: #666;">Course Purchase ke baad niche diya gaya form bharna hoga:</p>
-            <form onsubmit="return false;">
-                <input type="text" placeholder="Full Name *" required>
-                <input type="tel" placeholder="Mobile Number *" required>
-                <input type="email" placeholder="Email Address *" required>
-                <select required>
+            <form id="student-reg-form" onsubmit="handleRegistration(event)">
+                <input type="text" id="reg-name" placeholder="Full Name *" required>
+                <input type="tel" id="reg-mobile" placeholder="Mobile Number *" required>
+                <input type="email" id="reg-email" placeholder="Email Address *" required>
+                <select id="reg-course" required>
                     <option value="">Select Course *</option>
                     <option value="2d">AutoCAD 2D - ₹1000</option>
                     <option value="3d">AutoCAD 2D + 3D - ₹1500</option>
                 </select>
-                <textarea placeholder="Address" rows="3"></textarea>
+                <textarea id="reg-address" placeholder="Address" rows="3"></textarea>
                 <button type="submit" class="reg-submit">Submit Registration</button>
             </form>
         </div>
 
-        <!-- 7. Contact Us Section -->
+        <!-- 8. Contact Us Section -->
         <section id="contact" class="contact-info">
             <h2>Contact Us</h2>
             <p style="font-size: 1.3rem; font-weight: bold; margin: 10px 0; color: #0056b3;">Arun Banjare</p>
@@ -255,21 +335,21 @@
         </section>
     </div>
 
-    <!-- 8. Login / Sign Up Section (At the very bottom) -->
+    <!-- 9. Login / Sign Up Section -->
     <div class="auth-section" id="auth">
         <div class="auth-box">
             
             <!-- LOGIN FORM -->
             <div id="login-form">
                 <h2>User Login</h2>
-                <form onsubmit="return false;">
+                <form onsubmit="handleLogin(event)">
                     <div class="input-group">
                         <label>Email or Mobile Number</label>
-                        <input type="text" placeholder="Enter your email or mobile" required>
+                        <input type="text" id="login-id" placeholder="Enter your email or mobile" required>
                     </div>
                     <div class="input-group">
                         <label>Password</label>
-                        <input type="password" placeholder="Enter your password" required>
+                        <input type="password" id="login-pass" placeholder="Enter your password" required>
                     </div>
                     <button type="submit" class="auth-btn">Login</button>
                 </form>
@@ -281,22 +361,22 @@
             <!-- SIGN UP FORM -->
             <div id="signup-form" class="hidden">
                 <h2>Create Account</h2>
-                <form onsubmit="return false;">
+                <form onsubmit="submitSignup(event)">
                     <div class="input-group">
                         <label>Full Name</label>
-                        <input type="text" placeholder="Enter your full name" required>
+                        <input type="text" id="signup-name" placeholder="Enter your full name" required>
                     </div>
                     <div class="input-group">
                         <label>Email Address</label>
-                        <input type="email" placeholder="Enter your email address" required>
+                        <input type="email" id="signup-email" placeholder="Enter your email address" required>
                     </div>
                     <div class="input-group">
                         <label>Mobile Number</label>
-                        <input type="tel" placeholder="Enter your mobile number" required>
+                        <input type="tel" id="signup-mobile" placeholder="Enter your mobile number" required>
                     </div>
                     <div class="input-group">
                         <label>Password</label>
-                        <input type="password" placeholder="Create a password" required>
+                        <input type="password" id="signup-pass" placeholder="Create a password" required>
                     </div>
                     <button type="submit" class="auth-btn" style="background: #28a745;">Sign Up</button>
                 </form>
@@ -312,7 +392,28 @@
         <p>&copy; 2026 Learn CAD with Arun Banjare. All Rights Reserved.</p>
     </footer>
 
+    <!-- INTERACTIVE JAVASCRIPT -->
     <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        let slideInterval = setInterval(nextSlide, 4000);
+
+        function showSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (index + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        function changeSlide(direction) {
+            clearInterval(slideInterval);
+            showSlide(currentSlide + direction);
+            slideInterval = setInterval(nextSlide, 4000);
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
         function toggleForm(formType) {
             const loginForm = document.getElementById('login-form');
             const signupForm = document.getElementById('signup-form');
@@ -323,6 +424,26 @@
                 signupForm.classList.add('hidden');
                 loginForm.classList.remove('hidden');
             }
+        }
+
+        function submitSignup(event) {
+            event.preventDefault();
+            const name = document.getElementById('signup-name').value;
+            alert("Congratulations " + name + "!\nYour Account has been Created Successfully. You can now Log in.");
+            toggleForm('login');
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const loginId = document.getElementById('login-id').value;
+            alert("Welcome back!\nLogin successful for " + loginId);
+        }
+
+        function handleRegistration(event) {
+            event.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            alert("Thank you " + name + "!\nYour Student Registration details have been submitted successfully.");
+            document.getElementById('student-reg-form').reset();
         }
     </script>
 </body>
