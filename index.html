@@ -122,13 +122,13 @@
             border-radius: 12px; 
             box-shadow: 0 6px 18px rgba(0,0,0,0.08); 
             padding: 30px; 
-            width: 350px; 
+            width: 320px; 
             text-align: center; 
             transition: 0.3s;
             border: 1px solid #eef2f5;
         }
         .course-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.12); }
-        .course-card h3 { margin-bottom: 10px; color: #333; font-size: 1.4rem; }
+        .course-card h3 { margin-bottom: 10px; color: #333; font-size: 1.3rem; }
         .price { font-size: 1.8rem; color: #28a745; font-weight: 700; margin: 15px 0; }
         .course-card ul { text-align: left; list-style: none; margin: 20px 0; border-top: 1px solid #eee; padding-top: 15px; }
         .course-card ul li { margin-bottom: 10px; color: #555; font-size: 0.95rem; }
@@ -193,6 +193,7 @@
             .slider-container { height: 300px; }
             .slide-caption { font-size: 0.9rem; padding: 10px; }
             .slider-btn { padding: 8px 12px; font-size: 14px; }
+            .courses-grid { flex-direction: column; align-items: center; }
         }
     </style>
 </head>
@@ -220,38 +221,33 @@
         <p>Professional AutoCAD Design and Consultation Services by Civil Engineer Arun Banjare</p>
     </section>
 
-    <!-- 3. AUTOMATIC IMAGE SLIDER WITH YOUR LOGO/PLAN IMAGES -->
+    <!-- 3. AUTOMATIC IMAGE SLIDER WITH YOUR IMAGES -->
     <div id="portfolio">
         <h2 class="section-title">Our House Design Portfolio</h2>
         <div class="slider-container">
-            <!-- Slide 1 -->
             <div class="slide active">
                 <img src="logo2.png" alt="House Design Plan 1">
                 <div class="slide-caption">Recent 2D House Floor Plan</div>
             </div>
-            <!-- Slide 2 -->
             <div class="slide">
                 <img src="logo3.png" alt="House Design Plan 2">
                 <div class="slide-caption">AutoCAD Layout Drawing</div>
             </div>
-            <!-- Slide 3 -->
             <div class="slide">
                 <img src="logo4.png" alt="House Design Plan 3">
                 <div class="slide-caption">Modern 3D Front Elevation</div>
             </div>
-            <!-- Slide 4 -->
             <div class="slide">
                 <img src="logo5.png" alt="House Design Plan 4">
                 <div class="slide-caption">Premium Exterior Building Design</div>
             </div>
 
-            <!-- Left and Right Control Arrows -->
             <button class="slider-btn prev" onclick="changeSlide(-1)">&#10094;</button>
             <button class="slider-btn next" onclick="changeSlide(1)">&#10095;</button>
         </div>
         <div style="text-align: center; margin-bottom: 40px;">
             <a class="btn" href="https://wa.me/917440850479" target="_blank" style="background: #25d366;">Get Your Own House Plan</a>
-            <a class="btn2" href="https://www.youtube.com/@LearnCADwithErArunBanjare" target="_blank">Watch Tutorials on YouTube</a>
+            <a class="btn2" href="https://www.youtube.com" target="_blank">Watch Tutorials on YouTube</a>
         </div>
     </div>
 
@@ -259,9 +255,9 @@
         <!-- 4. About Section -->
         <section id="about" class="about-box">
             <h2>About Learn CAD with Arun Banjare</h2>
-            <p style="margin-top: 10px;">Welcome to Learn CAD with Arun Banjare. We provide Professional AutoCAD Training in Hindi from Basic to Advanced Level. We also provide complete House Planning and Structural Drawing services for residential buildings.</p>
+            <p style="margin-top: 10px;">Welcome to Learn CAD with Arun Banjare. We provide Professional AutoCAD and Revit Training in Hindi from Basic to Advanced Level. We also provide complete House Planning and Structural Drawing services for residential buildings.</p>
             <ul>
-                <li>✅ AutoCAD 2D & 3D Training</li>
+                <li>✅ AutoCAD & Revit 3D Training</li>
                 <li>✅ PDF Notes & Practical Projects</li>
                 <li>✅ Completion Certificate</li>
                 <li>✅ Lifetime WhatsApp Support</li>
@@ -269,7 +265,7 @@
         </section>
 
         <!-- 5. Courses Section -->
-        <h2 class="section-title" id="course">Our AutoCAD Courses</h2>
+        <h2 class="section-title" id="course">Our Technical Courses</h2>
         <div class="courses-grid">
             <div class="course-card">
                 <h3>AutoCAD 2D Course</h3>
@@ -280,7 +276,7 @@
                     <li>✔ Completion Certificate</li>
                     <li>✔ Lifetime Support</li>
                 </ul>
-                <a href="https://wa.me/917440850479" class="btn" target="_blank">Enroll Now</a>
+                <a href="https://wa.me/917440850479?text=Hi%20Arun,%20I%20want%20to%20enroll%20in%20AutoCAD%202D%20Course." class="btn" target="_blank">Enroll Now</a>
             </div>
 
             <div class="course-card">
@@ -292,7 +288,19 @@
                     <li>✔ Completion Certificate</li>
                     <li>✔ Lifetime Support</li>
                 </ul>
-                <a href="https://wa.me/917440850479" class="btn" target="_blank">Enroll Now</a>
+                <a href="https://wa.me/917440850479?text=Hi%20Arun,%20I%20want%20to%20enroll%20in%20AutoCAD%202D%20%2B%203D%20Course." class="btn" target="_blank">Enroll Now</a>
+            </div>
+
+            <div class="course-card">
+                <h3>Revit Architecture</h3>
+                <div class="price">₹1500</div>
+                <ul>
+                    <li>✔ Complete 3D Modeling</li>
+                    <li>✔ Vastu Compliant Layouts</li>
+                    <li>✔ Front Elevation & Rendering</li>
+                    <li>✔ Lifetime Support</li>
+                </ul>
+                <a href="https://wa.me/917440850479?text=Hi%20Arun,%20I%20want%20to%20enroll%20in%20Revit%20Architecture%20Course." class="btn" target="_blank">Enroll Now</a>
             </div>
         </div>
 
@@ -301,10 +309,10 @@
             <h2>House Plan & Structural Drawing</h2>
             <div class="price" style="margin: 15px 0;">₹5 / Sq.ft</div>
             <p style="margin-bottom: 15px;">Complete House Planning with 2D Floor Plan, Front Elevation, Structural Drawing, Foundation Layout, Beam/Column Layout, Electrical & Plumbing Layout.</p>
-            <a href="https://wa.me/917440850479" class="btn" target="_blank">Book Your Plan</a>
+            <a href="https://wa.me/917440850479?text=Hi%20Arun,%20I%20want%20to%20book%20a%20House%20Plan%20Design%20service." class="btn" target="_blank">Book Your Plan</a>
         </section>
 
-        <!-- 7. Student Registration Form -->
+        <!-- 7. Student Registration Form WITH WHATSAPP BACKEND API -->
         <h2 class="section-title" id="registration">Student Registration</h2>
         <div class="reg-form">
             <p style="margin-bottom: 25px; font-weight: bold; color: #666;">Course Purchase ke baad niche diya gaya form bharna hoga:</p>
@@ -314,8 +322,9 @@
                 <input type="email" id="reg-email" placeholder="Email Address *" required>
                 <select id="reg-course" required>
                     <option value="">Select Course *</option>
-                    <option value="2d">AutoCAD 2D - ₹1000</option>
-                    <option value="3d">AutoCAD 2D + 3D - ₹1500</option>
+                    <option value="AutoCAD 2D (₹1000)">AutoCAD 2D - ₹1000</option>
+                    <option value="AutoCAD 2D + 3D (₹1500)">AutoCAD 2D + 3D - ₹1500</option>
+                    <option value="Revit Architecture (₹1500)">Revit Architecture - ₹1500</option>
                 </select>
                 <textarea id="reg-address" placeholder="Address" rows="3"></textarea>
                 <button type="submit" class="reg-submit">Submit Registration</button>
@@ -329,7 +338,7 @@
             <p>📞 Mobile : 7440850479</p>
             <p>📧 Email : er.arunbanjare@gmail.com</p>
             <div style="margin-top: 25px;">
-                <a href="https://www.youtube.com/@LearnCADwithErArunBanjare" class="btn2" target="_blank">Visit YouTube Channel</a>
+                <a href="https://www.youtube.com" class="btn2" target="_blank">Visit YouTube Channel</a>
                 <a href="https://wa.me/917440850479" class="btn" target="_blank">Chat on WhatsApp</a>
             </div>
         </section>
@@ -439,10 +448,29 @@
             alert("Welcome back!\nLogin successful for " + loginId);
         }
 
+        // --- WHATSAPP REDIRECT BACKEND ---
         function handleRegistration(event) {
             event.preventDefault();
+            
             const name = document.getElementById('reg-name').value;
-            alert("Thank you " + name + "!\nYour Student Registration details have been submitted successfully.");
+            const mobile = document.getElementById('reg-mobile').value;
+            const email = document.getElementById('reg-email').value;
+            const course = document.getElementById('reg-course').value;
+            const address = document.getElementById('reg-address').value;
+
+            const message = "New Student Registration Details:\n\n" +
+                            "📝 Name: " + name + "\n" +
+                            "📞 Mobile: " + mobile + "\n" +
+                            "📧 Email: " + email + "\n" +
+                            "📚 Course: " + course + "\n" +
+                            "📍 Address: " + address;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = "https://wa.me/917440850479?text=" + encodedMessage;
+
+            alert("Thank you " + name + "!\nYour details are verified. Press OK to complete registration on WhatsApp.");
+            
+            window.open(whatsappUrl, '_blank');
             document.getElementById('student-reg-form').reset();
         }
     </script>
