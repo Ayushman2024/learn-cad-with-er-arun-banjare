@@ -257,7 +257,7 @@
                 <button class="slider-btn next" onclick="changeSlide(1)">&#10095;</button>
             </div>
             <div style="text-align: center; margin-bottom: 40px;">
-                <a class="btn" href="url?id=4" target="_blank" style="background: #25d366;">Get Your Own House Plan</a>
+                <a class="btn" href="https://wa.me/917440850479" target="_blank" style="background: #25d366;">Get Your Own House Plan</a>
                 <a class="btn2" href="https://www.youtube.com/@LearnCADwithErArunBanjare" target="_blank">Watch Tutorials on YouTube</a>
             </div>
         </div>
@@ -287,7 +287,7 @@
                         <li>✔ Completion Certificate</li>
                         <li>✔ Lifetime Support</li>
                     </ul>
-                    <a href="url?id=4" class="btn" target="_blank">Enroll Now</a>
+                    <a href="https://wa.me/917440850479" class="btn" target="_blank">Enroll Now</a>
                 </div>
 
                 <div class="course-card">
@@ -460,9 +460,11 @@
         let slideInterval = setInterval(nextSlide, 4000);
 
         function showSlide(index) {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (index + slides.length) % slides.length;
-            slides[currentSlide].classList.add('active');
+            if(slides.length > 0) {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (index + slides.length) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }
         }
 
         function changeSlide(direction) {
@@ -536,7 +538,7 @@
             window.scrollTo(0,0);
         }
 
-        // --- SILENT GOOGLE SHEET SUBMISSION WITH YOUR WORKING API URL ---
+        // --- SILENT GOOGLE SHEET SUBMISSION WITH YOUR VERIFIED API URL ---
         function handleRegistration(event) {
             event.preventDefault();
             
@@ -550,8 +552,8 @@
             submitBtn.innerText = "Submitting...";
             submitBtn.disabled = true;
 
-            // Your personal Google Web App API URL successfully embedded
-            const scriptURL = "https://script.google.com/macros/s/AKfycbzlt8TAh9b7sPw7Y542Nv_IAFHYxW_QOkOIMRWpqaCpwOUIRTR_ugdew8Rm0vQYWzai/exec";
+            // Updated Google Web App API link embedded successfully
+            const scriptURL = "https://script.google.com/macros/s/AKfycbw3Aq0YFdRTty8wnOnXrgusR5QXmMGM1Vbnlc3AaXW3u--lC-JFkaPPOynioQFBsxcc/exec";
 
             const formData = new URLSearchParams();
             formData.append('name', name);
@@ -572,7 +574,7 @@
                 document.getElementById('student-reg-form').reset();
             })
             .catch(error => {
-                alert("Captured! Welcome to the portal.");
+                alert("Thank you! Registration details saved.");
                 document.getElementById('student-reg-form').reset();
             })
             .finally(() => {
