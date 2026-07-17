@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn CAD with Arun Banjare & Kheduram Aadil</title>
+    <title>Learn CAD with Arun Banjare</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -36,13 +36,14 @@
             display: flex;
             align-items: center;
         }
+        /* लोगो का साइज 90px बड़ा किया गया */
         .logo img {
-            width: 50px;
-            height: 50px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             margin-right: 15px;
             object-fit: cover;
-            border: 2px white solid;
+            border: 3px white solid;
         }
         .logo h2 {
             font-size: 1.4rem;
@@ -63,7 +64,6 @@
         nav a:hover {
             color: #ffc107;
         }
-        /* VIP Buttons for Login & Sign Up in Navbar */
         .nav-btn {
             background: #28a745;
             padding: 6px 15px;
@@ -124,10 +124,11 @@
             opacity: 1;
             z-index: 1;
         }
+        /* इमेज को फुल दिखाने के लिए fill किया गया */
         .slide img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: fill;
             background: #111;
         }
         .slide-caption {
@@ -423,7 +424,7 @@
 
     <!-- MAIN WEBSITE CONTENT AREA -->
     <div id="main-website">
-        <!-- Header Navigation -->
+        <!-- Header Navigation (अपरिवर्तित - अरुण बंजारे ही रहेगा) -->
         <header>
             <div class="logo">
                 <img src="LOGO1.PNG.png" alt="Logo">
@@ -439,10 +440,10 @@
             </nav>
         </header>
 
-        <!-- Top Title Banner -->
+        <!-- Top Title Banner (दोनों इंजीनियर्स के नाम जोड़े गए हैं) -->
         <section class="hero-banner">
             <h1>Learn AutoCAD & House Planning</h1>
-            <p>Professional AutoCAD Design and Consultation Services by Civil Engineer Arun Banjare</p>
+            <p>Professional AutoCAD Design and Consultation Services by Civil Engineer Arun Banjare & Civil Engineer KHEDURAM AADIL</p>
         </section>
 
         <!-- AUTOMATIC IMAGE SLIDER -->
@@ -475,10 +476,10 @@
         </div>
 
         <div class="container">
-            <!-- About Section -->
+            <!-- About Section (यहाँ हेडिंग में & KHEDURAM AADIL जोड़ा गया है) -->
             <section id="about" class="about-box">
-                <h2>About Learn CAD with Arun Banjare</h2>
-                <p style="margin-top: 10px;">Welcome to Learn CAD with Arun Banjare. We provide Professional AutoCAD and Revit Training in Hindi from Basic to Advanced Level. We also provide complete House Planning and Structural Drawing services for residential buildings.</p>
+                <h2>About Learn CAD with Arun Banjare & KHEDURAM AADIL</h2>
+                <p style="margin-top: 10px;">Welcome to Learn CAD with Arun Banjare & KHEDURAM AADIL. We provide Professional AutoCAD and Revit Training in Hindi from Basic to Advanced Level. We also provide complete House Planning and Structural Drawing services for residential buildings.</p>
                 <ul>
                     <li>✅ AutoCAD & Revit 3D Training</li>
                     <li>✅ PDF Notes & Practical Projects</li>
@@ -552,10 +553,10 @@
                 </form>
             </div>
 
-            <!-- Contact Us Section -->
+            <!-- Contact Us Section (दोनों नाम शामिल हैं) -->
             <section id="contact" class="contact-info">
                 <h2>Contact Us</h2>
-                <p style="font-size: 1.3rem; font-weight: bold; margin: 10px 0; color: #0056b3;">Arun Banjare</p>
+                <p style="font-size: 1.3rem; font-weight: bold; margin: 10px 0; color: #0056b3;">Arun Banjare & KHEDURAM AADIL</p>
                 <p>📞 Mobile : 7440850479</p>
                 <p>📧 Email : er.arunbanjare@gmail.com</p>
                 <div style="margin-top: 25px;">
@@ -617,7 +618,7 @@
         </div>
     </div>
 
-    <!-- STUDENT DASHBOARD (HIDDEN BY DEFAULT) -->
+    <!-- STUDENT DASHBOARD -->
     <div id="student-dashboard" class="container hidden">
         <div class="dashboard-container">
             <div class="dashboard-header">
@@ -734,7 +735,6 @@
             window.scrollTo(0,0);
         }
 
-        // --- SILENT GOOGLE SHEET SUBMISSION WITH YOUR VERIFIED API URL ---
         function handleRegistration(event) {
             event.preventDefault();
             const name = document.getElementById('reg-name').value;
