@@ -7,35 +7,82 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
-        body { background-color: #f4f6f9; color: #333; line-height: 1.6; }
-
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            line-height: 1.6;
+        }
         /* Navigation Header */
-        header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 15px 40px; 
-            background: #0056b3; 
-            color: white; 
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: #0056b3;
+            color: white;
             position: sticky;
             top: 0;
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        .logo { display: flex; align-items: center; }
-        .logo img { width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; object-fit: cover; border: 2px white solid; }
-        .logo h2 { font-size: 1.4rem; font-weight: 600; }
-        nav { display: flex; align-items: center; }
-        nav a { color: white; text-decoration: none; margin-left: 20px; font-weight: 500; font-size: 0.95rem; transition: 0.3s; }
-        nav a:hover { color: #ffc107; }
-
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+            border: 2px white solid;
+        }
+        .logo h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: 0.3s;
+        }
+        nav a:hover {
+            color: #ffc107;
+        }
         /* VIP Buttons for Login & Sign Up in Navbar */
-        .nav-btn { background: #28a745; padding: 6px 15px; border-radius: 4px; font-weight: 600; cursor: pointer; }
-        .nav-btn:hover { background: #218838; color: white; }
-        .nav-btn.signup-btn { background: #ffc107; color: #333; }
-        .nav-btn.signup-btn:hover { background: #e0a800; color: #333; }
-
+        .nav-btn {
+            background: #28a745;
+            padding: 6px 15px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .nav-btn:hover {
+            background: #218838;
+            color: white;
+        }
+        .nav-btn.signup-btn {
+            background: #ffc107;
+            color: #333;
+        }
+        .nav-btn.signup-btn:hover {
+            background: #e0a800;
+            color: #333;
+        }
         /* Hero Banner */
         .hero-banner {
             background: linear-gradient(135deg, #0056b3 0%, #003366 100%);
@@ -43,9 +90,16 @@
             text-align: center;
             padding: 40px 20px;
         }
-        .hero-banner h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 5px; }
-        .hero-banner p { font-size: 1.1rem; color: #ffc107; font-weight: 500; }
-
+        .hero-banner h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .hero-banner p {
+            font-size: 1.1rem;
+            color: #ffc107;
+            font-weight: 500;
+        }
         /* Automatic Image Slider Style */
         .slider-container {
             position: relative;
@@ -66,7 +120,10 @@
             display: flex;
             align-items: flex-end;
         }
-        .slide.active { opacity: 1; z-index: 1; }
+        .slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
         .slide img {
             width: 100%;
             height: 100%;
@@ -75,7 +132,9 @@
         }
         .slide-caption {
             position: absolute;
-            bottom: 0; left: 0; right: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
             background: rgba(0, 86, 179, 0.85);
             color: white;
             padding: 15px;
@@ -99,45 +158,109 @@
             z-index: 10;
             transition: 0.3s;
         }
-        .slider-btn:hover { background: #0056b3; }
+        .slider-btn:hover {
+            background: #0056b3;
+        }
         .prev { left: 20px; }
         .next { right: 20px; }
 
         /* General Container */
-        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
-        .section-title { text-align: center; margin: 40px 0 20px 0; font-size: 2.2rem; color: #0056b3; font-weight: 700; position: relative; }
-        .section-title::after { content: ''; display: block; width: 60px; height: 4px; background: #ffc107; margin: 10px auto 0 auto; border-radius: 2px; }
-        
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .section-title {
+            text-align: center;
+            margin: 40px 0 20px 0;
+            font-size: 2.2rem;
+            color: #0056b3;
+            font-weight: 700;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: #ffc107;
+            margin: 10px auto 0 auto;
+            border-radius: 2px;
+        }
         /* About Section */
-        .about-box { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 40px; }
-        .about-box h2 { color: #0056b3; margin-bottom: 15px; }
-        .about-box ul { list-style: none; margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
-        .about-box ul li { font-weight: 500; color: #444; }
-
+        .about-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+        .about-box h2 {
+            color: #0056b3;
+            margin-bottom: 15px;
+        }
+        .about-box ul {
+            list-style: none;
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        .about-box ul li {
+            font-weight: 500;
+            color: #444;
+        }
         /* Course Section Styling */
-        .courses-grid { display: flex; gap: 25px; flex-wrap: wrap; justify-content: center; margin-bottom: 50px; }
-        .course-card { 
-            background: white; 
-            border-radius: 12px; 
-            box-shadow: 0 6px 18px rgba(0,0,0,0.08); 
-            padding: 30px; 
-            width: 320px; 
-            text-align: center; 
+        .courses-grid {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+        .course-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            padding: 30px;
+            width: 320px;
+            text-align: center;
             transition: 0.3s;
             border: 1px solid #eef2f5;
         }
-        .course-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.12); }
-        .course-card h3 { margin-bottom: 10px; color: #333; font-size: 1.3rem; }
-        .price { font-size: 1.8rem; color: #28a745; font-weight: 700; margin: 15px 0; }
-        .course-card ul { text-align: left; list-style: none; margin: 20px 0; border-top: 1px solid #eee; padding-top: 15px; }
-        .course-card ul li { margin-bottom: 10px; color: #555; font-size: 0.95rem; }
-        
-        .btn, .btn2 { 
-            display: inline-block; 
-            padding: 12px 25px; 
-            border-radius: 6px; 
-            text-decoration: none; 
-            font-weight: 600; 
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+        .course-card h3 {
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 1.3rem;
+        }
+        .price {
+            font-size: 1.8rem;
+            color: #28a745;
+            font-weight: 700;
+            margin: 15px 0;
+        }
+        .course-card ul {
+            text-align: left;
+            list-style: none;
+            margin: 20px 0;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        .course-card ul li {
+            margin-bottom: 10px;
+            color: #555;
+            font-size: 0.95rem;
+        }
+        .btn, .btn2 {
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
             margin: 5px;
             cursor: pointer;
             border: none;
@@ -148,20 +271,60 @@
         .btn:hover { background: #218838; }
         .btn2 { background: #dc3545; color: white; }
         .btn2:hover { background: #c82333; }
-        
+
         /* Registration Form Styling */
-        .reg-form { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); max-width: 650px; margin: 0 auto 50px auto; }
+        .reg-form {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            max-width: 650px;
+            margin: 0 auto 50px auto;
+        }
         .reg-form p { text-align: center; margin-bottom: 20px; }
-        .reg-form input, .reg-form select, .reg-form textarea { width: 100%; padding: 12px; margin-bottom: 18px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; font-size: 0.95rem; outline: none; }
-        .reg-form input:focus, .reg-form select:focus, .reg-form textarea:focus { border-color: #0056b3; }
-        .reg-submit { background: #0056b3; color: white; width: 100%; padding: 14px; border: none; border-radius: 6px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.3s; }
+        .reg-form input, .reg-form select, .reg-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        .reg-form input:focus, .reg-form select:focus, .reg-form textarea:focus {
+            border-color: #0056b3;
+        }
+        .reg-submit {
+            background: #0056b3;
+            color: white;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
         .reg-submit:hover { background: #004085; }
 
         /* Contact Section */
-        .contact-info { text-align: center; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-
+        .contact-info {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
         /* Login / Sign Up Section */
-        .auth-section { background: #e9ecef; padding: 80px 20px; display: flex; justify-content: center; border-top: 4px solid #0056b3; }
+        .auth-section {
+            background: #e9ecef;
+            padding: 80px 20px;
+            display: flex;
+            justify-content: center;
+            border-top: 4px solid #0056b3;
+        }
         .auth-box {
             background: white;
             padding: 40px;
@@ -170,33 +333,83 @@
             width: 100%;
             max-width: 440px;
         }
-        .auth-box h2 { margin-bottom: 25px; color: #333; text-align: center; font-weight: 700; }
+        .auth-box h2 {
+            margin-bottom: 25px;
+            color: #333;
+            text-align: center;
+            font-weight: 700;
+        }
         .input-group { margin-bottom: 20px; text-align: left; }
         .input-group label { display: block; margin-bottom: 8px; color: #555; font-weight: 600; font-size: 14px; }
         .input-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; outline: none; font-size: 15px; }
         .input-group input:focus { border-color: #0056b3; }
-        .auth-btn { width: 100%; padding: 14px; background: #0056b3; border: none; color: white; font-size: 16px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; transition: 0.3s; }
+        .auth-btn {
+            width: 100%;
+            padding: 14px;
+            background: #0056b3;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
         .auth-btn:hover { background: #004085; }
-        
         .switch-text { text-align: center; margin-top: 20px; font-size: 14px; color: #666; }
         .switch-text a { color: #0056b3; text-decoration: none; font-weight: bold; cursor: pointer; }
         .switch-text a:hover { text-decoration: underline; }
 
         /* Student Dashboard Style */
-        .dashboard-container { background: white; border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin-top: 30px; }
-        .dashboard-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 30px; }
+        .dashboard-container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            margin-top: 30px;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
         .dashboard-header h2 { color: #0056b3; }
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .dash-card { background: #f8f9fa; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; }
-        .dash-card h3 { color: #333; margin-bottom: 15px; font-size: 1.2rem; border-left: 4px solid #0056b3; padding-left: 10px; }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .dash-card {
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+        }
+        .dash-card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            border-left: 4px solid #0056b3;
+            padding-left: 10px;
+        }
         .dash-list { list-style: none; }
-        .dash-list li { padding: 10px 0; border-bottom: 1px dashed #e2e8f0; display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; }
+        .dash-list li {
+            padding: 10px 0;
+            border-bottom: 1px dashed #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+        }
         .dash-list li a { color: #0056b3; text-decoration: none; font-weight: 600; }
         .dash-list li a:hover { text-decoration: underline; }
-
         .hidden { display: none !important; }
         footer { text-align: center; padding: 25px; background: #222; color: #aaa; font-size: 14px; }
-        
+
         @media (max-width: 768px) {
             .slider-container { height: 300px; }
             .slide-caption { font-size: 0.9rem; padding: 10px; }
@@ -252,13 +465,12 @@
                     <img src="logo5.png" alt="House Design Plan 4">
                     <div class="slide-caption">Premium Exterior Building Design</div>
                 </div>
-
                 <button class="slider-btn prev" onclick="changeSlide(-1)">&#10094;</button>
                 <button class="slider-btn next" onclick="changeSlide(1)">&#10095;</button>
             </div>
             <div style="text-align: center; margin-bottom: 40px;">
                 <a class="btn" href="https://wa.me/917440850479" target="_blank" style="background: #25d366;">Get Your Own House Plan</a>
-                <a class="btn2" href="https://www.youtube.com/@LearnCADwithErArunBanjare" target="_blank">Watch Tutorials on YouTube</a>
+                <a class="btn2" href="https://www.youtube.com/@LEARNCADWITHER.ARUNBANJARE" target="_blank" rel="noopener noreferrer">Watch Tutorials on YouTube</a>
             </div>
         </div>
 
@@ -289,7 +501,6 @@
                     </ul>
                     <a href="https://wa.me/917440850479" class="btn" target="_blank">Enroll Now</a>
                 </div>
-
                 <div class="course-card">
                     <h3>AutoCAD 2D + 3D Course</h3>
                     <div class="price">₹1500</div>
@@ -301,7 +512,6 @@
                     </ul>
                     <a href="https://wa.me/917440850479" class="btn" target="_blank">Enroll Now</a>
                 </div>
-
                 <div class="course-card">
                     <h3>Revit Architecture</h3>
                     <div class="price">₹1500</div>
@@ -349,59 +559,59 @@
                 <p>📞 Mobile : 7440850479</p>
                 <p>📧 Email : er.arunbanjare@gmail.com</p>
                 <div style="margin-top: 25px;">
-                    <a href="https://www.youtube.com/@LearnCADwithErArunBanjare" class="btn2" target="_blank">Visit YouTube Channel</a>
+                    <a href="https://www.youtube.com/@LEARNCADWITHER.ARUNBANJARE" class="btn2" target="_blank" rel="noopener noreferrer">Visit YouTube Channel</a>
                     <a href="https://wa.me/917440850479" class="btn" target="_blank">Chat on WhatsApp</a>
                 </div>
             </section>
         </div>
+    </div>
 
-        <!-- Login / Sign Up Forms Area -->
-        <div class="auth-section" id="auth">
-            <div class="auth-box">
-                <!-- LOGIN FORM -->
-                <div id="login-form">
-                    <h2>User Login</h2>
-                    <form onsubmit="handleLogin(event)">
-                        <div class="input-group">
-                            <label>Email or Mobile Number</label>
-                            <input type="text" id="login-id" placeholder="Enter email or mobile" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Password</label>
-                            <input type="password" id="login-pass" placeholder="Enter password" required>
-                        </div>
-                        <button type="submit" class="auth-btn">Login</button>
-                    </form>
-                    <div class="switch-text">
-                        Don't have an account? <a onclick="toggleForm('signup')">Sign Up Here</a>
+    <!-- Login / Sign Up Forms Area -->
+    <div class="auth-section" id="auth">
+        <div class="auth-box">
+            <!-- LOGIN FORM -->
+            <div id="login-form">
+                <h2>User Login</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="input-group">
+                        <label>Email or Mobile Number</label>
+                        <input type="text" id="login-id" placeholder="Enter email or mobile" required>
                     </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="login-pass" placeholder="Enter password" required>
+                    </div>
+                    <button type="submit" class="auth-btn">Login</button>
+                </form>
+                <div class="switch-text">
+                    Don't have an account? <a onclick="toggleForm('signup')">Sign Up Here</a>
                 </div>
+            </div>
 
-                <!-- SIGN UP FORM -->
-                <div id="signup-form" class="hidden">
-                    <h2>Create Account</h2>
-                    <form onsubmit="submitSignup(event)">
-                        <div class="input-group">
-                            <label>Full Name</label>
-                            <input type="text" id="signup-name" placeholder="Enter your full name" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Email Address</label>
-                            <input type="email" id="signup-email" placeholder="Enter email address" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Mobile Number</label>
-                            <input type="tel" id="signup-mobile" placeholder="Enter mobile number" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Password</label>
-                            <input type="password" id="signup-pass" placeholder="Create a password" required>
-                        </div>
-                        <button type="submit" class="auth-btn" style="background: #28a745;">Sign Up</button>
-                    </form>
-                    <div class="switch-text">
-                        Already have an account? <a onclick="toggleForm('login')">Login Here</a>
+            <!-- SIGN UP FORM -->
+            <div id="signup-form" class="hidden">
+                <h2>Create Account</h2>
+                <form onsubmit="submitSignup(event)">
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" id="signup-name" placeholder="Enter your full name" required>
                     </div>
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" id="signup-email" placeholder="Enter email address" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Mobile Number</label>
+                        <input type="tel" id="signup-mobile" placeholder="Enter mobile number" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="signup-pass" placeholder="Create a password" required>
+                    </div>
+                    <button type="submit" class="auth-btn" style="background: #28a745;">Sign Up</button>
+                </form>
+                <div class="switch-text">
+                    Already have an account? <a onclick="toggleForm('login')">Login Here</a>
                 </div>
             </div>
         </div>
@@ -417,18 +627,16 @@
                 </div>
                 <button onclick="handleLogout()" class="btn2" style="margin: 0;">Logout</button>
             </div>
-
             <div class="dashboard-grid">
                 <div class="dash-card">
                     <h3>🎥 My Course Lectures</h3>
                     <ul class="dash-list">
-                        <li><span>AutoCAD Chapter 1: Basics & Interface</span> <a href="https://www.youtube.com/@LearnCADwithErArunBanjare" target="_blank">Watch Video</a></li>
-                        <li><span>AutoCAD Chapter 2: Draw & Modify Commands</span> <a href="https://www.youtube.com/@LearnCADwithErArunBanjare" target="_blank">Watch Video</a></li>
-                        <li><span>AutoCAD Chapter 3: 2D Plan Layout Design</span> <a href="https://www.youtube.com/@LearnCADwithErArunBanjare" target="_blank">Watch Video</a></li>
-                        <li><span>Revit Chapter 1: 3D Walls & Elevation Intro</span> <a href="https://www.youtube.com/@LearnCADwithErArunBanjare" target="_blank">Watch Video</a></li>
+                        <li><span>AutoCAD Chapter 1: Basics & Interface</span> <a href="https://www.youtube.com/@LEARNCADWITHER.ARUNBANJARE" target="_blank" rel="noopener noreferrer">Watch Video</a></li>
+                        <li><span>AutoCAD Chapter 2: Draw & Modify Commands</span> <a href="https://www.youtube.com/@LEARNCADWITHER.ARUNBANJARE" target="_blank" rel="noopener noreferrer">Watch Video</a></li>
+                        <li><span>AutoCAD Chapter 3: 2D Plan Layout Design</span> <a href="https://www.youtube.com/@LEARNCADWITHER.ARUNBANJARE" target="_blank" rel="noopener noreferrer">Watch Video</a></li>
+                        <li><span>Revit Chapter 1: 3D Walls & Elevation Intro</span> <a href="https://www.youtube.com/@LEARNCADWITHER.ARUNBANJARE" target="_blank" rel="noopener noreferrer">Watch Video</a></li>
                     </ul>
                 </div>
-
                 <div class="dash-card">
                     <h3>📚 Study Material & PDFs</h3>
                     <ul class="dash-list">
@@ -437,7 +645,6 @@
                         <li><span>Revit Family Materials Pack (.rfa)</span> <a href="#" onclick="alert('Downloading Revit Families...')">Download</a></li>
                     </ul>
                 </div>
-
                 <div class="dash-card">
                     <h3>💬 Student Direct Support</h3>
                     <p style="font-size: 0.95rem; margin-bottom: 15px; color: #555;">If you face any issue during drawings, you can directly contact Civil Engineer Arun Banjare via WhatsApp or Call.</p>
@@ -454,13 +661,12 @@
     <!-- INTERACTIVE JAVASCRIPT -->
     <script>
         let usersDatabase = [];
-
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         let slideInterval = setInterval(nextSlide, 4000);
 
         function showSlide(index) {
-            if(slides.length > 0) {
+            if (slides.length > 0) {
                 slides[currentSlide].classList.remove('active');
                 currentSlide = (index + slides.length) % slides.length;
                 slides[currentSlide].classList.add('active');
@@ -474,7 +680,7 @@
         }
 
         function nextSlide() {
-            if(slides.length > 0) showSlide(currentSlide + 1);
+            if (slides.length > 0) showSlide(currentSlide + 1);
         }
 
         function toggleForm(formType) {
@@ -496,14 +702,8 @@
             const email = document.getElementById('signup-email').value;
             const mobile = document.getElementById('signup-mobile').value;
             const pass = document.getElementById('signup-pass').value;
-
-            usersDatabase.push({
-                username: name,
-                loginId: email,
-                mobileId: mobile,
-                password: pass
-            });
-
+            
+            usersDatabase.push({username: name, loginId: email, mobileId: mobile, password: pass });
             alert("Congratulations " + name + "!\nYour Account has been Created Successfully. You can now Log in using your email/mobile.");
             toggleForm('login');
         }
@@ -512,18 +712,14 @@
             event.preventDefault();
             const loginId = document.getElementById('login-id').value;
             const loginPass = document.getElementById('login-pass').value;
-
             let foundUser = usersDatabase.find(u => (u.loginId === loginId || u.mobileId === loginId) && u.password === loginPass);
             let studentName = "Student";
-            
             if (foundUser) {
                 studentName = foundUser.username;
             } else {
-                studentName = loginId.split('@')[0]; 
+                studentName = loginId.split('@')[0];
             }
-
             alert("Welcome back " + studentName + "!\nLogin successful. Opening Student Dashboard...");
-
             document.getElementById('main-website').classList.add('hidden');
             document.getElementById('student-dashboard').classList.remove('hidden');
             document.getElementById('welcome-user').innerText = "Welcome, " + studentName + "!";
@@ -541,20 +737,17 @@
         // --- SILENT GOOGLE SHEET SUBMISSION WITH YOUR VERIFIED API URL ---
         function handleRegistration(event) {
             event.preventDefault();
-            
             const name = document.getElementById('reg-name').value;
             const mobile = document.getElementById('reg-mobile').value;
             const email = document.getElementById('reg-email').value;
             const course = document.getElementById('reg-course').value;
             const address = document.getElementById('reg-address').value;
             const submitBtn = document.getElementById('submit-text');
-
+            
             submitBtn.innerText = "Submitting...";
             submitBtn.disabled = true;
 
-            // Updated Google Web App API link embedded successfully
             const scriptURL = "https://script.google.com/macros/s/AKfycbw3Aq0YFdRTty8wnOnXrgusR5QXmMGM1Vbnlc3AaXW3u--lC-JFkaPPOynioQFBsxcc/exec";
-
             const formData = new URLSearchParams();
             formData.append('name', name);
             formData.append('mobile', mobile);
@@ -562,13 +755,7 @@
             formData.append('course', course);
             formData.append('address', address);
 
-            fetch(scriptURL, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            })
+            fetch(scriptURL, {method: 'POST', body: formData, headers: {'Content-Type': 'application/x-www-form-urlencoded' } })
             .then(response => {
                 alert("Thank you " + name + "!\nYour Registration details have been submitted successfully to our database.");
                 document.getElementById('student-reg-form').reset();
