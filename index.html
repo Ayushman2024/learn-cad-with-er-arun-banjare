@@ -409,12 +409,135 @@
         .hidden { display: none !important; }
         footer { text-align: center; padding: 25px; background: #222; color: #aaa; font-size: 14px; line-height: 1.8; }
 
+        /* --- WhatsApp Widget Styling (caddapp.com jaisa) --- */
+        .wa-widget-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99999;
+        }
+        .wa-floating-btn {
+            width: 60px;
+            height: 60px;
+            background-color: #25D366;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            animation: waBounce 2s infinite alternate;
+        }
+        .wa-floating-btn:hover {
+            transform: scale(1.1);
+            background-color: #20ba5a;
+        }
+        .wa-svg-icon {
+            width: 34px;
+            height: 34px;
+            fill: #ffffff;
+        }
+        .wa-popup-box {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 320px;
+            background-color: #1a1a1a;
+            border: 1px solid #2d2d2d;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transition: opacity 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: bottom right;
+            opacity: 1;
+            transform: scale(1);
+        }
+        .wa-popup-box.hidden {
+            display: none !important;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        .wa-close-btn {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #888888;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s;
+            z-index: 10;
+        }
+        .wa-close-btn:hover { color: #ffffff; }
+        .wa-popup-header {
+            padding: 25px 20px 10px 20px;
+            text-align: center;
+        }
+        .wa-header-icon-bg {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(37, 211, 102, 0.15);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .wa-header-svg {
+            width: 36px;
+            height: 36px;
+            fill: #25D366;
+        }
+        .wa-popup-body {
+            padding: 0 24px 30px 24px;
+            text-align: center;
+        }
+        .wa-popup-body h3 {
+            color: #ffffff;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .wa-popup-body p {
+            color: #aaaaaa;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+        .wa-chat-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #25D366;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        .wa-chat-btn:hover {
+            background-color: #20ba5a;
+            transform: translateY(-2px);
+        }
+
+        @keyframes waBounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-6px); }
+        }
+
         @media (max-width: 768px) {
             .slider-container { height: 300px; }
             .slide-caption { font-size: 0.9rem; padding: 10px; }
             .slider-btn { padding: 8px 12px; font-size: 14px; }
             .courses-grid { flex-direction: column; align-items: center; }
             .dashboard-header { flex-direction: column; gap: 15px; text-align: center; }
+            .wa-widget-container { bottom: 20px; right: 20px; }
+            .wa-popup-box { width: 290px; right: 0; }
         }
     </style>
 </head>
@@ -653,13 +776,45 @@
         </div>
     </div>
 
-    <!-- FOOTER AREA (Designed & Developed टेक्स्ट यहाँ जोड़ा गया है) -->
+    <!-- FLOATING WHATSAPP WIDGET (caddapp.com jaisa Look & Animation) -->
+    <div class="wa-widget-container">
+        <!-- Floating Round Icon -->
+        <button class="wa-floating-btn" onclick="toggleWhatsAppChat()" aria-label="Chat on WhatsApp">
+            <svg viewBox="0 0 24 24" class="wa-svg-icon">
+                <path d="M12.004 2c-5.523 0-10 4.477-10 10a9.957 9.957 0 0 0 1.358 4.987L2 22l5.154-1.353A9.958 9.958 0 0 0 12.004 22c5.523 0 10-4.477 10-10s-4.477-10-10-10zm.017 16.518c-1.63 0-3.14-.492-4.406-1.334l-.316-.192-3.045.799.814-2.969-.214-.34A7.95 7.95 0 0 1 4.02 12c0-4.42 3.597-8.018 8.018-8.018 4.42 0 8.018 3.597 8.018 8.018 0 4.42-3.598 8.018-8.017 8.018zM15.93 13.06c-.3-.15-1.774-.874-2.048-.974-.274-.1-.474-.15-.674.15-.2.3-.774.974-.948 1.174-.175.2-.35.225-.65.075-.3-.15-1.264-.466-2.41-1.488-.891-.795-1.492-1.777-1.667-2.077-.175-.3-.018-.463.13-.612.134-.133.3-.349.45-.524.149-.174.2-.3.3-.5.1-.2.05-.375-.025-.524-.075-.15-.674-1.623-.924-2.223-.244-.585-.493-.506-.674-.515-.175-.008-.375-.01-.575-.01s-.525.075-.8.375c-.275.3-1.05 1.024-1.05 2.5 0 1.473 1.074 2.896 1.224 3.096.15.2 2.115 3.23 5.123 4.53.715.31 1.273.495 1.708.634.718.228 1.37.196 1.887.119.577-.087 1.774-.724 2.023-1.423.25-.7.25-1.3 1.175-1.423-.075-.125-.225-.225-.525-.375z"/>
+            </svg>
+        </button>
+
+        <!-- Automatic Modern Dark-Theme Pop-up Panel -->
+        <div class="wa-popup-box hidden" id="waPopupBox">
+            <!-- Close Button (X) -->
+            <button class="wa-close-btn" onclick="closeWhatsAppChat()" aria-label="Close Chat">&times;</button>
+            
+            <!-- Custom Content Inside Box -->
+            <div class="wa-popup-header">
+                <div class="wa-header-icon-bg">
+                    <svg viewBox="0 0 24 24" class="wa-header-svg">
+                        <path d="M12.004 2c-5.523 0-10 4.477-10 10a9.957 9.957 0 0 0 1.358 4.987L2 22l5.154-1.353A9.958 9.958 0 0 0 12.004 22c5.523 0 10-4.477 10-10s-4.477-10-10-10zm.017 16.518c-1.63 0-3.14-.492-4.406-1.334l-.316-.192-3.045.799.814-2.969-.214-.34A7.95 7.95 0 0 1 4.02 12c0-4.42 3.597-8.018 8.018-8.018 4.42 0 8.018 3.597 8.018 8.018 0 4.42-3.598 8.018-8.017 8.018zM15.93 13.06c-.3-.15-1.774-.874-2.048-.974-.274-.1-.474-.15-.674.15-.2.3-.774.974-.948 1.174-.175.2-.35.225-.65.075-.3-.15-1.264-.466-2.41-1.488-.891-.795-1.492-1.777-1.667-2.077-.175-.3-.018-.463.13-.612.134-.133.3-.349.45-.524.149-.174.2-.3.3-.5.1-.2.05-.375-.025-.524-.075-.15-.674-1.623-.924-2.223-.244-.585-.493-.506-.674-.515-.175-.008-.375-.01-.575-.01s-.525.075-.8.375c-.275.3-1.05 1.024-1.05 2.5 0 1.473 1.074 2.896 1.224 3.096.15.2 2.115 3.23 5.123 4.53.715.31 1.273.495 1.708.634.718.228 1.37.196 1.887.119.577-.087 1.774-.724 2.023-1.423.25-.7.25-1.3 1.175-1.423-.075-.125-.225-.225-.525-.375z"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="wa-popup-body">
+                <h3>Ghar Ka Naksha Banwana Hai?</h3>
+                <p>Hamein WhatsApp par message karein aur turant jankari payein!</p>
+                <a href="https://wa.me/917440850479" target="_blank" class="wa-chat-btn">
+                    <span>Chat on WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER AREA -->
     <footer>
         <p>&copy; 2026 Learn CAD with Er. Arun Banjare. All Rights Reserved.</p>
         <p style="font-size: 12px; color: #ffc107; font-weight: 500;">Designed & Developed by Er. Arun Banjare</p>
     </footer>
 
-    <!-- INTERACTIVE JAVASCRIPT -->
+    <!-- INTERACTIVE JAVASCRIPT LOGIC -->
     <script>
         let usersDatabase = [];
         let currentSlide = 0;
@@ -768,6 +923,26 @@
                 submitBtn.innerText = "Submit Registration";
                 submitBtn.disabled = false;
             });
+        }
+
+        /* --- WhatsApp Widget Script Logic (3 Seconds Automatic Delay Pop-up) --- */
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const popup = document.getElementById('waPopupBox');
+                if (popup && popup.classList.contains('hidden')) {
+                    popup.classList.remove('hidden');
+                }
+            }, 3000); 
+        });
+
+        function toggleWhatsAppChat() {
+            const popup = document.getElementById('waPopupBox');
+            if (popup) { popup.classList.toggle('hidden'); }
+        }
+
+        function closeWhatsAppChat() {
+            const popup = document.getElementById('waPopupBox');
+            if (popup) { popup.classList.add('hidden'); }
         }
     </script>
 </body>
