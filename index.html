@@ -36,7 +36,6 @@
             display: flex;
             align-items: center;
         }
-        /* लोगो का साइज 90px बड़ा किया गया */
         .logo img {
             width: 90px;
             height: 90px;
@@ -124,7 +123,6 @@
             opacity: 1;
             z-index: 1;
         }
-        /* इमेज को फुल दिखाने के लिए fill किया गया */
         .slide img {
             width: 100%;
             height: 100%;
@@ -424,7 +422,7 @@
 
     <!-- MAIN WEBSITE CONTENT AREA -->
     <div id="main-website">
-        <!-- Header Navigation (अपरिवर्तित - अरुण बंजारे ही रहेगा) -->
+        <!-- Header Navigation -->
         <header>
             <div class="logo">
                 <img src="LOGO1.PNG.png" alt="Logo">
@@ -440,10 +438,10 @@
             </nav>
         </header>
 
-        <!-- Top Title Banner (दोनों इंजीनियर्स के नाम जोड़े गए हैं) -->
+        <!-- Top Title Banner -->
         <section class="hero-banner">
             <h1>Learn AutoCAD & House Planning</h1>
-            <p>Professional AutoCAD Design and Consultation Services by Civil Engineer Arun Banjare & Civil Engineer KHEDURAM AADIL</p>
+            <p>Professional AutoCAD Design and Consultation Services by Civil Engineer Arun Banjare</p>
         </section>
 
         <!-- AUTOMATIC IMAGE SLIDER -->
@@ -476,10 +474,10 @@
         </div>
 
         <div class="container">
-            <!-- About Section (यहाँ हेडिंग में & KHEDURAM AADIL जोड़ा गया है) -->
+            <!-- About Section (यहाँ Kheduram Aadil सामान्य फॉर्मेट में अपडेट कर दिया गया है) -->
             <section id="about" class="about-box">
-                <h2>About Learn CAD with Arun Banjare & KHEDURAM AADIL</h2>
-                <p style="margin-top: 10px;">Welcome to Learn CAD with Arun Banjare & KHEDURAM AADIL. We provide Professional AutoCAD and Revit Training in Hindi from Basic to Advanced Level. We also provide complete House Planning and Structural Drawing services for residential buildings.</p>
+                <h2>About Learn CAD with Arun Banjare & Kheduram Aadil</h2>
+                <p style="margin-top: 10px;">Welcome to Learn CAD with Arun Banjare & Kheduram Aadil. We provide Professional AutoCAD and Revit Training in Hindi from Basic to Advanced Level. We also provide complete House Planning and Structural Drawing services for residential buildings.</p>
                 <ul>
                     <li>✅ AutoCAD & Revit 3D Training</li>
                     <li>✅ PDF Notes & Practical Projects</li>
@@ -534,29 +532,29 @@
                 <a href="https://wa.me/917440850479" class="btn" target="_blank">Book Your Plan</a>
             </section>
 
-            <!-- Student Registration Form WITH GOOGLE SHEETS BACKEND -->
+            <!-- Student Registration Form -->
             <h2 class="section-title" id="registration">Student Registration</h2>
             <div class="reg-form">
                 <p style="margin-bottom: 25px; font-weight: bold; color: #666;">Fill this form after purchasing the course:</p>
                 <form id="student-reg-form" onsubmit="handleRegistration(event)">
-                    <input type="text" id="reg-name" placeholder="Full Name *" required>
-                    <input type="tel" id="reg-mobile" placeholder="Mobile Number *" required>
-                    <input type="email" id="reg-email" placeholder="Email Address *" required>
-                    <select id="reg-course" required>
+                    <input type="text" id="reg-name" name="name" placeholder="Full Name *" required>
+                    <input type="tel" id="reg-mobile" name="mobile" placeholder="Mobile Number *" required>
+                    <input type="email" id="reg-email" name="email" placeholder="Email Address *" required>
+                    <select id="reg-course" name="course" required>
                         <option value="">Select Course *</option>
                         <option value="AutoCAD 2D (₹1000)">AutoCAD 2D - ₹1000</option>
                         <option value="AutoCAD 2D + 3D (₹1500)">AutoCAD 2D + 3D - ₹1500</option>
                         <option value="Revit Architecture (₹1500)">Revit Architecture - ₹1500</option>
                     </select>
-                    <textarea id="reg-address" placeholder="Address" rows="3"></textarea>
+                    <textarea id="reg-address" name="address" placeholder="Address" rows="3"></textarea>
                     <button type="submit" class="reg-submit" id="submit-text">Submit Registration</button>
                 </form>
             </div>
 
-            <!-- Contact Us Section (दोनों नाम शामिल हैं) -->
+            <!-- Contact Us Section -->
             <section id="contact" class="contact-info">
                 <h2>Contact Us</h2>
-                <p style="font-size: 1.3rem; font-weight: bold; margin: 10px 0; color: #0056b3;">Arun Banjare & KHEDURAM AADIL</p>
+                <p style="font-size: 1.3rem; font-weight: bold; margin: 10px 0; color: #0056b3;">Arun Banjare</p>
                 <p>📞 Mobile : 7440850479</p>
                 <p>📧 Email : er.arunbanjare@gmail.com</p>
                 <div style="margin-top: 25px;">
