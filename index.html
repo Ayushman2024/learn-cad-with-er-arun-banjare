@@ -7,354 +7,83 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            scroll-behavior: smooth;
-        }
-        body {
-            background-color: #f4f6f9;
-            color: #333;
-            line-height: 1.6;
-        }
+        * {box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        body {background-color: #f4f6f9; color: #333; line-height: 1.6; }
+        
         /* Navigation Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 40px;
-            background: #0056b3;
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-        .logo img {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            margin-right: 15px;
-            object-fit: cover;
-            border: 3px white solid;
-        }
-        .logo h2 {
-            font-size: 1.4rem;
-            font-weight: 600;
-        }
-        nav {
-            display: flex;
-            align-items: center;
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 20px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: 0.3s;
-        }
-        nav a:hover {
-            color: #ffc107;
-        }
-        .nav-btn {
-            background: #28a745;
-            padding: 6px 15px;
-            border-radius: 4px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .nav-btn:hover {
-            background: #218838;
-            color: white;
-        }
-        .nav-btn.signup-btn {
-            background: #ffc107;
-            color: #333;
-        }
-        .nav-btn.signup-btn:hover {
-            background: #e0a800;
-            color: #333;
-        }
+        header {display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background: #0056b3; color: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .logo {display: flex; align-items: center; }
+        .logo img {width: 90px; height: 90px; border-radius: 50%; margin-right: 15px; object-fit: cover; border: 3px white solid; }
+        .logo h2 {font-size: 1.4rem; font-weight: 600; }
+        nav {display: flex; align-items: center; }
+        nav a {color: white; text-decoration: none; margin-left: 20px; font-weight: 500; font-size: 0.95rem; transition: 0.3s; }
+        nav a:hover {color: #ffc107; }
+        .nav-btn {background: #28a745; padding: 6px 15px; border-radius: 4px; font-weight: 600; cursor: pointer; }
+        .nav-btn:hover {background: #218838; color: white; }
+        .nav-btn.signup-btn {background: #ffc107; color: #333; }
+        .nav-btn.signup-btn:hover {background: #e0a800; color: #333; }
+
         /* Hero Banner */
-        .hero-banner {
-            background: linear-gradient(135deg, #0056b3 0%, #003366 100%);
-            color: white;
-            text-align: center;
-            padding: 40px 20px;
-        }
-        .hero-banner h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        .hero-banner p {
-            font-size: 1.1rem;
-            color: #ffc107;
-            font-weight: 500;
-        }
+        .hero-banner {background: linear-gradient(135deg, #0056b3 0%, #003366 100%); color: white; text-align: center; padding: 40px 20px; }
+        .hero-banner h1 {font-size: 2.5rem; font-weight: 700; margin-bottom: 5px; }
+        .hero-banner p {font-size: 1.1rem; color: #ffc107; font-weight: 500; }
+
         /* Automatic Image Slider Style */
-        .slider-container {
-            position: relative;
-            max-width: 1000px;
-            height: 450px;
-            margin: 30px auto 40px auto;
-            overflow: hidden;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            background: #000;
-        }
-        .slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 0.8s ease-in-out;
-            display: flex;
-            align-items: flex-end;
-        }
-        .slide.active {
-            opacity: 1;
-            z-index: 1;
-        }
-        .slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: fill;
-            background: #111;
-        }
-        .slide-caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 86, 179, 0.85);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 1.1rem;
-            z-index: 2;
-        }
-        .slider-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0,0,0,0.6);
-            color: white;
-            border: none;
-            padding: 12px 16px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 50%;
-            z-index: 10;
-            transition: 0.3s;
-        }
-        .slider-btn:hover {
-            background: #0056b3;
-        }
+        .slider-container {position: relative; max-width: 1000px; height: 450px; margin: 30px auto 40px auto; overflow: hidden; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); background: #000; }
+        .slide {position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease-in-out; display: flex; align-items: flex-end; }
+        .slide.active {opacity: 1; z-index: 1; }
+        .slide img {width: 100%; height: 100%; object-fit: fill; background: #111; }
+        .slide-caption {position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0, 86, 179, 0.85); color: white; padding: 15px; text-align: center; font-weight: 600; font-size: 1.1rem; z-index: 2; }
+        .slider-btn {position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; padding: 12px 16px; font-size: 18px; font-weight: bold; cursor: pointer; border-radius: 50%; z-index: 10; transition: 0.3s; }
+        .slider-btn:hover {background: #0056b3; }
         .prev { left: 20px; }
         .next { right: 20px; }
 
         /* General Container */
-        .container {
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        .section-title {
-            text-align: center;
-            margin: 40px 0 20px 0;
-            font-size: 2.2rem;
-            color: #0056b3;
-            font-weight: 700;
-            position: relative;
-        }
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background: #ffc107;
-            margin: 10px auto 0 auto;
-            border-radius: 2px;
-        }
+        .container {max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+        .section-title {text-align: center; margin: 40px 0 20px 0; font-size: 2.2rem; color: #0056b3; font-weight: 700; position: relative; }
+        .section-title::after {content: ''; display: block; width: 60px; height: 4px; background: #ffc107; margin: 10px auto 0 auto; border-radius: 2px; }
+
         /* About Section */
-        .about-box {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            margin-bottom: 40px;
-        }
-        .about-box h2 {
-            color: #0056b3;
-            margin-bottom: 15px;
-        }
-        .about-box ul {
-            list-style: none;
-            margin-top: 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-        }
-        .about-box ul li {
-            font-weight: 500;
-            color: #444;
-        }
+        .about-box {background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 40px; }
+        .about-box h2 {color: #0056b3; margin-bottom: 15px; }
+        .about-box ul {list-style: none; margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+        .about-box ul li {font-weight: 500; color: #444; }
+
         /* Course Section Styling */
-        .courses-grid {
-            display: flex;
-            gap: 25px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 50px;
-        }
-        .course-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-            padding: 30px;
-            width: 320px;
-            text-align: center;
-            transition: 0.3s;
-            border: 1px solid #eef2f5;
-        }
-        .course-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-        }
-        .course-card h3 {
-            margin-bottom: 10px;
-            color: #333;
-            font-size: 1.3rem;
-        }
-        .price {
-            font-size: 1.8rem;
-            color: #28a745;
-            font-weight: 700;
-            margin: 15px 0;
-        }
-        .course-card ul {
-            text-align: left;
-            list-style: none;
-            margin: 20px 0;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
-        }
-        .course-card ul li {
-            margin-bottom: 10px;
-            color: #555;
-            font-size: 0.95rem;
-        }
-        .btn, .btn2 {
-            display: inline-block;
-            padding: 12px 25px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            margin: 5px;
-            cursor: pointer;
-            border: none;
-            transition: 0.3s;
-            font-size: 0.95rem;
-        }
+        .courses-grid {display: flex; gap: 25px; flex-wrap: wrap; justify-content: center; margin-bottom: 50px; }
+        .course-card {background: white; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.08); padding: 30px; width: 320px; text-align: center; transition: 0.3s; border: 1px solid #eef2f5; }
+        .course-card:hover {transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.12); }
+        .course-card h3 {margin-bottom: 10px; color: #333; font-size: 1.3rem; }
+        .price {font-size: 1.8rem; color: #28a745; font-weight: 700; margin: 15px 0; }
+        .course-card ul {text-align: left; list-style: none; margin: 20px 0; border-top: 1px solid #eee; padding-top: 15px; }
+        .course-card ul li {margin-bottom: 10px; color: #555; font-size: 0.95rem; }
+        .btn, .btn2 {display: inline-block; padding: 12px 25px; border-radius: 6px; text-decoration: none; font-weight: 600; margin: 5px; cursor: pointer; border: none; transition: 0.3s; font-size: 0.95rem; }
         .btn { background: #28a745; color: white; }
         .btn:hover { background: #218838; }
         .btn2 { background: #dc3545; color: white; }
         .btn2:hover { background: #c82333; }
 
         /* Registration Form Styling */
-        .reg-form {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-            max-width: 650px;
-            margin: 0 auto 50px auto;
-        }
+        .reg-form {background: white; padding: 40px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); max-width: 650px; margin: 0 auto 50px auto; }
         .reg-form p { text-align: center; margin-bottom: 20px; }
-        .reg-form input, .reg-form select, .reg-form textarea {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 18px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 0.95rem;
-            outline: none;
-        }
-        .reg-form input:focus, .reg-form select:focus, .reg-form textarea:focus {
-            border-color: #0056b3;
-        }
-        .reg-submit {
-            background: #0056b3;
-            color: white;
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+        .reg-form input, .reg-form select, .reg-form textarea {width: 100%; padding: 12px; margin-bottom: 18px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; font-size: 0.95rem; outline: none; }
+        .reg-form input:focus, .reg-form select:focus, .reg-form textarea:focus {border-color: #0056b3; }
+        .reg-submit {background: #0056b3; color: white; width: 100%; padding: 14px; border: none; border-radius: 6px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.3s; }
         .reg-submit:hover { background: #004085; }
 
         /* Contact Section */
-        .contact-info {
-            text-align: center;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        }
+        .contact-info {text-align: center; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+
         /* Login / Sign Up Section */
-        .auth-section {
-            background: #e9ecef;
-            padding: 80px 20px;
-            display: flex;
-            justify-content: center;
-            border-top: 4px solid #0056b3;
-        }
-        .auth-box {
-            background: white;
-            padding: 40px;
-            border-radius: 14px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-            width: 100%;
-            max-width: 440px;
-        }
-        .auth-box h2 {
-            margin-bottom: 25px;
-            color: #333;
-            text-align: center;
-            font-weight: 700;
-        }
+        .auth-section {background: #e9ecef; padding: 80px 20px; display: flex; justify-content: center; border-top: 4px solid #0056b3; }
+        .auth-box {background: white; padding: 40px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); width: 100%; max-width: 440px; }
+        .auth-box h2 {margin-bottom: 25px; color: #333; text-align: center; font-weight: 700; }
         .input-group { margin-bottom: 20px; text-align: left; }
         .input-group label { display: block; margin-bottom: 8px; color: #555; font-weight: 600; font-size: 14px; }
         .input-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; outline: none; font-size: 15px; }
         .input-group input:focus { border-color: #0056b3; }
-        .auth-btn {
-            width: 100%;
-            padding: 14px;
-            background: #0056b3;
-            border: none;
-            color: white;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 10px;
-            transition: 0.3s;
-        }
+        .auth-btn {width: 100%; padding: 14px; background: #0056b3; border: none; color: white; font-size: 16px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; transition: 0.3s; }
         .auth-btn:hover { background: #004085; }
         .switch-text { text-align: center; margin-top: 20px; font-size: 14px; color: #666; }
         .switch-text a { color: #0056b3; text-decoration: none; font-weight: bold; cursor: pointer; }
@@ -368,32 +97,25 @@
         .stat-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); flex: 1; min-width: 200px; text-align: center; border-bottom: 4px solid #0056b3; }
         .stat-card h3 { font-size: 0.95rem; color: #64748b; }
         .stat-number { font-size: 2rem; font-weight: 700; color: #0f172a; margin-top: 5px; }
-        
         .search-filter-bar { display: flex; gap: 15px; margin-bottom: 30px; }
         .lms-search { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 1rem; outline: none; }
         .lms-filter { padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1; background: white; font-weight: 500; }
-
         .lms-section-title { font-size: 1.8rem; color: #0f172a; margin-bottom: 20px; font-weight: 700; }
         .lms-courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-        
         .lms-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05); position: relative; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; }
         .lms-card:hover { transform: translateY(-6px); box-shadow: 0 20px 35px rgba(0,0,0,0.1); }
-        
         .badge { position: absolute; top: 15px; left: 15px; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; color: white; background: #28a745; z-index: 5; }
         .locked-badge { background: #dc3545; }
         .cs-badge { background: #ef4444; }
-
         .thumb-placeholder { height: 160px; background: linear-gradient(135deg, #0056b3 0%, #002244 100%); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; padding: 20px; text-align: center; font-size: 1.1rem; }
         .card-details { padding: 20px; display: flex; flex-direction: column; flex: 1; }
         .level { font-size: 0.75rem; color: #0056b3; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; display: block; }
         .lms-card h3 { font-size: 1.15rem; color: #1e293b; font-weight: 600; line-height: 1.4; margin-bottom: 5px; min-height: 50px; }
         .instructor { font-size: 0.85rem; color: #64748b; margin-bottom: 15px; }
         .meta-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #475569; font-weight: 500; margin-bottom: 15px; }
-        
         .progress-container { background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 5px; }
         .progress-bar { background: #ffc107; height: 100%; border-radius: 4px; }
         .progress-text { font-size: 0.75rem; color: #64748b; margin-bottom: 20px; font-weight: 500; }
-        
         .lms-btn-continue { background: #0056b3; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-top: auto; width: 100%; }
         .lms-btn-continue:hover { background: #004085; }
         .lms-btn-certificate { background: #ffc107; color: #1e293b; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: auto; width: 100%; transition: 0.2s; }
@@ -402,126 +124,24 @@
         .lms-btn-cs { background: #cbd5e1; color: #94a3b8; border: none; padding: 12px; border-radius: 8px; font-weight: 600; margin-top: auto; width: 100%; cursor: not-allowed; }
 
         /* --- Floating WhatsApp Widget Styling --- */
-        .wa-widget-container {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 99999;
-        }
-        .wa-floating-btn {
-            width: 60px;
-            height: 60px;
-            background-color: #25D366;
-            border: none;
-            border-radius: 50%;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            animation: waBounce 2s infinite alternate;
-        }
-        .wa-floating-btn:hover {
-            transform: scale(1.1);
-            background-color: #20ba5a;
-        }
-        .wa-svg-icon {
-            width: 34px;
-            height: 34px;
-            fill: #ffffff;
-        }
-        .wa-popup-box {
-            position: absolute;
-            bottom: 80px;
-            right: 0;
-            width: 320px;
-            background-color: #1a1a1a;
-            border: 1px solid #2d2d2d;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            transition: opacity 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-origin: bottom right;
-            opacity: 1;
-            transform: scale(1);
-        }
-        .wa-popup-box.hidden {
-            display: none !important;
-            opacity: 0;
-            transform: scale(0.8);
-        }
-        .wa-close-btn {
-            position: absolute;
-            top: 12px;
-            right: 15px;
-            background: none;
-            border: none;
-            color: #888888;
-            font-size: 24px;
-            cursor: pointer;
-            transition: color 0.2s;
-            z-index: 10;
-        }
+        .wa-widget-container {position: fixed; bottom: 30px; right: 30px; z-index: 99999; }
+        .wa-floating-btn {width: 60px; height: 60px; background-color: #25D366; border: none; border-radius: 50%; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease, background-color 0.3s ease; animation: waBounce 2s infinite alternate; }
+        .wa-floating-btn:hover {transform: scale(1.1); background-color: #20ba5a; }
+        .wa-svg-icon {width: 34px; height: 34px; fill: #ffffff; }
+        .wa-popup-box {position: absolute; bottom: 80px; right: 0; width: 320px; background-color: #1a1a1a; border: 1px solid #2d2d2d; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); overflow: hidden; transition: opacity 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: bottom right; opacity: 1; transform: scale(1); }
+        .wa-popup-box.hidden {display: none !important; opacity: 0; transform: scale(0.8); }
+        .wa-close-btn {position: absolute; top: 12px; right: 15px; background: none; border: none; color: #888888; font-size: 24px; cursor: pointer; transition: color 0.2s; z-index: 10; }
         .wa-close-btn:hover { color: #ffffff; }
-        .wa-popup-header {
-            padding: 25px 20px 10px 20px;
-            text-align: center;
-        }
-        .wa-header-icon-bg {
-            width: 60px;
-            height: 60px;
-            background-color: rgba(37, 211, 102, 0.15);
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .wa-header-svg {
-            width: 36px;
-            height: 36px;
-            fill: #25D366;
-        }
-        .wa-popup-body {
-            padding: 0 24px 30px 24px;
-            text-align: center;
-        }
-        .wa-popup-body h3 {
-            color: #ffffff;
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-        .wa-popup-body p {
-            color: #aaaaaa;
-            font-size: 0.9rem;
-            line-height: 1.4;
-            margin-bottom: 20px;
-        }
-        .wa-chat-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #25D366;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-            transition: background-color 0.2s, transform 0.2s;
-        }
-        .wa-chat-btn:hover {
-            background-color: #20ba5a;
-            transform: translateY(-2px);
-        }
+        .wa-popup-header {padding: 25px 20px 10px 20px; text-align: center; }
+        .wa-header-icon-bg {width: 60px; height: 60px; background-color: rgba(37, 211, 102, 0.15); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
+        .wa-header-svg {width: 36px; height: 36px; fill: #25D366; }
+        .wa-popup-body {padding: 0 24px 30px 24px; text-align: center; }
+        .wa-popup-body h3 {color: #ffffff; font-size: 1.25rem; font-weight: 600; margin-bottom: 8px; }
+        .wa-popup-body p {color: #aaaaaa; font-size: 0.9rem; line-height: 1.4; margin-bottom: 20px; }
+        .wa-chat-btn {display: flex; align-items: center; justify-content: center; background-color: #25D366; color: #ffffff; text-decoration: none; padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); transition: background-color 0.2s, transform 0.2s; }
+        .wa-chat-btn:hover {background-color: #20ba5a; transform: translateY(-2px); }
 
-        @keyframes waBounce {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-6px); }
-        }
-
+        @keyframes waBounce {0% { transform: translateY(0); } 100% { transform: translateY(-6px); } }
         .hidden { display: none !important; }
 
         @media (max-width: 768px) {
@@ -774,10 +394,9 @@
             </div>
 
             <h2 class="lms-section-title">My Premium Learning Panel</h2>
-            
+
             <!-- Unlimited Grid System for all 8 requested courses -->
             <div class="lms-courses-grid">
-                
                 <!-- Course Card 1: AutoCAD 2D -->
                 <div class="lms-card enrolled">
                     <div class="badge">Enrolled</div>
@@ -923,7 +542,6 @@
                         <button class="lms-btn-cs" disabled>Coming Soon</button>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -959,6 +577,35 @@
 
     <!-- MAIN FOOTER AREA -->
     <footer id="global-footer">
+        <!-- Total Visitor Counter Start -->
+        <div style="text-align: center; margin: 20px auto 15px auto; padding: 12px 20px; font-family: 'Poppins', sans-serif; background-color: #ffffff; border-radius: 8px; border: 1px solid #dee2e6; max-width: 300px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <p style="margin: 0; font-size: 15px; color: #212529;">
+                👥 <strong>कुल विज़िटर्स:</strong> 
+                <span id="visitor_count" style="color: #0d6efd; font-weight: bold; font-size: 18px; margin-left: 6px;">लोड हो रहा है...</span>
+            </p>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const siteKey = "learn-cad-with-er-arun-banjare"; 
+
+                fetch(`https://api.counterapi.dev/v1/${siteKey}/visits/up`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.count !== undefined) {
+                            document.getElementById('visitor_count').innerText = data.count.toLocaleString();
+                        } else {
+                            document.getElementById('visitor_count').innerText = '1';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Counter API Error:', error);
+                        document.getElementById('visitor_count').innerText = '1';
+                    });
+            });
+        </script>
+        <!-- Total Visitor Counter End -->
+
         <p>&copy; 2026 Learn CAD with Er. Arun Banjare. All Rights Reserved.</p>
         <p style="font-size: 12px; color: #ffc107; font-weight: 500; margin-top: 5px;">Designed & Developed by Er. Arun Banjare</p>
     </footer>
@@ -1007,8 +654,14 @@
             const email = document.getElementById('signup-email').value;
             const mobile = document.getElementById('signup-mobile').value;
             const pass = document.getElementById('signup-pass').value;
-            
-            usersDatabase.push({username: name, loginId: email, mobileId: mobile, password: pass });
+
+            usersDatabase.push({
+                username: name,
+                loginId: email,
+                mobileId: mobile,
+                password: pass
+            });
+
             alert("Congratulations " + name + "!\nYour Account has been Created Successfully. You can now Log in using your email/mobile.");
             toggleForm('login');
         }
@@ -1017,15 +670,18 @@
             event.preventDefault();
             const loginId = document.getElementById('login-id').value;
             const loginPass = document.getElementById('login-pass').value;
+
             let foundUser = usersDatabase.find(u => (u.loginId === loginId || u.mobileId === loginId) && u.password === loginPass);
             let studentName = "Student";
+
             if (foundUser) {
                 studentName = foundUser.username;
             } else {
                 studentName = loginId.split('@')[0];
             }
+
             alert("Welcome back " + studentName + "!\nLogin successful. Opening Student Dashboard...");
-            
+
             // यह लॉजिक पूरे पुराने होमपेज को हाइड करके नया प्रीमियम Udemy LMS बोर्ड लोड करता है
             document.getElementById('main-website').classList.add('hidden');
             document.getElementById('auth').classList.add('hidden');
@@ -1050,8 +706,8 @@
             const email = document.getElementById('reg-email').value;
             const course = document.getElementById('reg-course').value;
             const address = document.getElementById('reg-address').value;
-            const submitBtn = document.getElementById('submit-text');
             
+            const submitBtn = document.getElementById('submit-text');
             submitBtn.innerText = "Submitting...";
             submitBtn.disabled = true;
 
@@ -1063,7 +719,13 @@
             formData.append('course', course);
             formData.append('address', address);
 
-            fetch(scriptURL, {method: 'POST', body: formData, headers: {'Content-Type': 'application/x-www-form-urlencoded' } })
+            fetch(scriptURL, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
             .then(response => {
                 alert("Thank you " + name + "!\nYour Registration details have been submitted successfully.");
                 document.getElementById('student-reg-form').reset();
@@ -1085,17 +747,21 @@
                 if (popup && popup.classList.contains('hidden')) {
                     popup.classList.remove('hidden');
                 }
-            }, 3000); 
+            }, 3000);
         });
 
         function toggleWhatsAppChat() {
             const popup = document.getElementById('waPopupBox');
-            if (popup) { popup.classList.toggle('hidden'); }
+            if (popup) {
+                popup.classList.toggle('hidden');
+            }
         }
 
         function closeWhatsAppChat() {
             const popup = document.getElementById('waPopupBox');
-            if (popup) { popup.classList.add('hidden'); }
+            if (popup) {
+                popup.classList.add('hidden');
+            }
         }
     </script>
 </body>
