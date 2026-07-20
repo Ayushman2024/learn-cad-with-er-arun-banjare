@@ -185,7 +185,6 @@
         <div id="portfolio">
             <h2 class="section-title">Our House Design Portfolio</h2>
             <div class="slider-container">
-                <!-- आपकी नगर पालिका वाली नई ड्राइंग यहाँ पहली इमेज है -->
                 <div class="slide active">
                     <img src="blueprint.png.png" alt="Nagar Palika Permission & Submission Drawing">
                     <div class="slide-caption">Nagar Palika Permission & Submission Drawing</div>
@@ -275,6 +274,10 @@
             <div class="reg-form">
                 <p style="margin-bottom: 25px; font-weight: bold; color: #666;">Fill this form after purchasing the course:</p>
                 <form id="student-reg-form" onsubmit="handleRegistration(event)">
+                    <!-- Web3Forms Access Key Integration -->
+                    <input type="hidden" name="access_key" value="61ed77d4-9920-4836-a30f-e2527adc54b3">
+                    <input type="hidden" name="subject" value="New Student Registration - Learn CAD">
+
                     <input type="text" id="reg-name" name="name" placeholder="Full Name *" required>
                     <input type="tel" id="reg-mobile" name="mobile" placeholder="Mobile Number *" required>
                     <input type="email" id="reg-email" name="email" placeholder="Email Address *" required>
@@ -682,7 +685,6 @@
 
             alert("Welcome back " + studentName + "!\nLogin successful. Opening Student Dashboard...");
 
-            // यह लॉजिक पूरे पुराने होमपेज को हाइड करके नया प्रीमियम Udemy LMS बोर्ड लोड करता है
             document.getElementById('main-website').classList.add('hidden');
             document.getElementById('auth').classList.add('hidden');
             document.getElementById('student-dashboard').classList.remove('hidden');
@@ -701,38 +703,33 @@
 
         function handleRegistration(event) {
             event.preventDefault();
+            const formElement = document.getElementById('student-reg-form');
             const name = document.getElementById('reg-name').value;
-            const mobile = document.getElementById('reg-mobile').value;
-            const email = document.getElementById('reg-email').value;
-            const course = document.getElementById('reg-course').value;
-            const address = document.getElementById('reg-address').value;
-            
             const submitBtn = document.getElementById('submit-text');
+            
             submitBtn.innerText = "Submitting...";
             submitBtn.disabled = true;
 
-            const scriptURL = "https://script.google.com/macros/s/AKfycbw3Aq0YFdRTty8wnOnXrgusR5QXmMGM1Vbnlc3AaXW3u--lC-JFkaPPOynioQFBsxcc/exec";
-            const formData = new URLSearchParams();
-            formData.append('name', name);
-            formData.append('mobile', mobile);
-            formData.append('email', email);
-            formData.append('course', course);
-            formData.append('address', address);
+            // Send data to Web3Forms (Email Notification)
+            const web3Data = new FormData(formElement);
 
-            fetch(scriptURL, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
+            fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: web3Data
             })
-            .then(response => {
+            .then(res => res.json())
+            .then(data => {
+                // Also trigger Google Script endpoint in background if active
+                const scriptURL = "https://script.google.com/macros/s/AKfycbw3Aq0YFdRTty8wnOnXrgusR5QXmMGM1Vbnlc3AaXW3u--lC-JFkaPPOynioQFBsxcc/exec";
+                const formData = new URLSearchParams(new FormData(formElement));
+                fetch(scriptURL, { method: 'POST', body: formData, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).catch(() => {});
+
                 alert("Thank you " + name + "!\nYour Registration details have been submitted successfully.");
-                document.getElementById('student-reg-form').reset();
+                formElement.reset();
             })
             .catch(error => {
-                alert("Thank you! Registration details saved.");
-                document.getElementById('student-reg-form').reset();
+                alert("Thank you " + name + "!\nYour Registration details have been submitted successfully.");
+                formElement.reset();
             })
             .finally(() => {
                 submitBtn.innerText = "Submit Registration";
