@@ -669,27 +669,25 @@
             toggleForm('login');
         }
 
+        // UPDATED STRICT LOGIN FUNCTION
         function handleLogin(event) {
             event.preventDefault();
-            const loginId = document.getElementById('login-id').value;
-            const loginPass = document.getElementById('login-pass').value;
+            const loginId = document.getElementById('login-id').value.trim();
+            const loginPass = document.getElementById('login-pass').value.trim();
 
             let foundUser = usersDatabase.find(u => (u.loginId === loginId || u.mobileId === loginId) && u.password === loginPass);
-            let studentName = "Student";
 
             if (foundUser) {
-                studentName = foundUser.username;
+                alert("Welcome back " + foundUser.username + "!\nLogin successful. Opening Student Dashboard...");
+
+                document.getElementById('main-website').classList.add('hidden');
+                document.getElementById('auth').classList.add('hidden');
+                document.getElementById('student-dashboard').classList.remove('hidden');
+                document.getElementById('welcome-user').innerText = "Welcome, " + foundUser.username + "!";
+                window.scrollTo(0,0);
             } else {
-                studentName = loginId.split('@')[0];
+                alert("Incorrect Email/Mobile or Password!\nPlease check your credentials or Sign Up first.");
             }
-
-            alert("Welcome back " + studentName + "!\nLogin successful. Opening Student Dashboard...");
-
-            document.getElementById('main-website').classList.add('hidden');
-            document.getElementById('auth').classList.add('hidden');
-            document.getElementById('student-dashboard').classList.remove('hidden');
-            document.getElementById('welcome-user').innerText = "Welcome, " + studentName + "!";
-            window.scrollTo(0,0);
         }
 
         function handleLogout() {
