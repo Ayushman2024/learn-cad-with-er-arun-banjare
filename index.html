@@ -569,7 +569,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 initDynamicSystem();
-                checkSavedSession(); // Check Auto Login Persistence
             }, 1000);
         });
 
@@ -583,16 +582,18 @@
                 return;
             }
 
-            // Check Student Session
+            // Check Student Session with ID Persistence Fix
             const savedUser = localStorage.getItem('cad_student_user');
             if (savedUser) {
                 try {
                     currentStudentUser = JSON.parse(savedUser);
-                    document.getElementById('main-website').classList.add('hidden');
-                    document.getElementById('auth').classList.add('hidden');
-                    document.getElementById('student-dashboard').classList.remove('hidden');
-                    document.getElementById('welcome-user').innerText = "Welcome, " + currentStudentUser.username + "!";
-                    loadStudentDashboardData();
+                    if (currentStudentUser && currentStudentUser.id) {
+                        document.getElementById('main-website').classList.add('hidden');
+                        document.getElementById('auth').classList.add('hidden');
+                        document.getElementById('student-dashboard').classList.remove('hidden');
+                        document.getElementById('welcome-user').innerText = "Welcome, " + currentStudentUser.username + "!";
+                        loadStudentDashboardData();
+                    }
                 } catch(e) {
                     localStorage.removeItem('cad_student_user');
                 }
@@ -610,9 +611,13 @@
                             "c3": { title: "Revit Architecture", price: 1500, category: "CAD Training", desc: "Complete 3D Modeling, Vastu Layouts & Rendering" },
                             "c4": { title: "Polytechnic 2nd Sem Civil Notes", price: 0, category: "Polytechnic Notes", desc: "Handcrafted PDF Notes for Applied Mechanics & Construction" }
                         };
-                        window.firebaseSet(window.firebaseRef(window.firebaseDB, 'courses'), defaultCourses).then(() => loadMainCourses());
+                        window.firebaseSet(window.firebaseRef(window.firebaseDB, 'courses'), defaultCourses).then(() => {
+                            loadMainCourses();
+                            checkSavedSession();
+                        });
                     } else {
                         loadMainCourses();
+                        checkSavedSession();
                     }
                 });
             }
@@ -863,7 +868,7 @@
             }
         }
 
-        /* LOGIN HANDLER WITH AUTO-LOGIN PERSISTENCE */
+        /* LOGIN HANDLER WITH FIXED ID SAVING */
         function handleLogin(event) {
             event.preventDefault();
             const loginId = document.getElementById('login-id').value.trim().toLowerCase();
@@ -885,11 +890,12 @@
                             if ((u.email === loginId || u.mobile === loginId) && u.password === loginPass) {
                                 foundUserKey = key;
                                 currentStudentUser = u;
-                                currentStudentUser.id = key;
+                                currentStudentUser.id = key; // Attach Firebase Node Key ID
                             }
                         });
 
                         if (foundUserKey) {
+                            // Save Full User Object INCLUDING the ID key
                             localStorage.setItem('cad_student_user', JSON.stringify(currentStudentUser));
                             alert("Welcome back " + currentStudentUser.username + "!");
                             document.getElementById('main-website').classList.add('hidden');
@@ -990,7 +996,7 @@
         }
 
         function loadStudentDashboardData() {
-            if (!currentStudentUser) return;
+            if (!currentStudentUser || !currentStudentUser.id) return;
             const dbRef = window.firebaseRef(window.firebaseDB);
             
             window.firebaseGet(window.firebaseChild(dbRef, 'user_enrollments/' + currentStudentUser.id)).then(snapshot => {
@@ -1037,7 +1043,7 @@
         }
 
         function enrollFreeCourse(courseId, price) {
-            if (!currentStudentUser) return;
+            if (!currentStudentUser || !currentStudentUser.id) return;
             if (price == 0) {
                 window.firebaseSet(window.firebaseRef(window.firebaseDB, 'user_enrollments/' + currentStudentUser.id + '/' + courseId), {
                     enrolledAt: new Date().toISOString()
