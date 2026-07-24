@@ -89,8 +89,6 @@
         .course-card:hover {transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.12); }
         .course-card h3 {margin-bottom: 10px; color: #333; font-size: 1.3rem; }
         .price {font-size: 1.8rem; color: #28a745; font-weight: 700; margin: 15px 0; }
-        .course-card ul {text-align: left; list-style: none; margin: 20px 0; border-top: 1px solid #eee; padding-top: 15px; }
-        .course-card ul li {margin-bottom: 10px; color: #555; font-size: 0.95rem; }
         .btn, .btn2 {display: inline-block; padding: 12px 25px; border-radius: 6px; text-decoration: none; font-weight: 600; margin: 5px; cursor: pointer; border: none; transition: 0.3s; font-size: 0.95rem; }
         .btn { background: #28a745; color: white; }
         .btn:hover { background: #218838; }
@@ -120,13 +118,12 @@
         .auth-btn:hover { background: #004085; }
         .switch-text { text-align: center; margin-top: 20px; font-size: 14px; color: #666; }
         .switch-text a { color: #0056b3; text-decoration: none; font-weight: bold; cursor: pointer; }
-        .switch-text a:hover { text-decoration: underline; }
 
         /* Admin Management Styling */
         .admin-card-box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 4px solid #0056b3; }
         .admin-card-box h3 { color: #0056b3; margin-bottom: 15px; font-size: 1.2rem; }
         .admin-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
-        .admin-form-grid input, .admin-form-grid select, .admin-form-grid textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; outline: none; }
+        .admin-form-grid input, .admin-form-grid select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; outline: none; }
         .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .admin-table th, .admin-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
         .admin-table th { background-color: #0056b3; color: white; font-weight: 600; }
@@ -295,7 +292,6 @@
                         
                         <select id="reg-course" name="course" required>
                             <option value="">Select Course / Notes *</option>
-                            <!-- Dynamic Options Loaded From Database -->
                         </select>
                         <textarea id="reg-address" name="address" placeholder="Address" rows="3"></textarea>
                         <button type="submit" class="reg-submit" id="submit-text">Submit & Create Account</button>
@@ -409,7 +405,6 @@
                     <div class="admin-form-grid">
                         <select id="adm-m-course" required>
                             <option value="">Select Target Course / Notes *</option>
-                            <!-- Auto Loaded from Firebase -->
                         </select>
                         <input type="text" id="adm-m-title" placeholder="Lecture Title (e.g. Chapter 1 PDF or Class 1 Video)" required>
                         <select id="adm-m-type" required>
@@ -570,17 +565,45 @@
             document.getElementById('auth').scrollIntoView();
         }
 
-        /* INITIAL DEFAULT COURSES SEEDING & LOADING */
+        /* INITIAL DEFAULT COURSES SEEDING & AUTO LOGIN RESTORE */
         window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(initDynamicSystem, 1200);
+            setTimeout(() => {
+                initDynamicSystem();
+                checkSavedSession(); // Check Auto Login Persistence
+            }, 1000);
         });
+
+        function checkSavedSession() {
+            // Check Admin Session
+            if (localStorage.getItem('isAdminLoggedIn') === 'true') {
+                document.getElementById('main-website').classList.add('hidden');
+                document.getElementById('auth').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                loadAdminData();
+                return;
+            }
+
+            // Check Student Session
+            const savedUser = localStorage.getItem('cad_student_user');
+            if (savedUser) {
+                try {
+                    currentStudentUser = JSON.parse(savedUser);
+                    document.getElementById('main-website').classList.add('hidden');
+                    document.getElementById('auth').classList.add('hidden');
+                    document.getElementById('student-dashboard').classList.remove('hidden');
+                    document.getElementById('welcome-user').innerText = "Welcome, " + currentStudentUser.username + "!";
+                    loadStudentDashboardData();
+                } catch(e) {
+                    localStorage.removeItem('cad_student_user');
+                }
+            }
+        }
 
         function initDynamicSystem() {
             if (window.firebaseDB && window.firebaseGet && window.firebaseChild && window.firebaseRef) {
                 const dbRef = window.firebaseRef(window.firebaseDB);
                 window.firebaseGet(window.firebaseChild(dbRef, 'courses')).then(snapshot => {
                     if (!snapshot.exists()) {
-                        // Seed Default Courses
                         const defaultCourses = {
                             "c1": { title: "AutoCAD 2D Course", price: 1000, category: "CAD Training", desc: "Basic to Advanced Practical Drawings & PDF Notes" },
                             "c2": { title: "AutoCAD 2D + 3D Course", price: 1500, category: "CAD Training", desc: "Complete 2D + 3D Real House Plan Practice" },
@@ -669,7 +692,7 @@
             }
         }
 
-        /* DEDICATED HOUSE PLAN CLIENT INQUIRY HANDLER */
+        /* HOUSE PLAN CLIENT FORM HANDLER */
         function handleHouseInquiry(event) {
             event.preventDefault();
             const name = document.getElementById('hp-name').value.trim();
@@ -686,15 +709,7 @@
 
             if (window.firebaseDB && window.firebasePush && window.firebaseRef) {
                 window.firebasePush(window.firebaseRef(window.firebaseDB, 'house_plan_requests'), {
-                    name: name,
-                    mobile: mobile,
-                    plot_size: size,
-                    nagar_palika: nagarpalika,
-                    district: district,
-                    state: state,
-                    details: details,
-                    submittedAt: new Date().toLocaleString(),
-                    timestamp: new Date().toISOString()
+                    name: name, mobile: mobile, plot_size: size, nagar_palika: nagarpalika, district: district, state: state, details: details, submittedAt: new Date().toLocaleString(), timestamp: new Date().toISOString()
                 }).then(() => {
                     alert("Thank you " + name + "!\nYour House Plan request has been received. Er. Arun Banjare will contact you soon on WhatsApp.");
                     document.getElementById('house-inquiry-form').reset();
@@ -705,20 +720,30 @@
             }
         }
 
-        /* ADMIN PORTAL LOGIC */
+        /* ADMIN PORTAL LOGIC WITH AUTO-LOGIN */
         function openAdminModal() {
+            if (localStorage.getItem('isAdminLoggedIn') === 'true') {
+                showAdminPanel();
+                return;
+            }
             const adminPass = prompt("Enter Admin Secret Password:");
             if (adminPass === "admin123") {
-                document.getElementById('main-website').classList.add('hidden');
-                document.getElementById('auth').classList.add('hidden');
-                document.getElementById('admin-panel').classList.remove('hidden');
-                loadAdminData();
+                localStorage.setItem('isAdminLoggedIn', 'true');
+                showAdminPanel();
             } else if (adminPass !== null) {
                 alert("Incorrect Admin Password!");
             }
         }
 
+        function showAdminPanel() {
+            document.getElementById('main-website').classList.add('hidden');
+            document.getElementById('auth').classList.add('hidden');
+            document.getElementById('admin-panel').classList.remove('hidden');
+            loadAdminData();
+        }
+
         function closeAdminPanel() {
+            localStorage.removeItem('isAdminLoggedIn');
             document.getElementById('admin-panel').classList.add('hidden');
             document.getElementById('main-website').classList.remove('hidden');
             document.getElementById('auth').classList.remove('hidden');
@@ -824,14 +849,10 @@
                     } else {
                         btn.innerText = "Creating Account...";
                         window.firebasePush(window.firebaseRef(window.firebaseDB, 'users'), {
-                            username: name,
-                            email: email,
-                            mobile: mobile,
-                            password: pass,
-                            createdAt: new Date().toISOString()
+                            username: name, email: email, mobile: mobile, password: pass, createdAt: new Date().toISOString()
                         }).then(() => {
                             alert("Congratulations " + name + "!\nYour Account has been created. You can now log in.");
-                            e.target.reset();
+                            event.target.reset();
                             toggleForm('login');
                         }).finally(() => {
                             btn.innerText = "Sign Up";
@@ -842,7 +863,7 @@
             }
         }
 
-        /* LOGIN HANDLER */
+        /* LOGIN HANDLER WITH AUTO-LOGIN PERSISTENCE */
         function handleLogin(event) {
             event.preventDefault();
             const loginId = document.getElementById('login-id').value.trim().toLowerCase();
@@ -869,6 +890,7 @@
                         });
 
                         if (foundUserKey) {
+                            localStorage.setItem('cad_student_user', JSON.stringify(currentStudentUser));
                             alert("Welcome back " + currentStudentUser.username + "!");
                             document.getElementById('main-website').classList.add('hidden');
                             document.getElementById('auth').classList.add('hidden');
@@ -891,6 +913,7 @@
 
         function handleLogout() {
             alert("Logged out successfully.");
+            localStorage.removeItem('cad_student_user');
             currentStudentUser = null;
             document.getElementById('student-dashboard').classList.add('hidden');
             document.getElementById('main-website').classList.remove('hidden');
@@ -932,12 +955,10 @@
                     } else {
                         submitBtn.innerText = "Submitting...";
                         
-                        // Push Registration
                         window.firebasePush(window.firebaseRef(window.firebaseDB, 'registrations'), {
                             name: name, phone: phone, email: email, course: course, address: address, timestamp: new Date().toISOString()
                         });
 
-                        // Create User Account
                         window.firebasePush(window.firebaseRef(window.firebaseDB, 'users'), {
                             username: name, email: email, mobile: phone, password: password, createdAt: new Date().toISOString()
                         }).then(() => {
@@ -972,7 +993,6 @@
             if (!currentStudentUser) return;
             const dbRef = window.firebaseRef(window.firebaseDB);
             
-            // Get Enrolled Courses of User
             window.firebaseGet(window.firebaseChild(dbRef, 'user_enrollments/' + currentStudentUser.id)).then(snapshot => {
                 const enrolledIds = snapshot.exists() ? snapshot.val() : {};
                 
@@ -1019,7 +1039,6 @@
         function enrollFreeCourse(courseId, price) {
             if (!currentStudentUser) return;
             if (price == 0) {
-                // Free Instant Enroll
                 window.firebaseSet(window.firebaseRef(window.firebaseDB, 'user_enrollments/' + currentStudentUser.id + '/' + courseId), {
                     enrolledAt: new Date().toISOString()
                 }).then(() => {
@@ -1044,7 +1063,7 @@
                     Object.keys(materials).forEach(mId => {
                         const m = materials[mId];
                         if (m.type === 'video') {
-                            listHtml += `<div style="padding:12px; border:1px solid #ddd; border-radius:8px; display:flex; justify-size:space-between; align-items:center; background:#f8fafc;">
+                            listHtml += `<div style="padding:12px; border:1px solid #ddd; border-radius:8px; display:flex; justify-content:space-between; align-items:center; background:#f8fafc;">
                                 <div><b>🎥 ${m.title}</b> (Video Lecture)</div>
                                 <button onclick="playInAppVideo('${m.link}', '${m.title}')" class="btn" style="padding:6px 15px; font-size:0.85rem;">Play Video</button>
                             </div>`;
