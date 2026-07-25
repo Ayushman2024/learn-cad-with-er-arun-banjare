@@ -1,12 +1,8 @@
-[
-  {
-    "relation": ["delegate_permission/common.handle_all_urls"],
-    "target": {
-      "namespace": "android_app",
-      "package_name": "io.github.ayushman2024.twa",
-      "sha256_cert_fingerprints": [
-        "..."
-      ]
-    }
-  }
-]
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.ayushman2024.twa",
+        "sha256_cert_fingerprints": ["C3:6D:A7:93:01:74:39:05:E2:0F:6A:6D:92:FB:E2:BB:FB:5C:1F:23:7C:A3:43:18:C9:42:CE:1D:21:86:BD:15"]
+      }
+    }]
