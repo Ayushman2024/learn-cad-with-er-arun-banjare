@@ -2,6 +2,15 @@
 <html lang="en">
 <head>
     <link rel="manifest" href="manifest.json">
+    
+    <!-- PWA UPDATE MODULE START -->
+    <script type="module">
+       import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
+       const el = document.createElement('pwa-update');
+       document.body.appendChild(el);
+    </script>
+    <!-- PWA UPDATE MODULE END -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learn CAD with Civil Engineer</title>
