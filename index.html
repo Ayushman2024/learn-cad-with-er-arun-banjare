@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <link rel="manifest" href="manifest.json">
     
@@ -155,13 +155,13 @@
         .stat-card h4 { font-size: 0.85rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
         .stat-card .stat-num { font-size: 1.8rem; font-weight: 700; color: #0f172a; }
         
-        .admin-card-box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 4px solid #0056b3; }
+        .admin-card-box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 4px solid #0056b3; overflow-x: auto; }
         .admin-card-box h3 { color: #0056b3; margin-bottom: 15px; font-size: 1.2rem; }
         .admin-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
         .admin-form-grid input, .admin-form-grid select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; outline: none; }
         .admin-search-input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 15px; font-size: 0.95rem; outline: none; }
         .admin-search-input:focus { border-color: #0056b3; box-shadow: 0 0 0 3px rgba(0,86,179,0.1); }
-        .admin-table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); min-width: 600px; }
         .admin-table th, .admin-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
         .admin-table th { background-color: #0056b3; color: white; font-weight: 600; }
         .admin-table tr:hover { background-color: #f8fafc; }
@@ -235,7 +235,7 @@
         <!-- Header Navigation -->
         <header>
             <div class="logo">
-                <img src="LOGO1.PNG.png" alt="Logo">
+                <img src="LOGO1.PNG.png" alt="Logo" loading="lazy">
                 <h2>Learn CAD with Civil Engineer</h2>
             </div>
             <nav>
@@ -260,19 +260,19 @@
             <h2 class="section-title">Our House Design Portfolio</h2>
             <div class="slider-container">
                 <div class="slide active">
-                    <img src="blueprint.png.png" alt="Nagar Palika Permission & Submission Drawing">
+                    <img src="blueprint.png.png" alt="Nagar Palika Permission & Submission Drawing" loading="lazy">
                     <div class="slide-caption">Nagar Palika Permission & Submission Drawing</div>
                 </div>
                 <div class="slide">
-                    <img src="logo3.png" alt="House Design Plan 2">
+                    <img src="logo3.png" alt="House Design Plan 2" loading="lazy">
                     <div class="slide-caption">AutoCAD Layout Drawing</div>
                 </div>
                 <div class="slide">
-                    <img src="logo4.png" alt="House Design Plan 3">
+                    <img src="logo4.png" alt="House Design Plan 3" loading="lazy">
                     <div class="slide-caption">Modern 3D Front Elevation</div>
                 </div>
                 <div class="slide">
-                    <img src="logo5.png" alt="House Design Plan 4">
+                    <img src="logo5.png" alt="House Design Plan 4" loading="lazy">
                     <div class="slide-caption">Premium Exterior Building Design</div>
                 </div>
                 <button class="slider-btn prev" onclick="changeSlide(-1)">&#10094;</button>
@@ -424,7 +424,7 @@
     <div id="admin-panel" class="hidden">
         <header style="background: #1e293b;">
             <div class="logo">
-                <img src="LOGO1.PNG.png" alt="Logo">
+                <img src="LOGO1.PNG.png" alt="Logo" loading="lazy">
                 <h2>Admin Control Dashboard</h2>
             </div>
             <button onclick="closeAdminPanel()" class="btn2" style="margin: 0; padding: 8px 20px; font-size: 0.9rem;">Exit Admin</button>
@@ -552,7 +552,7 @@
     <div id="student-dashboard" class="hidden">
         <header style="background: #002244;">
             <div class="logo">
-                <img src="LOGO1.PNG.png" alt="Logo">
+                <img src="LOGO1.PNG.png" alt="Logo" loading="lazy">
                 <h2 id="welcome-user">Welcome, Student!</h2>
             </div>
             <button onclick="handleLogout()" class="btn2" style="margin: 0; padding: 8px 20px; font-size: 0.9rem;">Logout Portal</button>
@@ -582,7 +582,7 @@
         </div>
     </div>
 
-    <!-- DYNAMIC PAYMENT MODAL (Spice Money UPI + Live QR + UTR Form) -->
+    <!-- DYNAMIC PAYMENT MODAL (Spice Money UPI + Live QR + Flexible UTR Form) -->
     <div id="payment-modal" class="modal-overlay hidden">
         <div class="modal-box" style="max-width: 480px;">
             <span class="modal-close" onclick="closePaymentModal()">&times;</span>
@@ -602,12 +602,12 @@
                     <p style="font-size:0.75rem; color:#64748b; margin-top:5px;">Spice Money Merchant UPI</p>
                 </div>
 
-                <!-- 12-Digit UTR Form -->
+                <!-- Flexible 10-22 Character UTR Form -->
                 <form onsubmit="submitUTR(event)" style="margin-top:15px; text-align:left;">
                     <label style="font-size:0.85rem; font-weight:600; color:#333; display:block; margin-bottom:5px;">
-                        Enter 12-Digit UTR / UPI Ref No. after Payment *:
+                        Enter UTR / UPI Ref No. after Payment *:
                     </label>
-                    <input type="text" id="pay-utr-input" placeholder="e.g. 410293847561" maxlength="12" pattern="\d{12}" required style="width:100%; padding:12px; border:1px solid #0056b3; border-radius:6px; font-size:1rem; outline:none; text-align:center; font-weight:bold; letter-spacing:1px;">
+                    <input type="text" id="pay-utr-input" placeholder="e.g. 410293847561 या Ref No." maxlength="22" required style="width:100%; padding:12px; border:1px solid #0056b3; border-radius:6px; font-size:1rem; outline:none; text-align:center; font-weight:bold; letter-spacing:1px;">
                     <button type="submit" id="pay-submit-btn" class="reg-submit" style="margin-top:10px; background:#0056b3;">Submit UTR for Verification</button>
                 </form>
             </div>
@@ -679,6 +679,20 @@
 
     <!-- DYNAMIC CORE JAVASCRIPT LOGIC -->
     <script>
+        // INPUT SANITIZATION FUNCTION
+        function sanitizeInput(str) {
+            if (typeof str !== 'string') return str;
+            return str
+                .replace(/[&<>"'`=\/]/g, function (s) {
+                    return {
+                        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;',
+                        "'": '&#x27;', '/': '&#x2F;', '`': '&#x60;', '=': '&#x3D;'
+                    }[s];
+                })
+                .replace(/[;|&$`]/g, '')
+                .trim();
+        }
+
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         let slideInterval = setInterval(nextSlide, 4000);
@@ -868,10 +882,10 @@
         /* ADMIN CREATOR & DELETE HANDLERS */
         function handleCreateCourse(e) {
             e.preventDefault();
-            const title = document.getElementById('adm-c-title').value.trim();
+            const title = sanitizeInput(document.getElementById('adm-c-title').value);
             const price = parseInt(document.getElementById('adm-c-price').value.trim());
             const category = document.getElementById('adm-c-category').value;
-            const desc = document.getElementById('adm-c-desc').value.trim();
+            const desc = sanitizeInput(document.getElementById('adm-c-desc').value);
 
             if (window.firebaseDB && window.firebasePush && window.firebaseRef) {
                 window.firebasePush(window.firebaseRef(window.firebaseDB, 'courses'), {
@@ -916,7 +930,7 @@
         function handleUploadMaterial(e) {
             e.preventDefault();
             const courseId = document.getElementById('adm-m-course').value;
-            const title = document.getElementById('adm-m-title').value.trim();
+            const title = sanitizeInput(document.getElementById('adm-m-title').value);
             const type = document.getElementById('adm-m-type').value;
             const link = document.getElementById('adm-m-link').value.trim();
 
@@ -936,13 +950,13 @@
         /* HOUSE PLAN CLIENT FORM HANDLER */
         function handleHouseInquiry(event) {
             event.preventDefault();
-            const name = document.getElementById('hp-name').value.trim();
-            const mobile = document.getElementById('hp-mobile').value.trim();
-            const size = document.getElementById('hp-size').value.trim();
-            const nagarpalika = document.getElementById('hp-nagarpalika').value.trim();
-            const district = document.getElementById('hp-district').value.trim();
-            const state = document.getElementById('hp-state').value.trim();
-            const details = document.getElementById('hp-details').value.trim();
+            const name = sanitizeInput(document.getElementById('hp-name').value);
+            const mobile = sanitizeInput(document.getElementById('hp-mobile').value);
+            const size = sanitizeInput(document.getElementById('hp-size').value);
+            const nagarpalika = sanitizeInput(document.getElementById('hp-nagarpalika').value);
+            const district = sanitizeInput(document.getElementById('hp-district').value);
+            const state = sanitizeInput(document.getElementById('hp-state').value);
+            const details = sanitizeInput(document.getElementById('hp-details').value);
             
             const btn = document.getElementById('hp-submit-btn');
             btn.innerText = "Submitting Request...";
@@ -1006,7 +1020,7 @@
                         document.getElementById('stat-pending-count').innerText = pKeys.length;
 
                         let html = `<table class="admin-table">
-                            <tr><th>Student Name</th><th>Course</th><th>Price</th><th>12-Digit UTR</th><th>Time</th><th>Action</th></tr>`;
+                            <tr><th>Student Name</th><th>Course</th><th>Price</th><th>UTR Ref No.</th><th>Time</th><th>Action</th></tr>`;
                         pKeys.forEach(pId => {
                             const p = pendData[pId];
                             html += `<tr>
@@ -1037,7 +1051,7 @@
                         document.getElementById('stat-approved-count').innerText = aKeys.length;
 
                         let html = `<table class="admin-table">
-                            <tr><th>Student Name</th><th>Course</th><th>Amount</th><th>12-Digit UTR</th><th>Approved Date</th></tr>`;
+                            <tr><th>Student Name</th><th>Course</th><th>Amount</th><th>UTR Ref No.</th><th>Approved Date</th></tr>`;
                         aKeys.forEach(aId => {
                             const a = appData[aId];
                             html += `<tr>
@@ -1201,9 +1215,9 @@
         /* SECURE SIGN UP HANDLER VIA FIREBASE AUTH */
         function submitSignup(event) {
             event.preventDefault();
-            const name = document.getElementById('signup-name').value.trim();
-            const email = document.getElementById('signup-email').value.trim().toLowerCase();
-            const mobile = document.getElementById('signup-mobile').value.trim();
+            const name = sanitizeInput(document.getElementById('signup-name').value);
+            const email = sanitizeInput(document.getElementById('signup-email').value).toLowerCase();
+            const mobile = sanitizeInput(document.getElementById('signup-mobile').value);
             const pass = document.getElementById('signup-pass').value.trim();
 
             const btn = document.getElementById('signup-btn-text');
@@ -1233,7 +1247,7 @@
         /* SECURE LOGIN HANDLER VIA FIREBASE AUTH */
         function handleLogin(event) {
             event.preventDefault();
-            const email = document.getElementById('login-id').value.trim().toLowerCase();
+            const email = sanitizeInput(document.getElementById('login-id').value).toLowerCase();
             const pass = document.getElementById('login-pass').value.trim();
 
             const btn = document.getElementById('login-btn-text');
@@ -1288,12 +1302,12 @@
         function handleRegistration(event) {
             event.preventDefault();
             const formElement = document.getElementById('student-reg-form');
-            const name = document.getElementById('reg-name').value.trim();
-            const phone = document.getElementById('reg-mobile').value.trim();
-            const email = document.getElementById('reg-email').value.trim().toLowerCase();
+            const name = sanitizeInput(document.getElementById('reg-name').value);
+            const phone = sanitizeInput(document.getElementById('reg-mobile').value);
+            const email = sanitizeInput(document.getElementById('reg-email').value).toLowerCase();
             const password = document.getElementById('reg-password').value.trim();
             const course = document.getElementById('reg-course').value;
-            const address = document.getElementById('reg-address').value;
+            const address = sanitizeInput(document.getElementById('reg-address').value);
             
             const submitBtn = document.getElementById('submit-text');
             submitBtn.innerText = "Creating Account...";
@@ -1455,66 +1469,107 @@
             currentPayingCourse = null;
         }
 
-        /* SUBMIT 12-DIGIT UTR WITH STRICT DUPLICATE CHECK */
-        function submitUTR(e) {
+        /* FLEXIBLE 10-22 CHARACTER UTR SUBMISSION LOGIC WITH FINALLY BLOCK */
+        async function submitUTR(e) {
             e.preventDefault();
-            const utr = document.getElementById('pay-utr-input').value.trim();
+            
+            const utrInput = document.getElementById('pay-utr-input');
+            const btn = document.getElementById('pay-submit-btn');
+            
+            if (!utrInput || !btn) return;
+            
+            const utr = sanitizeInput(utrInput.value);
 
-            if (!/^\d{12}$/.test(utr)) {
-                alert("Please enter a valid 12-digit UTR/UPI Transaction ID!");
+            // 1. Validation: Accepts 10 to 22 alphanumeric characters
+            if (!/^[a-zA-Z0-9]{10,22}$/.test(utr)) {
+                alert("कृपया सही 10 से 22 अंकों/अक्षरों का UTR या Ref No. दर्ज करें!");
                 return;
             }
 
-            const btn = document.getElementById('pay-submit-btn');
+            const originalBtnText = "Submit UTR for Verification";
             btn.innerText = "Submitting UTR...";
             btn.disabled = true;
 
-            const dbRef = window.firebaseRef(window.firebaseDB);
+            try {
+                if (!currentStudentUser || !currentStudentUser.id) {
+                    throw new Error("Student authentication session not found. Please log in again.");
+                }
 
-            // Duplicate Check in Pending & Approved Records
-            window.firebaseGet(window.firebaseChild(dbRef, 'payments')).then(snapshot => {
-                let isDuplicate = false;
-                if (snapshot.exists()) {
-                    const allPayments = snapshot.val();
-                    ['pending', 'approved'].forEach(status => {
-                        if (allPayments[status]) {
-                            Object.keys(allPayments[status]).forEach(k => {
-                                if (allPayments[status][k].utr === utr) {
-                                    isDuplicate = true;
-                                }
-                            });
-                        }
+                if (!currentPayingCourse || !currentPayingCourse.id) {
+                    throw new Error("Course information missing. Please re-select the course.");
+                }
+
+                let submittedSuccessfully = false;
+
+                // 2. Firebase Submission
+                if (window.firebaseDB && window.firebaseRef && window.firebasePush && window.firebaseGet) {
+                    const dbRef = window.firebaseRef(window.firebaseDB);
+                    
+                    // Duplicate Check in Pending & Approved Records
+                    const snapshot = await window.firebaseGet(window.firebaseChild(dbRef, 'payments'));
+                    let isDuplicate = false;
+
+                    if (snapshot.exists()) {
+                        const allPayments = snapshot.val();
+                        ['pending', 'approved'].forEach(status => {
+                            if (allPayments[status]) {
+                                Object.keys(allPayments[status]).forEach(k => {
+                                    if (allPayments[status][k].utr === utr) {
+                                        isDuplicate = true;
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                    if (isDuplicate) {
+                        alert("यह UTR नंबर पहले से दर्ज या प्रोसेस किया जा चुका है! कृपया सही UTR नंबर डालें।");
+                        return;
+                    }
+
+                    // Push Record to Firebase Pending Node
+                    await window.firebasePush(window.firebaseRef(window.firebaseDB, 'payments/pending'), {
+                        userId: currentStudentUser.id,
+                        userName: currentStudentUser.username || 'Student',
+                        userMobile: currentStudentUser.mobile || '',
+                        userEmail: currentStudentUser.email || '',
+                        courseId: currentPayingCourse.id,
+                        courseTitle: currentPayingCourse.title,
+                        amount: currentPayingCourse.price,
+                        utr: utr,
+                        status: 'pending',
+                        submittedAt: new Date().toISOString()
                     });
+
+                    submittedSuccessfully = true;
+                    alert("आपका UTR सफलता-पूर्वक सबमिट हो गया है!\nStatus: Verification Pending.\nएडमिन द्वारा वेरिफाई होते ही आपका कोर्स अपने-आप अनलॉक हो जाएगा।");
+                } else {
+                    // Fallback for Local Testing
+                    const localEnrollments = JSON.parse(localStorage.getItem('local_student_enrollments') || '{}');
+                    localEnrollments[currentPayingCourse.id] = {
+                        enrolledAt: new Date().toISOString(),
+                        status: 'active',
+                        utr: utr
+                    };
+                    localStorage.setItem('local_student_enrollments', JSON.stringify(localEnrollments));
+
+                    submittedSuccessfully = true;
+                    alert("लोकल टेस्ट मोड: UTR सेव हो गया है और आपका कोर्स अनलॉक कर दिया गया है!");
                 }
 
-                if (isDuplicate) {
-                    alert("This UTR number has already been submitted or processed! Please enter a valid unique UTR.");
-                    btn.innerText = "Submit UTR for Verification";
-                    btn.disabled = false;
-                    return;
-                }
-
-                // Push New Pending Payment Order
-                window.firebasePush(window.firebaseRef(window.firebaseDB, 'payments/pending'), {
-                    userId: currentStudentUser.id,
-                    userName: currentStudentUser.username || 'Student',
-                    userMobile: currentStudentUser.mobile || '',
-                    userEmail: currentStudentUser.email || '',
-                    courseId: currentPayingCourse.id,
-                    courseTitle: currentPayingCourse.title,
-                    amount: currentPayingCourse.price,
-                    utr: utr,
-                    status: 'pending',
-                    submittedAt: new Date().toISOString()
-                }).then(() => {
-                    alert("Your Payment Verification Request has been submitted successfully!\nStatus: Verification Pending.\nCourse will unlock automatically once Admin approves your UTR.");
+                if (submittedSuccessfully) {
                     closePaymentModal();
                     loadStudentDashboardData();
-                }).finally(() => {
-                    btn.innerText = "Submit UTR for Verification";
-                    btn.disabled = false;
-                });
-            });
+                }
+
+            } catch (error) {
+                console.error("UTR Submission Error:", error);
+                alert("त्रुटि (Error): " + error.message);
+            } finally {
+                // ALWAYS RESET BUTTON BACK TO ORIGINAL STATE (Prevents stuck loading)
+                btn.innerText = originalBtnText;
+                btn.disabled = false;
+            }
         }
 
         /* OPEN LECTURES & DRIVE PDF MODAL WITH DELETE SUPPORT */
