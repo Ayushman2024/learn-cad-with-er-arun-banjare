@@ -22,6 +22,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- QRCodeJS Library for Live QR Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <!-- FIREBASE SDK & DATABASE CONFIGURATION START -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
@@ -147,10 +150,10 @@
         .admin-nav-tabs { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; }
         .admin-nav-tab { padding: 10px 20px; font-weight: 600; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer; color: #475569; transition: 0.3s; font-size: 0.95rem; }
         .admin-nav-tab.active { background: #0056b3; color: white; border-color: #0056b3; box-shadow: 0 4px 12px rgba(0, 86, 179, 0.2); }
-        .admin-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: white; padding: 22px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid #0056b3; display: flex; flex-direction: column; justify-content: center; }
-        .stat-card h4 { font-size: 0.9rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-        .stat-card .stat-num { font-size: 2rem; font-weight: 700; color: #0f172a; }
+        .admin-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid #0056b3; display: flex; flex-direction: column; justify-content: center; }
+        .stat-card h4 { font-size: 0.85rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .stat-card .stat-num { font-size: 1.8rem; font-weight: 700; color: #0f172a; }
         
         .admin-card-box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 4px solid #0056b3; }
         .admin-card-box h3 { color: #0056b3; margin-bottom: 15px; font-size: 1.2rem; }
@@ -165,6 +168,8 @@
         .admin-btn-wa { background: #25d366; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 0.8rem; }
         .btn-del { background: #dc3545; color: white; padding: 6px 12px; border-radius: 4px; border: none; font-weight: 600; cursor: pointer; font-size: 0.8rem; }
         .btn-del:hover { background: #c82333; }
+        .btn-app { background: #28a745; color: white; padding: 6px 12px; border-radius: 4px; border: none; font-weight: 600; cursor: pointer; font-size: 0.8rem; }
+        .btn-app:hover { background: #218838; }
 
         /* LMS Student Dashboard Styling */
         .lms-container { padding: 30px 5%; background: #f8fafc; min-height: 100vh; }
@@ -175,6 +180,7 @@
         .lms-card { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.06); display: flex; flex-direction: column; position: relative; border: 1px solid #e2e8f0; }
         .lms-badge { position: absolute; top: 12px; left: 12px; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; color: white; background: #28a745; z-index: 5; }
         .badge-free { background: #17a2b8; }
+        .badge-pending { background: #ffc107; color: #333; }
         .lms-thumb { height: 150px; background: linear-gradient(135deg, #0056b3 0%, #002244 100%); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; padding: 15px; text-align: center; font-size: 1.1rem; }
         .lms-details { padding: 20px; display: flex; flex-direction: column; flex: 1; }
         .lms-details h3 { font-size: 1.1rem; color: #1e293b; font-weight: 600; margin-bottom: 10px; }
@@ -185,10 +191,18 @@
 
         /* Modal Player Styling */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 99999; }
-        .modal-box { background: white; width: 90%; max-width: 800px; border-radius: 12px; padding: 20px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .modal-box { background: white; width: 90%; max-width: 800px; border-radius: 12px; padding: 25px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; }
         .modal-close { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; color: #333; }
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000; margin-top: 15px; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+        /* Dynamic Payment Modal Styling */
+        .pay-box { text-align: center; padding: 10px; }
+        .pay-amount { font-size: 2rem; color: #28a745; font-weight: 700; margin: 10px 0; }
+        .upi-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: #28a745; color: white; border-radius: 8px; font-size: 1.1rem; font-weight: bold; text-decoration: none; margin: 15px 0; transition: 0.3s; border: none; cursor: pointer; }
+        .upi-btn:hover { background: #218838; }
+        .qr-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f8fafc; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; margin: 15px 0; }
+        #qr-code-canvas { margin: 10px auto; padding: 10px; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 
         /* Floating WhatsApp Widget */
         .wa-widget-container {position: fixed; bottom: 30px; right: 30px; z-index: 9999; }
@@ -306,7 +320,7 @@
                 </form>
             </div>
 
-            <!-- DDYNAMIC COURSES & NOTES SECTION -->
+            <!-- DYNAMIC COURSES & NOTES SECTION -->
             <h2 class="section-title" id="course">Our Technical Courses & Polytechnic Notes</h2>
             <div class="courses-grid" id="main-courses-list">
                 <!-- Live Dynamic Courses & Notes Loaded Here via JS -->
@@ -419,17 +433,17 @@
         <div class="container">
             <!-- 1. TOP ANALYTICS OVERVIEW CARDS -->
             <div class="admin-stats-grid">
+                <div class="stat-card" style="border-left-color: #ffc107;">
+                    <h4>⏳ Pending UTR Requests</h4>
+                    <div class="stat-num" id="stat-pending-count">0</div>
+                </div>
+                <div class="stat-card" style="border-left-color: #28a745;">
+                    <h4>✅ Approved Payments</h4>
+                    <div class="stat-num" id="stat-approved-count">0</div>
+                </div>
                 <div class="stat-card" style="border-left-color: #0056b3;">
                     <h4>🏡 House Plan Inquiries</h4>
                     <div class="stat-num" id="stat-house-count">0</div>
-                </div>
-                <div class="stat-card" style="border-left-color: #28a745;">
-                    <h4>📚 Student Registrations</h4>
-                    <div class="stat-num" id="stat-reg-count">0</div>
-                </div>
-                <div class="stat-card" style="border-left-color: #ffc107;">
-                    <h4>🔑 Registered Accounts</h4>
-                    <div class="stat-num" id="stat-user-count">0</div>
                 </div>
                 <div class="stat-card" style="border-left-color: #17a2b8;">
                     <h4>🎓 Active Courses & Notes</h4>
@@ -439,13 +453,31 @@
 
             <!-- 2. ADMIN NAVIGATION TABS -->
             <div class="admin-nav-tabs">
-                <button class="admin-nav-tab active" id="atab-courses" onclick="switchAdminTab('courses')">📚 Courses & Uploads</button>
+                <button class="admin-nav-tab active" id="atab-payments" onclick="switchAdminTab('payments')">💳 UTR Payments (Pending & Approved)</button>
+                <button class="admin-nav-tab" id="atab-courses" onclick="switchAdminTab('courses')">📚 Courses & Uploads</button>
                 <button class="admin-nav-tab" id="atab-house" onclick="switchAdminTab('house')">🏡 House Plan Requests</button>
                 <button class="admin-nav-tab" id="atab-users" onclick="switchAdminTab('users')">👥 Student Accounts & Registrations</button>
             </div>
 
+            <!-- SECTION PAYMENT FOLDERS: PENDING & APPROVED -->
+            <div id="asec-payments">
+                <!-- Folder 1: Pending Requests -->
+                <div class="admin-card-box" style="border-top-color: #ffc107;">
+                    <h3>⏳ Pending Payment Requests (Verify UTR in Spice Money App)</h3>
+                    <input type="text" class="admin-search-input" id="search-pending" placeholder="🔍 Search by student name, UTR, mobile..." onkeyup="filterAdminTable('search-pending', 'admin-pending-list')">
+                    <div id="admin-pending-list">Loading pending requests...</div>
+                </div>
+
+                <!-- Folder 2: Approved Payments -->
+                <div class="admin-card-box" style="border-top-color: #28a745;">
+                    <h3>✅ Approved Payments History</h3>
+                    <input type="text" class="admin-search-input" id="search-approved" placeholder="🔍 Search approved record by name, UTR, course..." onkeyup="filterAdminTable('search-approved', 'admin-approved-list')">
+                    <div id="admin-approved-list">Loading approved history...</div>
+                </div>
+            </div>
+
             <!-- SECTION A: COURSES & UPLOADS -->
-            <div id="asec-courses">
+            <div id="asec-courses" class="hidden">
                 <!-- Course Creator -->
                 <div class="admin-card-box">
                     <h3>➕ Add New Course or Polytechnic Notes (₹0 / Custom Price)</h3>
@@ -529,7 +561,7 @@
         <div class="lms-container">
             <div class="tab-menu">
                 <button class="tab-btn active" id="tab-my" onclick="switchStudentTab('my')">📚 My Enrolled Content</button>
-                <button class="tab-btn" id="tab-all" onclick="switchStudentTab('all')">🌐 Explore All Courses & Notes (₹0 Free)</button>
+                <button class="tab-btn" id="tab-all" onclick="switchStudentTab('all')">🌐 Explore All Courses & Notes</button>
             </div>
 
             <!-- Tab 1: My Enrolled Content -->
@@ -546,6 +578,38 @@
                 <div class="lms-courses-grid" id="student-all-grid">
                     <!-- Dynamic Available Cards Loaded Here -->
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DYNAMIC PAYMENT MODAL (Spice Money UPI + Live QR + UTR Form) -->
+    <div id="payment-modal" class="modal-overlay hidden">
+        <div class="modal-box" style="max-width: 480px;">
+            <span class="modal-close" onclick="closePaymentModal()">&times;</span>
+            <div class="pay-box">
+                <h3 id="pay-course-title" style="color:#0056b3;">Unlock Course</h3>
+                <div class="pay-amount" id="pay-course-price">₹0</div>
+
+                <!-- Auto-Generated Direct Mobile UPI Button -->
+                <a id="pay-deep-link" href="#" class="upi-btn">
+                    📱 Pay via PhonePe / GPay / Paytm
+                </a>
+
+                <!-- Desktop / Static Live QR Display -->
+                <div class="qr-wrapper">
+                    <p style="font-size:0.85rem; font-weight:600; color:#475569;">Or Scan QR Code via Any UPI App:</p>
+                    <div id="qr-code-canvas"></div>
+                    <p style="font-size:0.75rem; color:#64748b; margin-top:5px;">Spice Money Merchant UPI</p>
+                </div>
+
+                <!-- 12-Digit UTR Form -->
+                <form onsubmit="submitUTR(event)" style="margin-top:15px; text-align:left;">
+                    <label style="font-size:0.85rem; font-weight:600; color:#333; display:block; margin-bottom:5px;">
+                        Enter 12-Digit UTR / UPI Ref No. after Payment *:
+                    </label>
+                    <input type="text" id="pay-utr-input" placeholder="e.g. 410293847561" maxlength="12" pattern="\d{12}" required style="width:100%; padding:12px; border:1px solid #0056b3; border-radius:6px; font-size:1rem; outline:none; text-align:center; font-weight:bold; letter-spacing:1px;">
+                    <button type="submit" id="pay-submit-btn" class="reg-submit" style="margin-top:10px; background:#0056b3;">Submit UTR for Verification</button>
+                </form>
             </div>
         </div>
     </div>
@@ -620,6 +684,11 @@
         let slideInterval = setInterval(nextSlide, 4000);
         let currentStudentUser = null;
         let globalCoursesData = {};
+        
+        // SPICE MONEY MERCHANT UPI CONFIG
+        const MERCHANT_UPI_ID = "SPICED8103886535947020@yesbankltd";
+        const MERCHANT_NAME = "Arun Banjare";
+        let currentPayingCourse = null;
 
         function showSlide(index) {
             if (slides.length > 0) {
@@ -689,7 +758,7 @@
                                         currentStudentUser = snapshot.val();
                                         currentStudentUser.id = user.uid;
                                     } else {
-                                        currentStudentUser = { username: user.email.split('@')[0], id: user.uid };
+                                        currentStudentUser = { username: user.email.split('@')[0], id: user.uid, email: user.email };
                                     }
                                     document.getElementById('student-dashboard').classList.remove('hidden');
                                     document.getElementById('welcome-user').innerText = "Welcome, " + currentStudentUser.username + "!";
@@ -766,10 +835,12 @@
 
         /* ADMIN TAB & SEARCH HANDLERS */
         function switchAdminTab(tabName) {
+            document.getElementById('atab-payments').classList.remove('active');
             document.getElementById('atab-courses').classList.remove('active');
             document.getElementById('atab-house').classList.remove('active');
             document.getElementById('atab-users').classList.remove('active');
 
+            document.getElementById('asec-payments').classList.add('hidden');
             document.getElementById('asec-courses').classList.add('hidden');
             document.getElementById('asec-house').classList.add('hidden');
             document.getElementById('asec-users').classList.add('hidden');
@@ -927,6 +998,64 @@
             if (window.firebaseDB && window.firebaseGet && window.firebaseChild && window.firebaseRef) {
                 const dbRef = window.firebaseRef(window.firebaseDB);
                 
+                // Fetch & Display Pending UTR Payments (Folder 1)
+                window.firebaseGet(window.firebaseChild(dbRef, 'payments/pending')).then(snapshot => {
+                    if (snapshot.exists()) {
+                        const pendData = snapshot.val();
+                        const pKeys = Object.keys(pendData);
+                        document.getElementById('stat-pending-count').innerText = pKeys.length;
+
+                        let html = `<table class="admin-table">
+                            <tr><th>Student Name</th><th>Course</th><th>Price</th><th>12-Digit UTR</th><th>Time</th><th>Action</th></tr>`;
+                        pKeys.forEach(pId => {
+                            const p = pendData[pId];
+                            html += `<tr>
+                                <td><b>${p.userName || 'Student'}</b><br><small>${p.userMobile || p.userEmail || ''}</small></td>
+                                <td>${p.courseTitle}</td>
+                                <td><b>₹${p.amount}</b></td>
+                                <td><mark style="padding:2px 6px; font-weight:bold;">${p.utr}</mark></td>
+                                <td><small>${p.submittedAt ? new Date(p.submittedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ''}</small></td>
+                                <td>
+                                    <button class="btn-app" onclick="approvePayment('${pId}')">🟢 Approve & Unlock</button>
+                                    <button class="btn-del" onclick="rejectPayment('${pId}')">🔴 Reject</button>
+                                </td>
+                            </tr>`;
+                        });
+                        html += `</table>`;
+                        document.getElementById('admin-pending-list').innerHTML = html;
+                    } else {
+                        document.getElementById('stat-pending-count').innerText = '0';
+                        document.getElementById('admin-pending-list').innerHTML = `<p style="color:#888;">No pending UTR requests right now.</p>`;
+                    }
+                });
+
+                // Fetch & Display Approved UTR Payments (Folder 2)
+                window.firebaseGet(window.firebaseChild(dbRef, 'payments/approved')).then(snapshot => {
+                    if (snapshot.exists()) {
+                        const appData = snapshot.val();
+                        const aKeys = Object.keys(appData);
+                        document.getElementById('stat-approved-count').innerText = aKeys.length;
+
+                        let html = `<table class="admin-table">
+                            <tr><th>Student Name</th><th>Course</th><th>Amount</th><th>12-Digit UTR</th><th>Approved Date</th></tr>`;
+                        aKeys.forEach(aId => {
+                            const a = appData[aId];
+                            html += `<tr>
+                                <td><b>${a.userName || 'Student'}</b></td>
+                                <td>${a.courseTitle}</td>
+                                <td><span style="color:#28a745; font-weight:bold;">₹${a.amount}</span></td>
+                                <td><code>${a.utr}</code></td>
+                                <td><small>${a.approvedAt ? new Date(a.approvedAt).toLocaleDateString() : 'Verified'}</small></td>
+                            </tr>`;
+                        });
+                        html += `</table>`;
+                        document.getElementById('admin-approved-list').innerHTML = html;
+                    } else {
+                        document.getElementById('stat-approved-count').innerText = '0';
+                        document.getElementById('admin-approved-list').innerHTML = `<p style="color:#888;">No approved payment history found.</p>`;
+                    }
+                });
+
                 // Fetch & Display Active Courses
                 window.firebaseGet(window.firebaseChild(dbRef, 'courses')).then(snapshot => {
                     if (snapshot.exists()) {
@@ -988,7 +1117,6 @@
                     if (snapshot.exists()) {
                         const data = snapshot.val();
                         const keys = Object.keys(data);
-                        document.getElementById('stat-reg-count').innerText = keys.length;
 
                         let html = `<table class="admin-table">
                             <tr><th>Name</th><th>Phone</th><th>Email</th><th>Course</th><th>Action</th></tr>`;
@@ -1005,7 +1133,6 @@
                         html += `</table>`;
                         document.getElementById('admin-reg-list').innerHTML = html;
                     } else {
-                        document.getElementById('stat-reg-count').innerText = '0';
                         document.getElementById('admin-reg-list').innerHTML = `<p style="color:#888;">No student registrations found.</p>`;
                     }
                 });
@@ -1015,7 +1142,6 @@
                     if (snapshot.exists()) {
                         const data = snapshot.val();
                         const keys = Object.keys(data);
-                        document.getElementById('stat-user-count').innerText = keys.length;
 
                         let html = `<table class="admin-table">
                             <tr><th>Name</th><th>Email / ID</th><th>Mobile</th></tr>`;
@@ -1030,9 +1156,44 @@
                         html += `</table>`;
                         document.getElementById('admin-user-list').innerHTML = html;
                     } else {
-                        document.getElementById('stat-user-count').innerText = '0';
                         document.getElementById('admin-user-list').innerHTML = `<p style="color:#888;">No user accounts found.</p>`;
                     }
+                });
+            }
+        }
+
+        /* ONE-CLICK APPROVE & AUTO SHIFT TO APPROVED FOLDER */
+        function approvePayment(payId) {
+            const dbRef = window.firebaseRef(window.firebaseDB);
+            window.firebaseGet(window.firebaseChild(dbRef, 'payments/pending/' + payId)).then(snapshot => {
+                if (snapshot.exists()) {
+                    const payObj = snapshot.val();
+                    payObj.approvedAt = new Date().toISOString();
+                    
+                    // 1. Grant Enrollment to Student
+                    window.firebaseSet(window.firebaseRef(window.firebaseDB, 'user_enrollments/' + payObj.userId + '/' + payObj.courseId), {
+                        enrolledAt: new Date().toISOString(),
+                        status: 'active',
+                        utr: payObj.utr
+                    }).then(() => {
+                        // 2. Add to Approved Folder
+                        window.firebaseSet(window.firebaseRef(window.firebaseDB, 'payments/approved/' + payId), payObj).then(() => {
+                            // 3. Remove from Pending Folder
+                            window.firebaseRemove(window.firebaseRef(window.firebaseDB, 'payments/pending/' + payId)).then(() => {
+                                alert(`Payment Approved & Course Unlocked for ${payObj.userName || 'Student'}!`);
+                                loadAdminData();
+                            });
+                        });
+                    });
+                }
+            });
+        }
+
+        function rejectPayment(payId) {
+            if (confirm("Are you sure you want to reject this UTR submission?")) {
+                window.firebaseRemove(window.firebaseRef(window.firebaseDB, 'payments/pending/' + payId)).then(() => {
+                    alert("Payment request rejected & removed.");
+                    loadAdminData();
                 });
             }
         }
@@ -1091,7 +1252,7 @@
                             currentStudentUser = snapshot.val();
                             currentStudentUser.id = user.uid;
                         } else {
-                            currentStudentUser = { username: email.split('@')[0], id: user.uid };
+                            currentStudentUser = { username: email.split('@')[0], id: user.uid, email: email };
                         }
                         alert("Welcome back " + currentStudentUser.username + "!");
                         document.getElementById('admin-panel').classList.add('hidden');
@@ -1179,52 +1340,81 @@
             if (!currentStudentUser || !currentStudentUser.id) return;
             const dbRef = window.firebaseRef(window.firebaseDB);
             
+            // 1. Fetch User Enrollments & Pending Payments
             window.firebaseGet(window.firebaseChild(dbRef, 'user_enrollments/' + currentStudentUser.id)).then(snapshot => {
                 const enrolledIds = snapshot.exists() ? snapshot.val() : {};
                 
-                let myCardsHtml = "";
-                let allCardsHtml = "";
+                window.firebaseGet(window.firebaseChild(dbRef, 'payments/pending')).then(pendSnap => {
+                    const pendingList = pendSnap.exists() ? pendSnap.val() : {};
+                    const userPendingCourseIds = [];
+                    
+                    Object.keys(pendingList).forEach(pId => {
+                        if (pendingList[pId].userId === currentStudentUser.id) {
+                            userPendingCourseIds.push(pendingList[pId].courseId);
+                        }
+                    });
 
-                Object.keys(globalCoursesData).forEach(cId => {
-                    const c = globalCoursesData[cId];
-                    const isEnrolled = enrolledIds[cId] ? true : false;
+                    let myCardsHtml = "";
+                    let allCardsHtml = "";
 
-                    if (isEnrolled) {
-                        myCardsHtml += `<div class="lms-card">
-                            <div class="lms-badge">✅ Active Access</div>
-                            <div class="lms-thumb">${c.title}</div>
-                            <div class="lms-details">
-                                <h3>${c.title}</h3>
-                                <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">${c.desc || ''}</p>
-                                <button class="lms-btn-action" onclick="openCourseMaterials('${cId}', '${c.title}')">Open Lectures & Notes →</button>
-                            </div>
-                        </div>`;
-                    } else {
-                        const btnText = c.price == 0 ? "Enroll for FREE (₹0)" : `Enroll Now (₹${c.price})`;
-                        allCardsHtml += `<div class="lms-card">
-                            <div class="lms-badge badge-free">${c.price == 0 ? 'FREE NOTES' : 'PREMIUM'}</div>
-                            <div class="lms-thumb">${c.title}</div>
-                            <div class="lms-details">
-                                <h3>${c.title}</h3>
-                                <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">${c.desc || ''}</p>
-                                <button class="lms-btn-action lms-btn-free" onclick="enrollFreeCourse('${cId}', ${c.price})">${btnText}</button>
-                            </div>
-                        </div>`;
+                    Object.keys(globalCoursesData).forEach(cId => {
+                        const c = globalCoursesData[cId];
+                        const isEnrolled = enrolledIds[cId] ? true : false;
+                        const isPending = userPendingCourseIds.includes(cId);
+
+                        if (isEnrolled) {
+                            myCardsHtml += `<div class="lms-card">
+                                <div class="lms-badge">✅ Active Access</div>
+                                <div class="lms-thumb">${c.title}</div>
+                                <div class="lms-details">
+                                    <h3>${c.title}</h3>
+                                    <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">${c.desc || ''}</p>
+                                    <button class="lms-btn-action" onclick="openCourseMaterials('${cId}', '${c.title}')">Open Lectures & Notes →</button>
+                                </div>
+                            </div>`;
+                        } else {
+                            if (isPending) {
+                                allCardsHtml += `<div class="lms-card">
+                                    <div class="lms-badge badge-pending">⏳ Verification Pending</div>
+                                    <div class="lms-thumb">${c.title}</div>
+                                    <div class="lms-details">
+                                        <h3>${c.title}</h3>
+                                        <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">${c.desc || ''}</p>
+                                        <button class="lms-btn-action" style="background:#ffc107; color:#333; cursor:default;">⏳ Payment Pending Approval</button>
+                                    </div>
+                                </div>`;
+                            } else {
+                                const btnText = c.price == 0 ? "Enroll for FREE (₹0)" : `Pay & Unlock (₹${c.price})`;
+                                allCardsHtml += `<div class="lms-card">
+                                    <div class="lms-badge badge-free">${c.price == 0 ? 'FREE NOTES' : 'PREMIUM'}</div>
+                                    <div class="lms-thumb">${c.title}</div>
+                                    <div class="lms-details">
+                                        <h3>${c.title}</h3>
+                                        <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">${c.desc || ''}</p>
+                                        <button class="lms-btn-action lms-btn-free" onclick="openPaymentModal('${cId}')">${btnText}</button>
+                                    </div>
+                                </div>`;
+                            }
+                        }
+                    });
+
+                    if (myCardsHtml === "") {
+                        myCardsHtml = `<p style="color:#666; font-size:1.05rem;">Aapne abhi tak koi course/notes unlock nahi kiya hai. <b>"Explore All Courses & Notes"</b> tab par click karke unlock karein!</p>`;
                     }
+
+                    document.getElementById('student-enrolled-grid').innerHTML = myCardsHtml;
+                    document.getElementById('student-all-grid').innerHTML = allCardsHtml;
                 });
-
-                if (myCardsHtml === "") {
-                    myCardsHtml = `<p style="color:#666; font-size:1.05rem;">Aapne abhi tak koi course/notes unlock nahi kiya hai. <b>"Explore All Courses & Notes"</b> tab par click karke ₹0 Free Notes unlock karein!</p>`;
-                }
-
-                document.getElementById('student-enrolled-grid').innerHTML = myCardsHtml;
-                document.getElementById('student-all-grid').innerHTML = allCardsHtml;
             });
         }
 
-        function enrollFreeCourse(courseId, price) {
-            if (!currentStudentUser || !currentStudentUser.id) return;
-            if (price == 0) {
+        /* DYNAMIC PAYMENT MODAL WITH AUTO-AMOUNT & QR GENERATOR */
+        function openPaymentModal(courseId) {
+            const course = globalCoursesData[courseId];
+            if (!course) return;
+
+            if (course.price == 0) {
+                // Free Notes Direct Unlock
                 window.firebaseSet(window.firebaseRef(window.firebaseDB, 'user_enrollments/' + currentStudentUser.id + '/' + courseId), {
                     enrolledAt: new Date().toISOString()
                 }).then(() => {
@@ -1232,10 +1422,99 @@
                     loadStudentDashboardData();
                     switchStudentTab('my');
                 });
-            } else {
-                alert("This is a Paid Course! Please contact Er. Arun Banjare on WhatsApp to complete payment & unlock.");
-                window.open("https://wa.me/917440850479?text=Hello%20Er.%20Arun,%20Main%20paid%20course%20enroll%20karna%20chahta%20hu.", "_blank");
+                return;
             }
+
+            currentPayingCourse = { id: courseId, title: course.title, price: course.price };
+
+            document.getElementById('pay-course-title').innerText = course.title;
+            document.getElementById('pay-course-price').innerText = "₹" + course.price;
+
+            // Generate UPI Deep Link for Mobile (Auto-Fill Amount)
+            const upiString = `upi://pay?pa=${MERCHANT_UPI_ID}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${course.price}&cu=INR&tn=${encodeURIComponent(course.title)}`;
+            document.getElementById('pay-deep-link').setAttribute('href', upiString);
+
+            // Generate Live QR Code Canvas
+            const qrCanvasContainer = document.getElementById('qr-code-canvas');
+            qrCanvasContainer.innerHTML = "";
+            new QRCode(qrCanvasContainer, {
+                text: upiString,
+                width: 180,
+                height: 180,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+
+            document.getElementById('pay-utr-input').value = "";
+            document.getElementById('payment-modal').classList.remove('hidden');
+        }
+
+        function closePaymentModal() {
+            document.getElementById('payment-modal').classList.add('hidden');
+            currentPayingCourse = null;
+        }
+
+        /* SUBMIT 12-DIGIT UTR WITH STRICT DUPLICATE CHECK */
+        function submitUTR(e) {
+            e.preventDefault();
+            const utr = document.getElementById('pay-utr-input').value.trim();
+
+            if (!/^\d{12}$/.test(utr)) {
+                alert("Please enter a valid 12-digit UTR/UPI Transaction ID!");
+                return;
+            }
+
+            const btn = document.getElementById('pay-submit-btn');
+            btn.innerText = "Submitting UTR...";
+            btn.disabled = true;
+
+            const dbRef = window.firebaseRef(window.firebaseDB);
+
+            // Duplicate Check in Pending & Approved Records
+            window.firebaseGet(window.firebaseChild(dbRef, 'payments')).then(snapshot => {
+                let isDuplicate = false;
+                if (snapshot.exists()) {
+                    const allPayments = snapshot.val();
+                    ['pending', 'approved'].forEach(status => {
+                        if (allPayments[status]) {
+                            Object.keys(allPayments[status]).forEach(k => {
+                                if (allPayments[status][k].utr === utr) {
+                                    isDuplicate = true;
+                                }
+                            });
+                        }
+                    });
+                }
+
+                if (isDuplicate) {
+                    alert("This UTR number has already been submitted or processed! Please enter a valid unique UTR.");
+                    btn.innerText = "Submit UTR for Verification";
+                    btn.disabled = false;
+                    return;
+                }
+
+                // Push New Pending Payment Order
+                window.firebasePush(window.firebaseRef(window.firebaseDB, 'payments/pending'), {
+                    userId: currentStudentUser.id,
+                    userName: currentStudentUser.username || 'Student',
+                    userMobile: currentStudentUser.mobile || '',
+                    userEmail: currentStudentUser.email || '',
+                    courseId: currentPayingCourse.id,
+                    courseTitle: currentPayingCourse.title,
+                    amount: currentPayingCourse.price,
+                    utr: utr,
+                    status: 'pending',
+                    submittedAt: new Date().toISOString()
+                }).then(() => {
+                    alert("Your Payment Verification Request has been submitted successfully!\nStatus: Verification Pending.\nCourse will unlock automatically once Admin approves your UTR.");
+                    closePaymentModal();
+                    loadStudentDashboardData();
+                }).finally(() => {
+                    btn.innerText = "Submit UTR for Verification";
+                    btn.disabled = false;
+                });
+            });
         }
 
         /* OPEN LECTURES & DRIVE PDF MODAL WITH DELETE SUPPORT */
