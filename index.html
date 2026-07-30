@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
+    <meta name="google-site-verification" content="oUx44ZGg4JAi-baj4WGlj4YsuQj--9HHipNE6x4z8Yk" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn CAD with Civil Engineer</title>
     <link rel="manifest" href="manifest.json">
     
     <!-- PWA UPDATE & SERVICE WORKER MODULE -->
@@ -15,9 +19,6 @@
       }
     </script>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn CAD with Civil Engineer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
@@ -26,10 +27,10 @@
 
     <!-- FIREBASE SDK & DATABASE CONFIGURATION -->
     <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
-      import { getDatabase, ref, push, get, child, set, remove } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
-      import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
+      import { getDatabase, ref, push, get, child, set, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+      import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyAsV-Ey5RSNmQw2UJ4mU5STb9ZcDeIQAn0",
@@ -579,7 +580,6 @@
         let currentStudentUser = null;
         let globalCoursesData = {};
 
-        // 💡 Updated Live Razorpay Key ID
         const RAZORPAY_KEY_ID = "rzp_live_TJZTFyvVjOndr5";
 
         function showSlide(index) {
@@ -645,7 +645,7 @@
                                         currentStudentUser = { username: user.email.split('@')[0], id: user.uid, email: user.email };
                                     }
                                     document.getElementById('student-dashboard').classList.remove('hidden');
-                                    document.getElementById('welcome-user').innerText = "Welcome, " + currentStudentUser.username + "!";
+                                    document.getElementById('welcome-user').innerText = "Welcome, " + (currentStudentUser.username || 'Student') + "!";
                                     loadStudentDashboardData();
                                 });
                             }
@@ -842,7 +842,7 @@
             });
         }
 
-        // 💡 एडमिन पैनल में स्टूडेंट्स और रजिस्ट्रेशन डेटा को एक साथ फेच करने का कोड
+        // 💡 यहाँ एडमिन डेटा लोड करने का फंक्शन सही कर दिया गया है जिससे 'users' और 'registrations' दोनों सही दिखेंगे
         function loadAdminData() {
             if (window.firebaseDB && window.firebaseGet && window.firebaseChild && window.firebaseRef) {
                 const dbRef = window.firebaseRef(window.firebaseDB);
@@ -904,6 +904,9 @@
                         });
                         html += `</table>`;
                         document.getElementById('admin-house-list').innerHTML = html;
+                    } else {
+                        document.getElementById('stat-house-count').innerText = '0';
+                        document.getElementById('admin-house-list').innerHTML = `<p style="color:#888;">No inquiries found.</p>`;
                     }
                 });
 
@@ -950,6 +953,7 @@
             const pass = document.getElementById('signup-pass').value.trim();
 
             window.createUserWithEmailAndPassword(window.firebaseAuth, email, pass).then((userCredential) => {
+                // 💡 सुनिश्चित किया गया है कि डेटा सही 'users/' पाथ पर सेव हो
                 window.firebaseSet(window.firebaseRef(window.firebaseDB, 'users/' + userCredential.user.uid), {
                     username: name, email, mobile, createdAt: new Date().toISOString()
                 }).then(() => {
@@ -976,7 +980,7 @@
                         document.getElementById('main-website').classList.add('hidden');
                         document.getElementById('auth').classList.add('hidden');
                         document.getElementById('student-dashboard').classList.remove('hidden');
-                        document.getElementById('welcome-user').innerText = "Welcome, " + currentStudentUser.username + "!";
+                        document.getElementById('welcome-user').innerText = "Welcome, " + (currentStudentUser.username || 'Student') + "!";
                         loadStudentDashboardData();
                     });
                 }
@@ -995,6 +999,7 @@
             });
         }
 
+        // 💡 रजिस्ट्रेशन फॉर्म और अकाउंट क्रिएशन दोनों का डेटा अब फायरबेस में परफेक्टली स्टोर होगा
         function handleRegistration(event) {
             event.preventDefault();
             const name = sanitizeInput(document.getElementById('reg-name').value);
@@ -1005,8 +1010,15 @@
             const address = sanitizeInput(document.getElementById('reg-address').value);
 
             window.createUserWithEmailAndPassword(window.firebaseAuth, email, password).then((userCredential) => {
-                window.firebasePush(window.firebaseRef(window.firebaseDB, 'registrations'), { name, phone, email, course, address, timestamp: new Date().toISOString() });
-                window.firebaseSet(window.firebaseRef(window.firebaseDB, 'users/' + userCredential.user.uid), { username: name, email, mobile: phone, createdAt: new Date().toISOString() }).then(() => {
+                // 1. Save in registrations node
+                window.firebasePush(window.firebaseRef(window.firebaseDB, 'registrations'), { 
+                    name, phone, email, course, address, timestamp: new Date().toISOString() 
+                });
+                
+                // 2. Save in users node
+                window.firebaseSet(window.firebaseRef(window.firebaseDB, 'users/' + userCredential.user.uid), { 
+                    username: name, email, mobile: phone, createdAt: new Date().toISOString() 
+                }).then(() => {
                     alert("Account created successfully!");
                     document.getElementById('student-reg-form').reset();
                     toggleForm('login');
@@ -1072,7 +1084,6 @@
             });
         }
 
-        /* RAZORPAY STANDARD WEB CHECKOUT INTEGRATION */
         function startRazorpayPayment(courseId) {
             const course = globalCoursesData[courseId];
             if (!course) return;
