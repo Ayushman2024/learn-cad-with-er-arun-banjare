@@ -30,7 +30,7 @@
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
       import { getDatabase, ref, push, get, child, set, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-      import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+      import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyAsV-Ey5RSNmQw2UJ4mU5STb9ZcDeIQAn0",
@@ -61,6 +61,7 @@
       window.signOutUser = signOut;
       window.onAuthStateChanged = onAuthStateChanged;
       window.sendPasswordResetEmail = sendPasswordResetEmail;
+      window.sendEmailVerification = sendEmailVerification;
     </script>
 
     <style>
@@ -650,6 +651,8 @@
                             if (user.email.toLowerCase() === "er.arunbanjare@gmail.com" || user.email.toLowerCase() === "admin@learncad.com") {
                                 showAdminPanel();
                             } else {
+                                if (!user.emailVerified) return; // बिना वेरीफाई किए डैशबोर्ड न खोलें
+                                
                                 document.getElementById('admin-panel').classList.add('hidden');
                                 document.getElementById('main-website').classList.add('hidden');
                                 document.getElementById('auth').classList.add('hidden');
@@ -1013,6 +1016,7 @@
             }
         }
 
+        // साइन-अप (ईमेल वेरिफिकेशन के साथ)
         function submitSignup(event) {
             event.preventDefault();
             const name = sanitizeInput(document.getElementById('signup-name').value);
@@ -1021,36 +1025,51 @@
             const pass = document.getElementById('signup-pass').value.trim();
 
             window.createUserWithEmailAndPassword(window.firebaseAuth, email, pass).then((userCredential) => {
-                window.firebaseSet(window.firebaseRef(window.firebaseDB, 'users/' + userCredential.user.uid), {
-                    username: name, email, mobile, createdAt: new Date().toISOString()
-                }).then(() => {
-                    alert("Account created successfully!");
-                    event.target.reset();
-                    toggleForm('login');
+                const user = userCredential.user;
+                
+                window.sendEmailVerification(user).then(() => {
+                    window.firebaseSet(window.firebaseRef(window.firebaseDB, 'users/' + user.uid), {
+                        username: name, email, mobile, isVerified: false, createdAt: new Date().toISOString()
+                    }).then(() => {
+                        alert("Account created successfully! Verification link has been sent to your Email. Please check your inbox and verify before logging in.");
+                        event.target.reset();
+                        window.signOutUser(window.firebaseAuth);
+                        toggleForm('login');
+                    });
                 });
             }).catch((error) => alert("Error: " + error.message));
         }
 
+        // लॉगिन (ईमेल वेरिफिकेशन चेक के साथ)
         function handleLogin(event) {
             event.preventDefault();
             const email = sanitizeInput(document.getElementById('login-id').value).toLowerCase();
             const pass = document.getElementById('login-pass').value.trim();
 
             window.signInWithEmailAndPassword(window.firebaseAuth, email, pass).then((userCredential) => {
+                const user = userCredential.user;
+
                 if (email === "er.arunbanjare@gmail.com" || email === "admin@learncad.com") {
                     showAdminPanel();
-                } else {
-                    window.firebaseGet(window.firebaseChild(window.firebaseRef(window.firebaseDB), 'users/' + userCredential.user.uid)).then(snapshot => {
-                        currentStudentUser = snapshot.exists() ? snapshot.val() : { username: email.split('@')[0], id: userCredential.user.uid, email };
-                        currentStudentUser.id = userCredential.user.uid;
-                        document.getElementById('admin-panel').classList.add('hidden');
-                        document.getElementById('main-website').classList.add('hidden');
-                        document.getElementById('auth').classList.add('hidden');
-                        document.getElementById('student-dashboard').classList.remove('hidden');
-                        document.getElementById('welcome-user').innerText = "Welcome, " + (currentStudentUser.username || 'Student') + "!";
-                        loadStudentDashboardData();
-                    });
+                    return;
                 }
+
+                if (!user.emailVerified) {
+                    alert("Please verify your email address first! Check your inbox for the verification link.");
+                    window.signOutUser(window.firebaseAuth);
+                    return;
+                }
+
+                window.firebaseGet(window.firebaseChild(window.firebaseRef(window.firebaseDB), 'users/' + user.uid)).then(snapshot => {
+                    currentStudentUser = snapshot.exists() ? snapshot.val() : { username: email.split('@')[0], id: user.uid, email };
+                    currentStudentUser.id = user.uid;
+                    document.getElementById('admin-panel').classList.add('hidden');
+                    document.getElementById('main-website').classList.add('hidden');
+                    document.getElementById('auth').classList.add('hidden');
+                    document.getElementById('student-dashboard').classList.remove('hidden');
+                    document.getElementById('welcome-user').innerText = "Welcome, " + (currentStudentUser.username || 'Student') + "!";
+                    loadStudentDashboardData();
+                });
             }).catch((error) => alert("Login Error: " + error.message));
         }
 
@@ -1066,6 +1085,7 @@
             });
         }
 
+        // कोर्स रजिस्ट्रेशन (ईमेल वेरिफिकेशन के साथ)
         function handleRegistration(event) {
             event.preventDefault();
             const name = sanitizeInput(document.getElementById('reg-name').value);
@@ -1076,11 +1096,16 @@
             const address = sanitizeInput(document.getElementById('reg-address').value);
 
             window.createUserWithEmailAndPassword(window.firebaseAuth, email, password).then((userCredential) => {
-                window.firebasePush(window.firebaseRef(window.firebaseDB, 'registrations'), { name, phone, email, course, address, timestamp: new Date().toISOString() });
-                window.firebaseSet(window.firebaseRef(window.firebaseDB, 'users/' + userCredential.user.uid), { username: name, email, mobile: phone, createdAt: new Date().toISOString() }).then(() => {
-                    alert("Account created successfully!");
-                    document.getElementById('student-reg-form').reset();
-                    toggleForm('login');
+                const user = userCredential.user;
+
+                window.sendEmailVerification(user).then(() => {
+                    window.firebasePush(window.firebaseRef(window.firebaseDB, 'registrations'), { name, phone, email, course, address, timestamp: new Date().toISOString() });
+                    window.firebaseSet(window.firebaseRef(window.firebaseDB, 'users/' + user.uid), { username: name, email, mobile: phone, isVerified: false, createdAt: new Date().toISOString() }).then(() => {
+                        alert("Registration successful! Verification link sent to your Email. Please verify your email before logging in.");
+                        document.getElementById('student-reg-form').reset();
+                        window.signOutUser(window.firebaseAuth);
+                        toggleForm('login');
+                    });
                 });
             }).catch((error) => alert("Error: " + error.message));
         }
