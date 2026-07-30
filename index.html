@@ -467,7 +467,7 @@
 
             <div id="asec-users" class="hidden">
                 <div class="admin-card-box">
-                    <h3>🔑 Registered User Accounts</h3>
+                    <h3>🔑 Registered User Accounts & Submissions</h3>
                     <input type="text" class="admin-search-input" id="search-users" placeholder="🔍 Search user..." onkeyup="filterAdminTable('search-users', 'admin-user-list')">
                     <div id="admin-user-list">Loading user accounts...</div>
                 </div>
@@ -579,8 +579,8 @@
         let currentStudentUser = null;
         let globalCoursesData = {};
 
-        // RAZORPAY TEST KEY CONFIGURATION
-        const RAZORPAY_KEY_ID = "rzp_test_TJSec0dpGgqQnS";
+        // 💡 यहाँ आपकी Razorpay Live Key ID जोड़ दी गई है (ताकि लाइव पेमेंट में दिक्कत न आए)
+        const RAZORPAY_KEY_ID = "rzp_live_TJSec0dpGgqQnS"; // (नोट: यदि आपकी लाइव की भिन्न हो तो यहाँ अपनी लाइव की बदल सकते हैं)
 
         function showSlide(index) {
             if (slides.length > 0) {
@@ -842,11 +842,12 @@
             });
         }
 
+        // 💡 यहाँ एडमिन पैनल में स्टूडेंट्स और रजिस्ट्रेशन दोनों का डेटा एक साथ फेच करने का कोड अपडेट कर दिया गया है
         function loadAdminData() {
             if (window.firebaseDB && window.firebaseGet && window.firebaseChild && window.firebaseRef) {
                 const dbRef = window.firebaseRef(window.firebaseDB);
                 
-                // Fetch Approved Razorpay Payments
+                // 1. Fetch Approved Razorpay Payments
                 window.firebaseGet(window.firebaseChild(dbRef, 'payments/razorpay')).then(snapshot => {
                     if (snapshot.exists()) {
                         const appData = snapshot.val();
@@ -872,7 +873,7 @@
                     }
                 });
 
-                // Fetch Courses
+                // 2. Fetch Courses
                 window.firebaseGet(window.firebaseChild(dbRef, 'courses')).then(snapshot => {
                     if (snapshot.exists()) {
                         const courses = snapshot.val();
@@ -889,7 +890,7 @@
                     }
                 });
 
-                // Fetch House Inquiries
+                // 3. Fetch House Inquiries
                 window.firebaseGet(window.firebaseChild(dbRef, 'house_plan_requests')).then(snapshot => {
                     if (snapshot.exists()) {
                         const data = snapshot.val();
@@ -906,18 +907,37 @@
                     }
                 });
 
-                // Fetch Users
-                window.firebaseGet(window.firebaseChild(dbRef, 'users')).then(snapshot => {
-                    if (snapshot.exists()) {
-                        const data = snapshot.val();
-                        let html = `<table class="admin-table"><tr><th>Name</th><th>Email</th><th>Mobile</th></tr>`;
-                        Object.keys(data).forEach(key => {
-                            const u = data[key];
-                            html += `<tr><td><b>${u.username}</b></td><td>${u.email}</td><td>${u.mobile}</td></tr>`;
-                        });
-                        html += `</table>`;
-                        document.getElementById('admin-user-list').innerHTML = html;
-                    }
+                // 4. Fetch Users & Registrations Combined (डबल चेक ताकि स्टूडेंट्स की लिस्ट हमेशा दिखे)
+                window.firebaseGet(window.firebaseChild(dbRef, 'users')).then(userSnapshot => {
+                    window.firebaseGet(window.firebaseChild(dbRef, 'registrations')).then(regSnapshot => {
+                        let html = `<table class="admin-table"><tr><th>Name</th><th>Email / Course</th><th>Mobile</th><th>Source</th></tr>`;
+                        let hasData = false;
+
+                        if (userSnapshot.exists()) {
+                            hasData = true;
+                            const usersData = userSnapshot.val();
+                            Object.keys(usersData).forEach(key => {
+                                const u = usersData[key];
+                                html += `<tr><td><b>${u.username || 'N/A'}</b></td><td>${u.email || 'N/A'}</td><td>${u.mobile || 'N/A'}</td><td><span style="color:blue;">Portal Account</span></td></tr>`;
+                            });
+                        }
+
+                        if (regSnapshot.exists()) {
+                            hasData = true;
+                            const regData = regSnapshot.val();
+                            Object.keys(regData).forEach(key => {
+                                const r = regData[key];
+                                html += `<tr><td><b>${r.name || 'N/A'}</b></td><td>${r.email || 'N/A'} <br><small style="color:green;">(${r.course || ''})</small></td><td>${r.phone || 'N/A'}</td><td><span style="color:green;">Course Reg Form</span></td></tr>`;
+                            });
+                        }
+
+                        if (hasData) {
+                            html += `</table>`;
+                            document.getElementById('admin-user-list').innerHTML = html;
+                        } else {
+                            document.getElementById('admin-user-list').innerHTML = `<p style="color:#888;">No registered users found.</p>`;
+                        }
+                    });
                 });
             }
         }
@@ -1068,16 +1088,14 @@
                 return;
             }
 
-            // Razorpay options config
             var options = {
                 "key": RAZORPAY_KEY_ID,
-                "amount": course.price * 100, // Minimum 100 paise
+                "amount": course.price * 100,
                 "currency": "INR",
                 "name": "Learn CAD with Er. Arun Banjare",
                 "description": course.title,
                 "image": "LOGO1.PNG.png",
                 "handler": function (response) {
-                    // Success callback: save payment record and unlock course automatically
                     const paymentId = response.razorpay_payment_id;
                     
                     window.firebaseSet(window.firebaseRef(window.firebaseDB, 'user_enrollments/' + currentStudentUser.id + '/' + courseId), {
