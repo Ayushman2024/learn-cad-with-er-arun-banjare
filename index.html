@@ -409,6 +409,7 @@
                 <button class="admin-nav-tab" id="atab-courses" onclick="switchAdminTab('courses')">📚 Courses & Uploads</button>
                 <button class="admin-nav-tab" id="atab-house" onclick="switchAdminTab('house')">🏡 House Plan Requests</button>
                 <button class="admin-nav-tab" id="atab-users" onclick="switchAdminTab('users')">👥 Student Accounts</button>
+                <button class="admin-nav-tab" id="atab-coupons" onclick="switchAdminTab('coupons')">🎟️ Manage Coupons</button>
             </div>
 
             <div id="asec-payments">
@@ -471,6 +472,23 @@
                     <h3>🔑 Registered User Accounts & Submissions</h3>
                     <input type="text" class="admin-search-input" id="search-users" placeholder="🔍 Search user..." onkeyup="filterAdminTable('search-users', 'admin-user-list')">
                     <div id="admin-user-list">Loading user accounts...</div>
+                </div>
+            </div>
+
+            <div id="asec-coupons" class="hidden">
+                <div class="admin-card-box">
+                    <h3>🎟️ Create New Discount Coupon</h3>
+                    <form onsubmit="handleCreateCoupon(event)">
+                        <div class="admin-form-grid">
+                            <input type="text" id="adm-cp-code" placeholder="Coupon Code (e.g., CAD500)" style="text-transform: uppercase;" required>
+                            <input type="number" id="adm-cp-discount" placeholder="Discount Amount in ₹ (e.g., 200)" required>
+                        </div>
+                        <button type="submit" class="btn" style="background: #28a745;">Generate & Save Coupon</button>
+                    </form>
+                </div>
+                <div class="admin-card-box">
+                    <h3>📋 Existing Active Coupons</h3>
+                    <div id="admin-coupons-list">Loading coupons...</div>
                 </div>
             </div>
         </div>
@@ -713,11 +731,13 @@
             document.getElementById('atab-courses').classList.remove('active');
             document.getElementById('atab-house').classList.remove('active');
             document.getElementById('atab-users').classList.remove('active');
+            document.getElementById('atab-coupons').classList.remove('active');
 
             document.getElementById('asec-payments').classList.add('hidden');
             document.getElementById('asec-courses').classList.add('hidden');
             document.getElementById('asec-house').classList.add('hidden');
             document.getElementById('asec-users').classList.add('hidden');
+            document.getElementById('asec-coupons').classList.add('hidden');
 
             document.getElementById('atab-' + tabName).classList.add('active');
             document.getElementById('asec-' + tabName).classList.remove('hidden');
@@ -810,6 +830,58 @@
             });
         }
 
+        // कूपन क्रिएशन फंक्शन (एडमिन पैनल)
+        function handleCreateCoupon(e) {
+            e.preventDefault();
+            const code = sanitizeInput(document.getElementById('adm-cp-code').value).toUpperCase();
+            const discount = parseInt(document.getElementById('adm-cp-discount').value.trim());
+
+            if (window.firebaseDB && window.firebasePush && window.firebaseRef) {
+                window.firebasePush(window.firebaseRef(window.firebaseDB, 'coupons'), {
+                    code: code,
+                    discount: discount,
+                    createdAt: new Date().toISOString()
+                }).then(() => {
+                    alert("Coupon '" + code + "' created successfully!");
+                    loadAdminCoupons();
+                    e.target.reset();
+                });
+            }
+        }
+
+        function loadAdminCoupons() {
+            if (window.firebaseDB && window.firebaseGet && window.firebaseChild && window.firebaseRef) {
+                const dbRef = window.firebaseRef(window.firebaseDB);
+                window.firebaseGet(window.firebaseChild(dbRef, 'coupons')).then(snapshot => {
+                    if (snapshot.exists()) {
+                        const coupons = snapshot.val();
+                        let html = `<table class="admin-table"><tr><th>Coupon Code</th><th>Discount Amount</th><th>Action</th></tr>`;
+                        Object.keys(coupons).forEach(cId => {
+                            const cp = coupons[cId];
+                            html += `<tr>
+                                <td><b><code>${cp.code}</code></b></td>
+                                <td><span style="color:#28a745; font-weight:bold;">- ₹${cp.discount}</span></td>
+                                <td><button class="btn-del" onclick="deleteCoupon('${cId}', '${cp.code}')">🗑️ Delete</button></td>
+                            </tr>`;
+                        });
+                        html += `</table>`;
+                        document.getElementById('admin-coupons-list').innerHTML = html;
+                    } else {
+                        document.getElementById('admin-coupons-list').innerHTML = `<p style="color:#888;">No coupons created yet.</p>`;
+                    }
+                });
+            }
+        }
+
+        function deleteCoupon(couponId, couponCode) {
+            if (confirm(`Delete coupon "${couponCode}"?`)) {
+                window.firebaseRemove(window.firebaseRef(window.firebaseDB, 'coupons/' + couponId)).then(() => {
+                    alert("Coupon deleted!");
+                    loadAdminCoupons();
+                });
+            }
+        }
+
         function openAdminModal() {
             const adminEmail = prompt("Enter Admin Email:");
             if (!adminEmail) return;
@@ -828,6 +900,7 @@
             document.getElementById('admin-panel').classList.remove('hidden');
             window.scrollTo(0,0);
             loadAdminData();
+            loadAdminCoupons();
         }
 
         function closeAdminPanel() {
@@ -842,12 +915,10 @@
             });
         }
 
-        // 💡 यहाँ एडमिन डेटा लोड करने का फंक्शन सही कर दिया गया है जिससे 'users' और 'registrations' दोनों सही दिखेंगे
         function loadAdminData() {
             if (window.firebaseDB && window.firebaseGet && window.firebaseChild && window.firebaseRef) {
                 const dbRef = window.firebaseRef(window.firebaseDB);
                 
-                // 1. Fetch Approved Razorpay Payments
                 window.firebaseGet(window.firebaseChild(dbRef, 'payments/razorpay')).then(snapshot => {
                     if (snapshot.exists()) {
                         const appData = snapshot.val();
@@ -873,7 +944,6 @@
                     }
                 });
 
-                // 2. Fetch Courses
                 window.firebaseGet(window.firebaseChild(dbRef, 'courses')).then(snapshot => {
                     if (snapshot.exists()) {
                         const courses = snapshot.val();
@@ -890,7 +960,6 @@
                     }
                 });
 
-                // 3. Fetch House Inquiries
                 window.firebaseGet(window.firebaseChild(dbRef, 'house_plan_requests')).then(snapshot => {
                     if (snapshot.exists()) {
                         const data = snapshot.val();
@@ -910,7 +979,6 @@
                     }
                 });
 
-                // 4. Fetch Users & Registrations Combined
                 window.firebaseGet(window.firebaseChild(dbRef, 'users')).then(userSnapshot => {
                     window.firebaseGet(window.firebaseChild(dbRef, 'registrations')).then(regSnapshot => {
                         let html = `<table class="admin-table"><tr><th>Name</th><th>Email / Course</th><th>Mobile</th><th>Source</th></tr>`;
@@ -953,7 +1021,6 @@
             const pass = document.getElementById('signup-pass').value.trim();
 
             window.createUserWithEmailAndPassword(window.firebaseAuth, email, pass).then((userCredential) => {
-                // 💡 सुनिश्चित किया गया है कि डेटा सही 'users/' पाथ पर सेव हो
                 window.firebaseSet(window.firebaseRef(window.firebaseDB, 'users/' + userCredential.user.uid), {
                     username: name, email, mobile, createdAt: new Date().toISOString()
                 }).then(() => {
@@ -999,7 +1066,6 @@
             });
         }
 
-        // 💡 रजिस्ट्रेशन फॉर्म और अकाउंट क्रिएशन दोनों का डेटा अब फायरबेस में परफेक्टली स्टोर होगा
         function handleRegistration(event) {
             event.preventDefault();
             const name = sanitizeInput(document.getElementById('reg-name').value);
@@ -1010,15 +1076,8 @@
             const address = sanitizeInput(document.getElementById('reg-address').value);
 
             window.createUserWithEmailAndPassword(window.firebaseAuth, email, password).then((userCredential) => {
-                // 1. Save in registrations node
-                window.firebasePush(window.firebaseRef(window.firebaseDB, 'registrations'), { 
-                    name, phone, email, course, address, timestamp: new Date().toISOString() 
-                });
-                
-                // 2. Save in users node
-                window.firebaseSet(window.firebaseRef(window.firebaseDB, 'users/' + userCredential.user.uid), { 
-                    username: name, email, mobile: phone, createdAt: new Date().toISOString() 
-                }).then(() => {
+                window.firebasePush(window.firebaseRef(window.firebaseDB, 'registrations'), { name, phone, email, course, address, timestamp: new Date().toISOString() });
+                window.firebaseSet(window.firebaseRef(window.firebaseDB, 'users/' + userCredential.user.uid), { username: name, email, mobile: phone, createdAt: new Date().toISOString() }).then(() => {
                     alert("Account created successfully!");
                     document.getElementById('student-reg-form').reset();
                     toggleForm('login');
@@ -1071,7 +1130,14 @@
                             <div class="lms-details">
                                 <h3>${c.title}</h3>
                                 <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">${c.desc || ''}</p>
-                                <button class="lms-btn-action lms-btn-free" onclick="startRazorpayPayment('${cId}')">${btnText}</button>
+                                
+                                ${c.price > 0 ? `
+                                <div style="margin-bottom: 10px; display: flex; gap: 5px;">
+                                    <input type="text" id="coupon-input-${cId}" placeholder="Enter Coupon" style="padding: 6px; font-size: 0.8rem; width: 65%; border: 1px solid #ccc; border-radius: 4px; text-transform: uppercase;">
+                                    <button onclick="applyCouponAndPay('${cId}')" style="padding: 6px 10px; font-size: 0.8rem; background: #ffc107; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">Apply</button>
+                                </div>` : ''}
+
+                                <button class="lms-btn-action lms-btn-free" onclick="startRazorpayPayment('${cId}', ${c.price})">${btnText}</button>
                             </div>
                         </div>`;
                     }
@@ -1084,13 +1150,59 @@
             });
         }
 
-        function startRazorpayPayment(courseId) {
+        function applyCouponAndPay(courseId) {
             const course = globalCoursesData[courseId];
             if (!course) return;
 
-            if (course.price == 0) {
+            const inputField = document.getElementById(`coupon-input-${courseId}`);
+            const enteredCode = inputField.value.trim().toUpperCase();
+
+            if (!enteredCode) {
+                alert("Please enter a coupon code first!");
+                return;
+            }
+
+            const dbRef = window.firebaseRef(window.firebaseDB);
+            window.firebaseGet(window.firebaseChild(dbRef, 'coupons')).then(snapshot => {
+                if (snapshot.exists()) {
+                    const coupons = snapshot.val();
+                    let matchedCoupon = null;
+
+                    Object.keys(coupons).forEach(cpKey => {
+                        if (coupons[cpKey].code === enteredCode) {
+                            matchedCoupon = coupons[cpKey];
+                        }
+                    });
+
+                    if (matchedCoupon) {
+                        let discountAmount = matchedCoupon.discount;
+                        let finalPrice = course.price - discountAmount;
+
+                        if (finalPrice < 1) finalPrice = 1;
+
+                        alert(`Coupon Applied! You got ₹${discountAmount} off. New Price: ₹${finalPrice}`);
+                        triggerRazorpayCheckout(courseId, finalPrice, enteredCode);
+                    } else {
+                        alert("Invalid Coupon Code!");
+                    }
+                } else {
+                    alert("No active coupons found.");
+                }
+            });
+        }
+
+        function startRazorpayPayment(courseId, originalPrice) {
+            triggerRazorpayCheckout(courseId, originalPrice, "NONE");
+        }
+
+        function triggerRazorpayCheckout(courseId, payableAmount, appliedCouponCode) {
+            const course = globalCoursesData[courseId];
+            if (!course) return;
+
+            if (payableAmount == 0) {
                 window.firebaseSet(window.firebaseRef(window.firebaseDB, 'user_enrollments/' + currentStudentUser.id + '/' + courseId), {
-                    enrolledAt: new Date().toISOString()
+                    enrolledAt: new Date().toISOString(),
+                    couponUsed: appliedCouponCode
                 }).then(() => {
                     alert("Free access unlocked successfully!");
                     loadStudentDashboardData();
@@ -1101,24 +1213,27 @@
 
             var options = {
                 "key": RAZORPAY_KEY_ID,
-                "amount": course.price * 100,
+                "amount": payableAmount * 100,
                 "currency": "INR",
                 "name": "Learn CAD with Er. Arun Banjare",
-                "description": course.title,
+                "description": course.title + (appliedCouponCode !== "NONE" ? ` (Coupon: ${appliedCouponCode})` : ''),
                 "image": "LOGO1.PNG.png",
                 "handler": function (response) {
                     const paymentId = response.razorpay_payment_id;
                     
                     window.firebaseSet(window.firebaseRef(window.firebaseDB, 'user_enrollments/' + currentStudentUser.id + '/' + courseId), {
                         enrolledAt: new Date().toISOString(),
-                        payment_id: paymentId
+                        payment_id: paymentId,
+                        couponUsed: appliedCouponCode
                     }).then(() => {
                         window.firebasePush(window.firebaseRef(window.firebaseDB, 'payments/razorpay'), {
                             userId: currentStudentUser.id,
                             userName: currentStudentUser.username || 'Student',
                             courseId: courseId,
                             courseTitle: course.title,
-                            amount: course.price,
+                            amount: payableAmount,
+                            originalAmount: course.price,
+                            couponUsed: appliedCouponCode,
                             payment_id: paymentId,
                             paidAt: new Date().toISOString()
                         });
