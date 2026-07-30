@@ -579,8 +579,8 @@
         let currentStudentUser = null;
         let globalCoursesData = {};
 
-        // 💡 यहाँ आपकी Razorpay Live Key ID जोड़ दी गई है (ताकि लाइव पेमेंट में दिक्कत न आए)
-        const RAZORPAY_KEY_ID = "rzp_live_TJSec0dpGgqQnS"; // (नोट: यदि आपकी लाइव की भिन्न हो तो यहाँ अपनी लाइव की बदल सकते हैं)
+        // 💡 Updated Razorpay Key ID
+        const RAZORPAY_KEY_ID = "rzp_test_TJZC8NHJZAN9z0";
 
         function showSlide(index) {
             if (slides.length > 0) {
@@ -842,7 +842,7 @@
             });
         }
 
-        // 💡 यहाँ एडमिन पैनल में स्टूडेंट्स और रजिस्ट्रेशन दोनों का डेटा एक साथ फेच करने का कोड अपडेट कर दिया गया है
+        // 💡 एडमिन पैनल में स्टूडेंट्स और रजिस्ट्रेशन डेटा को एक साथ फेच करने का कोड
         function loadAdminData() {
             if (window.firebaseDB && window.firebaseGet && window.firebaseChild && window.firebaseRef) {
                 const dbRef = window.firebaseRef(window.firebaseDB);
@@ -907,7 +907,7 @@
                     }
                 });
 
-                // 4. Fetch Users & Registrations Combined (डबल चेक ताकि स्टूडेंट्स की लिस्ट हमेशा दिखे)
+                // 4. Fetch Users & Registrations Combined
                 window.firebaseGet(window.firebaseChild(dbRef, 'users')).then(userSnapshot => {
                     window.firebaseGet(window.firebaseChild(dbRef, 'registrations')).then(regSnapshot => {
                         let html = `<table class="admin-table"><tr><th>Name</th><th>Email / Course</th><th>Mobile</th><th>Source</th></tr>`;
