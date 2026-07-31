@@ -84,9 +84,17 @@
         .nav-btn.signup-btn {background: #ffc107; color: #333; }
         .nav-btn.signup-btn:hover {background: #e0a800; color: #333; }
 
-        .hero-banner {background: linear-gradient(135deg, #0056b3 0%, #003366 100%); color: white; text-align: center; padding: 40px 20px; }
-        .hero-banner h1 {font-size: 2.5rem; font-weight: 700; margin-bottom: 5px; }
-        .hero-banner p {font-size: 1.1rem; color: #ffc107; font-weight: 500; }
+        /* UPDATED HERO SECTION WITH STICKY SIDE VIDEO PANEL */
+        .hero { display: flex; justify-content: space-between; align-items: center; padding: 50px 8%; background: linear-gradient(135deg, #0056b3 0%, #003366 100%); color: white; min-height: 85vh; gap: 40px; }
+        .hero-text { flex: 1; max-width: 650px; }
+        .hero-text h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 15px; }
+        .hero-text p { font-size: 1.1rem; color: #e2e8f0; font-weight: 400; line-height: 1.7; margin-bottom: 20px; }
+        .hero-text h2 { margin-bottom: 8px; color: #ffc107; font-size: 1.3rem; }
+
+        /* STICKY SIDE VIDEO PANEL */
+        .hero-video-panel { width: 380px; position: sticky; top: 110px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 20px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 15px 35px rgba(0,0,0,0.3); z-index: 100; text-align: center; }
+        .hero-video-panel h3 { color: #ffc107; font-size: 18px; margin-bottom: 12px; }
+        .hero-video-panel video { width: 100%; border-radius: 12px; display: block; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 
         .slider-container {position: relative; max-width: 1000px; height: 450px; margin: 30px auto 40px auto; overflow: hidden; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); background: #000; }
         .slide {position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease-in-out; display: flex; align-items: flex-end; }
@@ -117,6 +125,14 @@
         .btn:hover { background: #218838; }
         .btn2 { background: #dc3545; color: white; }
         .btn2:hover { background: #c82333; }
+
+        /* FLOATING ANIMATION */
+        @keyframes floatAnimation {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating-element { animation: floatAnimation 3s ease-in-out infinite; }
 
         .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 25px; }
         .testimonial-card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid #ffc107; }
@@ -224,7 +240,11 @@
 
         .hidden { display: none !important; }
 
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
+            .hero { flex-direction: column; text-align: center; padding: 40px 5%; }
+            .hero-video-panel { width: 100%; max-width: 400px; position: relative; top: 0; margin-top: 30px; }
+            header { flex-direction: column; }
+            nav { margin-top: 15px; }
             .slider-container { height: 300px; }
             .courses-grid { flex-direction: column; align-items: center; }
             .admin-table { display: block; overflow-x: auto; }
@@ -252,9 +272,27 @@
             </nav>
         </header>
 
-        <section class="hero-banner">
-            <h1>Learn AutoCAD & House Planning</h1>
-            <p>Professional AutoCAD Design and Consultation Services by Civil Engineer Er. Arun Banjare</p>
+        <!-- UPDATED HERO SECTION WITH STICKY PROMO VIDEO -->
+        <section class="hero">
+            <div class="hero-text">
+                <h2>Er. Arun Banjare</h2>
+                <h1>Learn AutoCAD & House Planning</h1>
+                <p>सिविल इंजीनियरिंग और पॉलिटेक्निक छात्रों के लिए प्रैक्टिकल CAD ट्रेनिंग, यूनिट-वाइज सिक्योर नोट्स और वास्तु के अनुसार बेहतरीन हाउस प्लानिंग सर्विसेज।</p>
+                <div style="margin-top: 20px;">
+                    <a class="btn" href="#course" style="background: #28a745;">Explore Courses</a>
+                    <a class="btn2" href="https://www.youtube.com/@LEARNCADWITHER.ARUNBANJARE" target="_blank" rel="noopener noreferrer">YouTube Channel</a>
+                </div>
+            </div>
+
+            <!-- STICKY PROMO VIDEO PANEL (स्क्रॉल करने पर साथ चलेगा) -->
+            <div class="hero-video-panel">
+                <h3>🎬 Quick Intro Preview</h3>
+                <video autoplay muted loop playsinline>
+                    <source src="your-video-file.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p style="font-size: 13px; color: #ddd; margin-top: 8px;">कोर्स और नक्शा बनवाने की पूरी जानकारी देखें!</p>
+            </div>
         </section>
 
         <div id="portfolio">
@@ -287,8 +325,8 @@
 
         <div class="container">
             <section id="about" class="about-box">
-                <h2>About Learn CAD with Er. Arun Banjare & Er. Kheduram Aadil</h2>
-                <p style="margin-top: 10px;">Welcome to Learn CAD with Er. Arun Banjare & Er. Kheduram Aadil. We provide Professional AutoCAD and Revit Training in Hindi from Basic to Advanced Level. We also provide complete House Planning and Structural Drawing services for residential buildings.</p>
+                <h2>About Learn CAD with Civil Engineer & Er. Kheduram Aadil</h2>
+                <p style="margin-top: 10px;">Welcome to Learn CAD with Civil Engineer. We provide Professional AutoCAD and Revit Training in Hindi from Basic to Advanced Level. We also provide complete House Planning and Structural Drawing services for residential buildings.</p>
                 <ul>
                     <li>✅ AutoCAD & Revit 3D Training</li>
                     <li>✅ Secure In-App PDF Notes & Units</li>
@@ -297,24 +335,26 @@
                 </ul>
             </section>
 
+            <!-- HOUSE PLAN & VASTU SERVICE SECTION (₹5/Sq.ft) -->
             <section id="service" class="about-box" style="text-align: center;">
                 <h2>House Plan & Structural Drawing Services</h2>
-                <div class="price" style="margin: 15px 0;">₹5 / Sq.ft</div>
+                <div class="price" style="margin: 15px 0;">वास्तु के हिसाब से — मात्र ₹5 / Sq.ft</div>
                 <p style="margin-bottom: 15px;">Complete House Planning with 2D Floor Plan, Front Elevation, Structural Drawing, Foundation Layout, Beam/Column Layout, Electrical & Plumbing Layout.</p>
+                <a class="btn" href="https://wa.me/917440850479?text=Sir%20mujhe%20vastu%20ke%20hisab%20se%20ghar%20ka%20naksha%20banwana%20hai" target="_blank" style="background: #25d366; margin-top: 10px;">Book Naksha on WhatsApp</a>
             </section>
 
             <!-- STUDENT TESTIMONIALS SECTION -->
             <h2 class="section-title">What Our Students Say</h2>
             <div class="testimonials-grid">
-                <div class="testimonial-card">
+                <div class="testimonial-card floating-element">
                     <p>"AutoCAD 2D ka course bahut hi behtareen hai. Er. Arun sir ne bilkul zero se advance level tak aasan hindi me sikhaya hai."</p>
                     <h4>- Rahul Sahu (Civil Diploma Student)</h4>
                 </div>
-                <div class="testimonial-card">
+                <div class="testimonial-card floating-element">
                     <p>"Revit Architecture sikhne ke baad ab mai khud apne ghar ka 3D elevation aur plan bana leta hu. Thank you Sir!"</p>
                     <h4>- Mukesh Verma (Practicing Draughtsman)</h4>
                 </div>
-                <div class="testimonial-card">
+                <div class="testimonial-card floating-element">
                     <p>"Polytechnic ke notes aur video lectures ek hi jagah milne se padhai karna bahut aasan ho gaya hai."</p>
                     <h4>- Priya Dewangan (Engineering Student)</h4>
                 </div>
@@ -622,7 +662,7 @@
             <span class="modal-close" onclick="closeInvoiceModal()">&times;</span>
             <div id="invoice-content" style="padding: 10px;">
                 <div style="text-align: center; border-bottom: 2px solid #0056b3; padding-bottom: 15px; margin-bottom: 15px;">
-                    <h2 style="color: #0056b3; font-size: 1.3rem;">Learn CAD with Er. Arun Banjare</h2>
+                    <h2 style="color: #0056b3; font-size: 1.3rem;">Learn CAD with Civil Engineer</h2>
                     <p style="font-size: 0.85rem; color: #666;">Official Digital Tax Invoice / Receipt</p>
                 </div>
                 <p><strong>Student Name:</strong> <span id="inv-name"></span></p>
@@ -646,7 +686,7 @@
         </div>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                const siteKey = "learn-cad-with-er-arun-banjare";
+                const siteKey = "learn-cad-with-civil-engineer";
                 fetch(`https://api.counterapi.dev/v1/${siteKey}/visits/up`)
                     .then(response => response.json())
                     .then(data => {
@@ -659,7 +699,7 @@
                     .catch(() => document.getElementById('visitor_count').innerText = '1');
             });
         </script>
-        <p>&copy; 2026 Learn CAD with Er. Arun Banjare. All Rights Reserved.</p>
+        <p>&copy; 2026 Learn CAD with Civil Engineer. All Rights Reserved.</p>
         <p style="font-size: 12px; color: #ffc107; font-weight: 500; margin-top: 5px;">Designed & Developed by Er. Arun Banjare</p>
     </footer>
 
@@ -799,7 +839,7 @@
                     Object.keys(globalCoursesData).forEach(id => {
                         const c = globalCoursesData[id];
                         const priceText = c.price == 0 ? "₹0 (FREE)" : "₹" + c.price;
-                        cardsHtml += `<div class="course-card">
+                        cardsHtml += `<div class="course-card floating-element">
                             <h3>${c.title}</h3>
                             <div class="price">${priceText}</div>
                             <p style="font-size:0.9rem; color:#666; margin-bottom:15px;">${c.desc || ''}</p>
@@ -1290,7 +1330,7 @@
                     const btnText = isFree ? "Enroll for FREE (₹0)" : `Pay via Razorpay (₹${c.price})`;
                     const thumbHtml = c.thumb ? `<img src="${c.thumb}" alt="${c.title}">` : c.title;
 
-                    allCardsHtml += `<div class="lms-card" data-title="${c.title.toLowerCase()}">
+                    allCardsHtml += `<div class="lms-card floating-element" data-title="${c.title.toLowerCase()}">
                         <div class="lms-badge badge-free">${isFree ? 'FREE NOTES' : 'PREMIUM'}</div>
                         <div class="lms-thumb">${thumbHtml}</div>
                         <div class="lms-details">
@@ -1333,7 +1373,7 @@
                     const thumbHtml = c.thumb ? `<img src="${c.thumb}" alt="${c.title}">` : c.title;
 
                     if (isEnrolled) {
-                        myCardsHtml += `<div class="lms-card" data-title="${c.title.toLowerCase()}">
+                        myCardsHtml += `<div class="lms-card floating-element" data-title="${c.title.toLowerCase()}">
                             <div class="lms-badge">✅ Active Access</div>
                             <div class="lms-thumb">${thumbHtml}</div>
                             <div class="lms-details">
@@ -1345,7 +1385,7 @@
                     }
 
                     const btnText = isFree ? "Enroll for FREE (₹0)" : `Pay via Razorpay (₹${c.price})`;
-                    allCardsHtml += `<div class="lms-card" data-title="${c.title.toLowerCase()}">
+                    allCardsHtml += `<div class="lms-card floating-element" data-title="${c.title.toLowerCase()}">
                         <div class="lms-badge badge-free">${isFree ? 'FREE NOTES' : 'PREMIUM'}</div>
                         <div class="lms-thumb">${thumbHtml}</div>
                         <div class="lms-details">
@@ -1383,7 +1423,7 @@
                 "key": RAZORPAY_KEY_ID,
                 "amount": course.price * 100,
                 "currency": "INR",
-                "name": "Learn CAD with Er. Arun Banjare",
+                "name": "Learn CAD with Civil Engineer",
                 "description": course.title,
                 "image": "LOGO1.PNG.png",
                 "handler": function (response) {
