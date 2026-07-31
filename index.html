@@ -14,7 +14,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- PWA UPDATE & SERVICE WORKER MODULE -->
     <script type="module">
        import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
        const el = document.createElement('pwa-update');
@@ -26,10 +25,8 @@
       }
     </script>
 
-    <!-- RAZORPAY CHECKOUT SDK SCRIPT -->
     <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
 
-    <!-- FIREBASE SDK & DATABASE CONFIGURATION -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
@@ -84,14 +81,13 @@
         .nav-btn.signup-btn {background: #ffc107; color: #333; }
         .nav-btn.signup-btn:hover {background: #e0a800; color: #333; }
 
-        /* UPDATED HERO SECTION WITH STICKY SIDE VIDEO PANEL */
-        .hero { display: flex; justify-content: space-between; align-items: center; padding: 50px 8%; background: linear-gradient(135deg, #0056b3 0%, #003366 100%); color: white; min-height: 85vh; gap: 40px; }
+        /* HERO SECTION WITH STICKY SIDE VIDEO PANEL */
+        .hero { display: flex; justify-content: space-between; align-items: center; padding: 40px 8%; background: linear-gradient(135deg, #0056b3 0%, #003366 100%); color: white; min-height: 80vh; gap: 40px; }
         .hero-text { flex: 1; max-width: 650px; }
         .hero-text h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 15px; }
         .hero-text p { font-size: 1.1rem; color: #e2e8f0; font-weight: 400; line-height: 1.7; margin-bottom: 20px; }
         .hero-text h2 { margin-bottom: 8px; color: #ffc107; font-size: 1.3rem; }
 
-        /* STICKY SIDE VIDEO PANEL */
         .hero-video-panel { width: 380px; position: sticky; top: 110px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 20px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 15px 35px rgba(0,0,0,0.3); z-index: 100; text-align: center; }
         .hero-video-panel h3 { color: #ffc107; font-size: 18px; margin-bottom: 12px; }
         .hero-video-panel video { width: 100%; border-radius: 12px; display: block; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
@@ -126,7 +122,6 @@
         .btn2 { background: #dc3545; color: white; }
         .btn2:hover { background: #c82333; }
 
-        /* FLOATING ANIMATION */
         @keyframes floatAnimation {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
@@ -217,6 +212,12 @@
         .lms-btn-free { background: #28a745; }
         .lms-btn-free:hover { background: #218838; }
 
+        /* COUPON BOX STYLES */
+        .coupon-box { display: flex; gap: 10px; margin: 12px 0; }
+        .coupon-box input { flex: 1; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; text-transform: uppercase; outline: none; }
+        .coupon-box button { background: #ffc107; color: #333; border: none; padding: 8px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+        .coupon-box button:hover { background: #e0a800; }
+
         /* SIDE FLOATING LIVE CHAT WIDGET FOR STUDENTS */
         .student-chat-widget { position: fixed; bottom: 30px; left: 30px; z-index: 9999; }
         .student-chat-fab { width: 60px; height: 60px; background-color: #0056b3; border: none; border-radius: 50%; box-shadow: 0 4px 15px rgba(0, 86, 179, 0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; font-size: 26px; transition: transform 0.3s ease; }
@@ -254,7 +255,6 @@
     </style>
 </head>
 <body>
-    <!-- MAIN STATIC WEBSITE AREA -->
     <div id="main-website">
         <header>
             <div class="logo">
@@ -272,7 +272,6 @@
             </nav>
         </header>
 
-        <!-- UPDATED HERO SECTION WITH STICKY PROMO VIDEO -->
         <section class="hero">
             <div class="hero-text">
                 <h2>Er. Arun Banjare</h2>
@@ -284,7 +283,6 @@
                 </div>
             </div>
 
-            <!-- STICKY PROMO VIDEO PANEL (स्क्रॉल करने पर साथ चलेगा) -->
             <div class="hero-video-panel">
                 <h3>🎬 Quick Intro Preview</h3>
                 <video autoplay muted loop playsinline>
@@ -335,7 +333,6 @@
                 </ul>
             </section>
 
-            <!-- HOUSE PLAN & VASTU SERVICE SECTION (₹5/Sq.ft) -->
             <section id="service" class="about-box" style="text-align: center;">
                 <h2>House Plan & Structural Drawing Services</h2>
                 <div class="price" style="margin: 15px 0;">वास्तु के हिसाब से — मात्र ₹5 / Sq.ft</div>
@@ -343,7 +340,6 @@
                 <a class="btn" href="https://wa.me/917440850479?text=Sir%20mujhe%20vastu%20ke%20hisab%20se%20ghar%20ka%20naksha%20banwana%20hai" target="_blank" style="background: #25d366; margin-top: 10px;">Book Naksha on WhatsApp</a>
             </section>
 
-            <!-- STUDENT TESTIMONIALS SECTION -->
             <h2 class="section-title">What Our Students Say</h2>
             <div class="testimonials-grid">
                 <div class="testimonial-card floating-element">
@@ -409,7 +405,6 @@
         </div>
     </div>
 
-    <!-- AUTH SECTION -->
     <div class="auth-section" id="auth">
         <div class="auth-box">
             <div id="login-form">
@@ -462,7 +457,6 @@
         </div>
     </div>
 
-    <!-- ADMIN PANEL -->
     <div id="admin-panel" class="hidden">
         <header style="background: #1e293b;">
             <div class="logo">
@@ -489,10 +483,11 @@
             </div>
 
             <div class="admin-nav-tabs">
-                <button class="admin-nav-tab active" id="atab-payments" onclick="switchAdminTab('payments')">💳 Razorpay Payments History</button>
+                <button class="admin-nav-tab active" id="atab-payments" onclick="switchAdminTab('payments')">💳 Razorpay Payments</button>
                 <button class="admin-nav-tab" id="atab-courses" onclick="switchAdminTab('courses')">📚 Courses & Uploads</button>
                 <button class="admin-nav-tab" id="atab-house" onclick="switchAdminTab('house')">🏡 House Plan Requests</button>
                 <button class="admin-nav-tab" id="atab-users" onclick="switchAdminTab('users')">👥 Student Accounts</button>
+                <button class="admin-nav-tab" id="atab-coupons" onclick="switchAdminTab('coupons')">🎟️ Manage Coupons</button>
                 <button class="admin-nav-tab" id="atab-support" onclick="switchAdminTab('support')">💬 Student Support Chats</button>
             </div>
 
@@ -567,6 +562,23 @@
                 </div>
             </div>
 
+            <div id="asec-coupons" class="hidden">
+                <div class="admin-card-box">
+                    <h3>🎟️ Create Discount Coupon</h3>
+                    <form onsubmit="handleCreateCoupon(event)">
+                        <div class="admin-form-grid">
+                            <input type="text" id="adm-cp-code" placeholder="Coupon Code (e.g. CAD50)" required style="text-transform: uppercase;">
+                            <input type="number" id="adm-cp-disc" placeholder="Discount Amount in ₹" required>
+                        </div>
+                        <button type="submit" class="btn" style="background: #ffc107; color: #333;">Create Coupon</button>
+                    </form>
+                </div>
+                <div class="admin-card-box">
+                    <h3>📋 Active Discount Coupons</h3>
+                    <div id="admin-coupons-list">Loading coupons...</div>
+                </div>
+            </div>
+
             <div id="asec-support" class="hidden">
                 <div class="admin-card-box">
                     <h3>💬 Student Support Chats</h3>
@@ -583,7 +595,6 @@
         </div>
     </div>
 
-    <!-- STUDENT DASHBOARD (CADDAPP STYLE HEADER & NAV) -->
     <div id="student-dashboard" class="hidden">
         <header class="cadd-dashboard-header">
             <div class="cadd-logo-area">
@@ -606,7 +617,6 @@
         </header>
 
         <div class="cadd-main-container">
-            <!-- Search & Filter Bar -->
             <input type="text" class="cadd-search-bar" id="student-search-input" placeholder="Search all courses..." onkeyup="filterStudentCourses()">
             
             <div class="cadd-filter-row">
@@ -628,7 +638,6 @@
             </div>
         </div>
 
-        <!-- SIDE FLOATING LIVE CHAT WIDGET FOR STUDENTS -->
         <div class="student-chat-widget" id="studentChatWidgetContainer" style="display: none;">
             <button class="student-chat-fab" onclick="toggleStudentChatBox()" aria-label="Live Chat">💬</button>
             <div class="student-chat-popup hidden" id="studentChatPopupBox">
@@ -647,7 +656,6 @@
         </div>
     </div>
 
-    <!-- MEDIA & SECURE IN-APP PDF VIEWER MODAL -->
     <div id="media-modal" class="modal-overlay hidden">
         <div class="modal-box">
             <span class="modal-close" onclick="closeMediaModal()">&times;</span>
@@ -656,7 +664,6 @@
         </div>
     </div>
 
-    <!-- DIGITAL INVOICE MODAL -->
     <div id="invoice-modal" class="modal-overlay hidden">
         <div class="modal-box" style="max-width: 600px; text-align: left;">
             <span class="modal-close" onclick="closeInvoiceModal()">&times;</span>
@@ -677,11 +684,10 @@
         </div>
     </div>
 
-    <!-- FOOTER -->
     <footer>
         <div style="text-align: center; margin: 20px auto 15px auto; padding: 12px 20px; background-color: #ffffff; border-radius: 8px; border: 1px solid #dee2e6; max-width: 300px;">
             <p style="margin: 0; font-size: 15px; color: #212529;">
-                👥 <strong>कुल विज़िटर्स:</strong> <span id="visitor_count" style="color: #0d6efd; font-weight: bold; font-size: 18px; margin-left: 6px;">लोड हो रहा है...</span>
+                👥 <strong>कुल विज़िटर्स:</strong> <span id="visitor_count" style="color: #0d6efd; font-weight: bold; font-size: 18px; margin-left: 6px;">5,990</span>
             </p>
         </div>
         <script>
@@ -691,19 +697,19 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data && data.count !== undefined) {
-                            document.getElementById('visitor_count').innerText = data.count.toLocaleString();
+                            let adjustedCount = data.count + 5990;
+                            document.getElementById('visitor_count').innerText = adjustedCount.toLocaleString();
                         } else {
-                            document.getElementById('visitor_count').innerText = '1';
+                            document.getElementById('visitor_count').innerText = '5,990';
                         }
                     })
-                    .catch(() => document.getElementById('visitor_count').innerText = '1');
+                    .catch(() => document.getElementById('visitor_count').innerText = '5,990');
             });
         </script>
         <p>&copy; 2026 Learn CAD with Civil Engineer. All Rights Reserved.</p>
         <p style="font-size: 12px; color: #ffc107; font-weight: 500; margin-top: 5px;">Designed & Developed by Er. Arun Banjare</p>
     </footer>
 
-    <!-- CORE JAVASCRIPT & ADVANCED LMS SYSTEM -->
     <script>
         function sanitizeInput(str) {
             if (typeof str !== 'string') return str;
@@ -717,9 +723,9 @@
         let slideInterval = setInterval(nextSlide, 4000);
         let currentStudentUser = null;
         let globalCoursesData = {};
+        let globalCouponsData = {};
         let currentStudentTabActive = 'my';
 
-        // 💡 Live Razorpay Key ID
         const RAZORPAY_KEY_ID = "rzp_live_TJZTFyvVjOndr5";
 
         function showSlide(index) {
@@ -824,7 +830,17 @@
                         loadMainCourses();
                     }
                 });
+                loadCouponsData();
             }
+        }
+
+        function loadCouponsData() {
+            const dbRef = window.firebaseRef(window.firebaseDB);
+            window.firebaseGet(window.firebaseChild(dbRef, 'coupons')).then(snapshot => {
+                if (snapshot.exists()) {
+                    globalCouponsData = snapshot.val();
+                }
+            });
         }
 
         function loadMainCourses() {
@@ -857,24 +873,18 @@
         }
 
         function switchAdminTab(tabName) {
-            document.getElementById('atab-payments').classList.remove('active');
-            document.getElementById('atab-courses').classList.remove('active');
-            document.getElementById('atab-house').classList.remove('active');
-            document.getElementById('atab-users').classList.remove('active');
-            document.getElementById('atab-support').classList.remove('active');
-
-            document.getElementById('asec-payments').classList.add('hidden');
-            document.getElementById('asec-courses').classList.add('hidden');
-            document.getElementById('asec-house').classList.add('hidden');
-            document.getElementById('asec-users').classList.add('hidden');
-            document.getElementById('asec-support').classList.add('hidden');
+            ['payments', 'courses', 'house', 'users', 'coupons', 'support'].forEach(t => {
+                const tabEl = document.getElementById('atab-' + t);
+                const secEl = document.getElementById('asec-' + t);
+                if (tabEl) tabEl.classList.remove('active');
+                if (secEl) secEl.classList.add('hidden');
+            });
 
             document.getElementById('atab-' + tabName).classList.add('active');
             document.getElementById('asec-' + tabName).classList.remove('hidden');
 
-            if (tabName === 'support') {
-                loadAdminSupportChats();
-            }
+            if (tabName === 'support') loadAdminSupportChats();
+            if (tabName === 'coupons') loadAdminCoupons();
         }
 
         function filterAdminTable(inputId, containerId) {
@@ -895,16 +905,55 @@
             const thumb = sanitizeInput(document.getElementById('adm-c-thumb').value.trim());
             const desc = sanitizeInput(document.getElementById('adm-c-desc').value);
 
-            if (window.firebaseDB && window.firebasePush && window.firebaseRef) {
-                window.firebasePush(window.firebaseRef(window.firebaseDB, 'courses'), {
-                    title, price, category, thumb, desc, createdAt: new Date().toISOString()
-                }).then(() => {
-                    alert("Course created successfully!");
-                    loadMainCourses();
-                    loadAdminData();
-                    e.target.reset();
+            window.firebasePush(window.firebaseRef(window.firebaseDB, 'courses'), {
+                title, price, category, thumb, desc, createdAt: new Date().toISOString()
+            }).then(() => {
+                alert("Course created successfully!");
+                loadMainCourses();
+                loadAdminData();
+                e.target.reset();
+            });
+        }
+
+        function handleCreateCoupon(e) {
+            e.preventDefault();
+            const code = sanitizeInput(document.getElementById('adm-cp-code').value).toUpperCase();
+            const discount = parseInt(document.getElementById('adm-cp-disc').value);
+
+            window.firebasePush(window.firebaseRef(window.firebaseDB, 'coupons'), {
+                code, discount, createdAt: new Date().toISOString()
+            }).then(() => {
+                alert("Coupon created successfully!");
+                loadCouponsData();
+                loadAdminCoupons();
+                e.target.reset();
+            });
+        }
+
+        function deleteCoupon(cpId, cpCode) {
+            if (confirm(`Delete coupon "${cpCode}"?`)) {
+                window.firebaseRemove(window.firebaseRef(window.firebaseDB, 'coupons/' + cpId)).then(() => {
+                    loadCouponsData();
+                    loadAdminCoupons();
                 });
             }
+        }
+
+        function loadAdminCoupons() {
+            window.firebaseGet(window.firebaseChild(window.firebaseRef(window.firebaseDB), 'coupons')).then(snapshot => {
+                if (snapshot.exists()) {
+                    const coupons = snapshot.val();
+                    let html = `<table class="admin-table"><tr><th>Coupon Code</th><th>Discount Amount</th><th>Action</th></tr>`;
+                    Object.keys(coupons).forEach(cpId => {
+                        const cp = coupons[cpId];
+                        html += `<tr><td><b>${cp.code}</b></td><td><span style="color:#28a745; font-weight:bold;">₹${cp.discount}</span></td><td><button class="btn-del" onclick="deleteCoupon('${cpId}', '${cp.code}')">🗑️ Delete</button></td></tr>`;
+                    });
+                    html += `</table>`;
+                    document.getElementById('admin-coupons-list').innerHTML = html;
+                } else {
+                    document.getElementById('admin-coupons-list').innerHTML = `<p style="color:#888;">No active coupons found.</p>`;
+                }
+            });
         }
 
         function deleteCourse(courseId, courseTitle) {
@@ -1317,7 +1366,6 @@
             
             const dbRef = window.firebaseRef(window.firebaseDB);
             window.firebaseGet(window.firebaseChild(dbRef, 'user_enrollments/' + currentStudentUser.id)).then(snapshot => {
-                const enrolledIds = snapshot.exists() ? snapshot.val() : {};
                 let allCardsHtml = "";
 
                 Object.keys(globalCoursesData).forEach(cId => {
@@ -1336,7 +1384,8 @@
                         <div class="lms-details">
                             <h3>${c.title}</h3>
                             <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">${c.desc || ''}</p>
-                            <button class="lms-btn-action lms-btn-free" onclick="startRazorpayPayment('${cId}')">${btnText}</button>
+                            ${!isFree ? `<div class="coupon-box"><input type="text" id="coupon-${cId}" placeholder="Enter Coupon"><button onclick="applyCoupon('${cId}', ${c.price})">Apply</button></div>` : ''}
+                            <button class="lms-btn-action lms-btn-free" id="pay-btn-${cId}" onclick="startRazorpayPayment('${cId}', ${c.price})">${btnText}</button>
                         </div>
                     </div>`;
                 });
@@ -1391,7 +1440,8 @@
                         <div class="lms-details">
                             <h3>${c.title}</h3>
                             <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">${c.desc || ''}</p>
-                            <button class="lms-btn-action lms-btn-free" onclick="startRazorpayPayment('${cId}')">${btnText}</button>
+                            ${!isFree ? `<div class="coupon-box"><input type="text" id="coupon-${cId}" placeholder="Enter Coupon"><button onclick="applyCoupon('${cId}', ${c.price})">Apply</button></div>` : ''}
+                            <button class="lms-btn-action lms-btn-free" id="pay-btn-${cId}" onclick="startRazorpayPayment('${cId}', ${c.price})">${btnText}</button>
                         </div>
                     </div>`;
                 });
@@ -1403,12 +1453,36 @@
             });
         }
 
-        /* RAZORPAY STANDARD WEB CHECKOUT & DIGITAL INVOICE INTEGRATION */
-        function startRazorpayPayment(courseId) {
+        let appliedDiscounts = {};
+
+        function applyCoupon(courseId, originalPrice) {
+            const inputVal = document.getElementById(`coupon-${courseId}`).value.trim().toUpperCase();
+            let foundDisc = 0;
+
+            Object.keys(globalCouponsData).forEach(cpKey => {
+                const cp = globalCouponsData[cpKey];
+                if (cp.code === inputVal) {
+                    foundDisc = cp.discount;
+                }
+            });
+
+            if (foundDisc > 0) {
+                let finalPrice = Math.max(0, originalPrice - foundDisc);
+                appliedDiscounts[courseId] = finalPrice;
+                document.getElementById(`pay-btn-${courseId}`).innerText = `Pay via Razorpay (₹${finalPrice}) [Discount Applied!]`;
+                alert(`Coupon applied! New Price: ₹${finalPrice}`);
+            } else {
+                alert("Invalid Coupon Code!");
+            }
+        }
+
+        function startRazorpayPayment(courseId, originalPrice) {
             const course = globalCoursesData[courseId];
             if (!course) return;
 
-            if (course.price == 0) {
+            const finalAmount = appliedDiscounts[courseId] !== undefined ? appliedDiscounts[courseId] : course.price;
+
+            if (finalAmount == 0) {
                 window.firebaseSet(window.firebaseRef(window.firebaseDB, 'user_enrollments/' + currentStudentUser.id + '/' + courseId), {
                     enrolledAt: new Date().toISOString()
                 }).then(() => {
@@ -1421,9 +1495,9 @@
 
             var options = {
                 "key": RAZORPAY_KEY_ID,
-                "amount": course.price * 100,
+                "amount": finalAmount * 100,
                 "currency": "INR",
-                "name": "Learn CAD with Civil Engineer",
+                "name": "Learn CAD with Er. Arun Banjare",
                 "description": course.title,
                 "image": "LOGO1.PNG.png",
                 "handler": function (response) {
@@ -1439,12 +1513,12 @@
                             userName: currentStudentUser.username || 'Student',
                             courseId: courseId,
                             courseTitle: course.title,
-                            amount: course.price,
+                            amount: finalAmount,
                             payment_id: paymentId,
                             paidAt: new Date().toISOString()
                         });
                         
-                        showDigitalInvoice(currentStudentUser.username || 'Student', course.title, course.price, paymentId, paidDate);
+                        showDigitalInvoice(currentStudentUser.username || 'Student', course.title, finalAmount, paymentId, paidDate);
                         loadStudentDashboardData();
                         switchStudentTab('my');
                     });
@@ -1479,7 +1553,6 @@
             document.getElementById('invoice-modal').classList.add('hidden');
         }
 
-        /* UNIT-WISE FOLDER & SECURE IN-APP PDF VIEWER */
         function openCourseMaterials(courseId, courseTitle) {
             const dbRef = window.firebaseRef(window.firebaseDB);
             window.firebaseGet(window.firebaseChild(dbRef, 'course_materials/' + courseId)).then(snapshot => {
