@@ -29,7 +29,7 @@ header {
     gap: 10px;
 }
 
-/* लोगो का साइज 90px बड़ा किया गया */
+/* लोगो का साइज 90px बड़ा किया गया */
 .logo img {
     width: 90px;
     height: 90px;
@@ -283,6 +283,22 @@ footer {
     padding: 20px;
 }
 
+/* ==========================================================================
+    NEW FLOATING ANIMATION STYLING (For CAD Drawings & Thumbnails)
+   ========================================================================== */
+@keyframes floatAnimation {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+    100% { transform: translateY(0px); }
+}
+
+.floating-image {
+    animation: floatAnimation 3s ease-in-out infinite;
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
 /* --- Responsive Media Queries --- */
 @media (max-width: 900px) {
     header {
@@ -310,7 +326,7 @@ footer {
 }
 
 /* ==========================================================================
-   NEW CUSTOM FLOATING WHATSAPP WIDGET STYLING (caddapp.com Style)
+    NEW CUSTOM FLOATING WHATSAPP WIDGET STYLING (caddapp.com Style)
    ========================================================================== */
 .wa-widget-container {
     position: fixed;
@@ -466,4 +482,4 @@ footer {
         width: 290px;
         right: 0;
     }
-}
+ }
