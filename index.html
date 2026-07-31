@@ -33,7 +33,7 @@
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
-      import { getDatabase, ref, push, get, child, set, remove } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+      import { getDatabase, ref, push, get, child, set, remove, onValue } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
       import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
       const firebaseConfig = {
@@ -60,6 +60,7 @@
       window.firebaseChild = child;
       window.firebaseSet = set;
       window.firebaseRemove = remove;
+      window.firebaseOnValue = onValue;
       window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
       window.signInWithEmailAndPassword = signInWithEmailAndPassword;
       window.signOutUser = signOut;
@@ -165,7 +166,7 @@
 
         /* LMS STUDENT DASHBOARD STYLES */
         .lms-container { padding: 30px 5%; background: #f8fafc; min-height: 100vh; }
-        .tab-menu { display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+        .tab-menu { display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; flex-wrap: wrap; }
         .tab-btn { padding: 10px 20px; font-weight: 600; cursor: pointer; border: none; background: none; color: #64748b; font-size: 1rem; border-bottom: 3px solid transparent; transition: 0.3s; }
         .tab-btn.active { color: #0056b3; border-bottom-color: #0056b3; }
         .lms-courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
@@ -179,6 +180,16 @@
         .lms-btn-action:hover { background: #004085; }
         .lms-btn-free { background: #28a745; }
         .lms-btn-free:hover { background: #218838; }
+
+        /* CHAT STYLES */
+        .chat-box-wrapper { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); padding: 20px; display: flex; flex-direction: column; height: 500px; }
+        .chat-messages-area { flex: 1; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; overflow-y: auto; background: #f8fafc; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        .chat-msg { max-width: 75%; padding: 10px 14px; border-radius: 10px; font-size: 0.9rem; word-break: break-word; }
+        .chat-msg.student { background: #0056b3; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .chat-msg.admin { background: #e2e8f0; color: #1e293b; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .chat-input-row { display: flex; gap: 10px; }
+        .chat-input-row input { flex: 1; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; outline: none; font-size: 0.95rem; }
+        .chat-input-row button { padding: 0 25px; background: #28a745; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 99999; }
         .modal-box { background: white; width: 90%; max-width: 800px; border-radius: 12px; padding: 25px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; }
@@ -413,6 +424,7 @@
                 <button class="admin-nav-tab" id="atab-courses" onclick="switchAdminTab('courses')">📚 Courses & Uploads</button>
                 <button class="admin-nav-tab" id="atab-house" onclick="switchAdminTab('house')">🏡 House Plan Requests</button>
                 <button class="admin-nav-tab" id="atab-users" onclick="switchAdminTab('users')">👥 Student Accounts</button>
+                <button class="admin-nav-tab" id="atab-support" onclick="switchAdminTab('support')">💬 Student Support Chats</button>
             </div>
 
             <div id="asec-payments">
@@ -477,6 +489,20 @@
                     <div id="admin-user-list">Loading user accounts...</div>
                 </div>
             </div>
+
+            <div id="asec-support" class="hidden">
+                <div class="admin-card-box">
+                    <h3>💬 Student Support Chats</h3>
+                    <div style="display: grid; grid-template-columns: 280px 1fr; gap: 20px; min-height: 450px;">
+                        <div style="border-right: 1px solid #e2e8f0; padding-right: 15px; overflow-y: auto;" id="admin-chat-students-list">
+                            <p style="color: #666; font-size: 0.9rem;">Loading students...</p>
+                        </div>
+                        <div id="admin-active-chat-box" style="display: flex; flex-direction: column;">
+                            <p style="color: #888; text-align: center; margin-top: 150px;">👈 Kisi bhi student ki chat dekhne ke liye left side se student select karein.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -494,6 +520,7 @@
             <div class="tab-menu">
                 <button class="tab-btn active" id="tab-my" onclick="switchStudentTab('my')">📚 My Enrolled Content</button>
                 <button class="tab-btn" id="tab-all" onclick="switchStudentTab('all')">🌐 Explore All Courses & Notes</button>
+                <button class="tab-btn" id="tab-chat" onclick="switchStudentTab('chat')">💬 Live Support / Chat with Admin</button>
             </div>
 
             <div id="sec-my-courses">
@@ -504,6 +531,19 @@
             <div id="sec-all-courses" class="hidden">
                 <h2 style="margin-bottom:20px; font-size:1.4rem; color:#0f172a;">Unlock Courses & Polytechnic Notes via Razorpay</h2>
                 <div class="lms-courses-grid" id="student-all-grid"></div>
+            </div>
+
+            <div id="sec-student-chat" class="hidden">
+                <h2 style="margin-bottom:20px; font-size:1.4rem; color:#0f172a;">Admin Help & Support Chat</h2>
+                <div class="chat-box-wrapper">
+                    <div class="chat-messages-area" id="student-chat-messages">
+                        <div style="text-align: center; color: #888; margin-top: auto; margin-bottom: auto;">Yahan aap apni samasya (jaise payment ya course access) message ke roop mein bhej sakte hain. Admin turant reply karenge!</div>
+                    </div>
+                    <form class="chat-input-row" onsubmit="sendStudentChatMessage(event)">
+                        <input type="text" id="student-msg-input" placeholder="Apna message yahan type karein..." required autocomplete="off">
+                        <button type="submit">Send</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -569,7 +609,7 @@
         <p style="font-size: 12px; color: #ffc107; font-weight: 500; margin-top: 5px;">Designed & Developed by Er. Arun Banjare</p>
     </footer>
 
-    <!-- CORE JAVASCRIPT & RAZORPAY LIVE INTEGRATION LOGIC -->
+    <!-- CORE JAVASCRIPT & LIVE CHAT INTEGRATION -->
     <script>
         function sanitizeInput(str) {
             if (typeof str !== 'string') return str;
@@ -652,6 +692,7 @@
                                     document.getElementById('student-dashboard').classList.remove('hidden');
                                     document.getElementById('welcome-user').innerText = "Welcome, " + currentStudentUser.username + "!";
                                     loadStudentDashboardData();
+                                    initStudentLiveChat();
                                 });
                             }
                         } else {
@@ -718,14 +759,20 @@
             document.getElementById('atab-courses').classList.remove('active');
             document.getElementById('atab-house').classList.remove('active');
             document.getElementById('atab-users').classList.remove('active');
+            document.getElementById('atab-support').classList.remove('active');
 
             document.getElementById('asec-payments').classList.add('hidden');
             document.getElementById('asec-courses').classList.add('hidden');
             document.getElementById('asec-house').classList.add('hidden');
             document.getElementById('asec-users').classList.add('hidden');
+            document.getElementById('asec-support').classList.add('hidden');
 
             document.getElementById('atab-' + tabName).classList.add('active');
             document.getElementById('asec-' + tabName).classList.remove('hidden');
+
+            if (tabName === 'support') {
+                loadAdminSupportChats();
+            }
         }
 
         function filterAdminTable(inputId, containerId) {
@@ -851,7 +898,6 @@
             if (window.firebaseDB && window.firebaseGet && window.firebaseChild && window.firebaseRef) {
                 const dbRef = window.firebaseRef(window.firebaseDB);
                 
-                // 1. Fetch Approved Razorpay Payments
                 window.firebaseGet(window.firebaseChild(dbRef, 'payments/razorpay')).then(snapshot => {
                     if (snapshot.exists()) {
                         const appData = snapshot.val();
@@ -861,13 +907,7 @@
                         let html = `<table class="admin-table"><tr><th>Student Name</th><th>Course</th><th>Amount</th><th>Razorpay Payment ID</th><th>Date</th></tr>`;
                         aKeys.forEach(aId => {
                             const a = appData[aId];
-                            html += `<tr>
-                                <td><b>${a.userName || 'Student'}</b></td>
-                                <td>${a.courseTitle}</td>
-                                <td><span style="color:#28a745; font-weight:bold;">₹${a.amount}</span></td>
-                                <td><code>${a.payment_id}</code></td>
-                                <td><small>${a.paidAt ? new Date(a.paidAt).toLocaleDateString() : ''}</small></td>
-                            </tr>`;
+                            html += `<tr><td><b>${a.userName || 'Student'}</b></td><td>${a.courseTitle}</td><td><span style="color:#28a745; font-weight:bold;">₹${a.amount}</span></td><td><code>${a.payment_id}</code></td><td><small>${a.paidAt ? new Date(a.paidAt).toLocaleDateString() : ''}</small></td></tr>`;
                         });
                         html += `</table>`;
                         document.getElementById('admin-approved-list').innerHTML = html;
@@ -877,7 +917,6 @@
                     }
                 });
 
-                // 2. Fetch Courses
                 window.firebaseGet(window.firebaseChild(dbRef, 'courses')).then(snapshot => {
                     if (snapshot.exists()) {
                         const courses = snapshot.val();
@@ -894,7 +933,6 @@
                     }
                 });
 
-                // 3. Fetch House Inquiries
                 window.firebaseGet(window.firebaseChild(dbRef, 'house_plan_requests')).then(snapshot => {
                     if (snapshot.exists()) {
                         const data = snapshot.val();
@@ -911,7 +949,6 @@
                     }
                 });
 
-                // 4. Fetch Users & Registrations Combined
                 window.firebaseGet(window.firebaseChild(dbRef, 'users')).then(userSnapshot => {
                     window.firebaseGet(window.firebaseChild(dbRef, 'registrations')).then(regSnapshot => {
                         let html = `<table class="admin-table"><tr><th>Name</th><th>Email / Course</th><th>Mobile</th><th>Source</th></tr>`;
@@ -944,6 +981,120 @@
                     });
                 });
             }
+        }
+
+        /* LIVE SUPPORT CHAT LOGIC */
+        function initStudentLiveChat() {
+            if (!currentStudentUser || !currentStudentUser.id) return;
+            const chatRef = window.firebaseRef(window.firebaseDB, 'supports/' + currentStudentUser.id);
+            window.firebaseOnValue(chatRef, (snapshot) => {
+                const messagesArea = document.getElementById('student-chat-messages');
+                if (!snapshot.exists()) {
+                    messagesArea.innerHTML = `<div style="text-align: center; color: #888; margin-top: auto; margin-bottom: auto;">Abhi koi message nahi hai. Apni samasya yahan type karein!</div>`;
+                    return;
+                }
+                const msgs = snapshot.val();
+                let html = "";
+                Object.keys(msgs).forEach(mKey => {
+                    const m = msgs[mKey];
+                    const msgClass = m.sender === 'admin' ? 'admin' : 'student';
+                    html += `<div class="chat-msg ${msgClass}">
+                        <div style="font-size: 11px; opacity: 0.8; margin-bottom: 2px;"><b>${m.senderName}</b></div>
+                        <div>${m.text}</div>
+                    </div>`;
+                });
+                messagesArea.innerHTML = html;
+                messagesArea.scrollTop = messagesArea.scrollHeight;
+            });
+        }
+
+        function sendStudentChatMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('student-msg-input');
+            const text = sanitizeInput(input.value);
+            if (!text || !currentStudentUser) return;
+
+            window.firebasePush(window.firebaseRef(window.firebaseDB, 'supports/' + currentStudentUser.id), {
+                sender: 'student',
+                senderName: currentStudentUser.username || 'Student',
+                text: text,
+                timestamp: new Date().toISOString()
+            }).then(() => {
+                input.value = "";
+            });
+        }
+
+        function loadAdminSupportChats() {
+            const dbRef = window.firebaseRef(window.firebaseDB);
+            window.firebaseGet(window.firebaseChild(dbRef, 'users')).then(userSnap => {
+                window.firebaseGet(window.firebaseChild(dbRef, 'supports')).then(supportSnap => {
+                    const chatListDiv = document.getElementById('admin-chat-students-list');
+                    if (!supportSnap.exists()) {
+                        chatListDiv.innerHTML = `<p style="color:#888; font-size:0.9rem;">Koi student chat available nahi hai.</p>`;
+                        return;
+                    }
+                    const supports = supportSnap.val();
+                    const users = userSnap.exists() ? userSnap.val() : {};
+                    let listHtml = "";
+
+                    Object.keys(supports).forEach(sUid => {
+                        const sInfo = users[sUid] || { username: 'Student (' + sUid.substring(0,6) + ')' };
+                        listHtml += `<div onclick="openAdminChatForStudent('${sUid}', '${sInfo.username.replace(/'/g, "\\'")}')" style="padding: 12px; border-bottom: 1px solid #e2e8f0; cursor: pointer; transition: 0.2s; border-radius: 6px; margin-bottom: 5px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='transparent'">
+                            <div style="font-weight: 600; color: #1e293b; font-size: 0.95rem;">👤 ${sInfo.username}</div>
+                            <div style="font-size: 12px; color: #64748b;">Click to view chat →</div>
+                        </div>`;
+                    });
+                    chatListDiv.innerHTML = listHtml;
+                });
+            });
+        }
+
+        function openAdminChatForStudent(studentUid, studentName) {
+            const container = document.getElementById('admin-active-chat-box');
+            container.innerHTML = `<div style="font-weight: 600; color: #0056b3; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #e2e8f0;">Chat with: ${studentName}</div>
+                <div class="chat-messages-area" id="admin-chat-msgs-area" style="height: 350px;"></div>
+                <form class="chat-input-row" onsubmit="sendAdminChatMessage(event, '${studentUid}', '${studentName}')">
+                    <input type="text" id="admin-msg-input" placeholder="Admin reply yahan type karein..." required autocomplete="off">
+                    <button type="submit">Reply</button>
+                </form>`;
+
+            const chatRef = window.firebaseRef(window.firebaseDB, 'supports/' + studentUid);
+            window.firebaseOnValue(chatRef, (snapshot) => {
+                const area = document.getElementById('admin-chat-msgs-area');
+                if (!area) return;
+                if (!snapshot.exists()) {
+                    area.innerHTML = `<p style="color:#888; text-align:center;">No messages yet.</p>`;
+                    return;
+                }
+                const msgs = snapshot.val();
+                let html = "";
+                Object.keys(msgs).forEach(mKey => {
+                    const m = msgs[mKey];
+                    const msgClass = m.sender === 'admin' ? 'student' : 'admin';
+                    html += `<div class="chat-msg ${msgClass}">
+                        <div style="font-size: 11px; opacity: 0.8; margin-bottom: 2px;"><b>${m.senderName}</b></div>
+                        <div>${m.text}</div>
+                    </div>`;
+                });
+                area.innerHTML = html;
+                area.scrollTop = area.scrollHeight;
+            });
+        }
+
+        function sendAdminChatMessage(e, studentUid, studentName) {
+            e.preventDefault();
+            const input = document.getElementById('admin-msg-input');
+            const text = sanitizeInput(input.value);
+            if (!text) return;
+
+            window.firebasePush(window.firebaseRef(window.firebaseDB, 'supports/' + studentUid), {
+                sender: 'admin',
+                senderName: 'Er. Arun Banjare (Admin)',
+                text: text,
+                timestamp: new Date().toISOString()
+            }).then(() => {
+                input.value = "";
+            });
         }
 
         function submitSignup(event) {
@@ -982,6 +1133,7 @@
                         document.getElementById('student-dashboard').classList.remove('hidden');
                         document.getElementById('welcome-user').innerText = "Welcome, " + currentStudentUser.username + "!";
                         loadStudentDashboardData();
+                        initStudentLiveChat();
                     });
                 }
             }).catch((error) => alert("Login Error: " + error.message));
@@ -1019,16 +1171,23 @@
         }
 
         function switchStudentTab(tab) {
+            document.getElementById('tab-my').classList.remove('active');
+            document.getElementById('tab-all').classList.remove('active');
+            document.getElementById('tab-chat').classList.remove('active');
+
+            document.getElementById('sec-my-courses').classList.add('hidden');
+            document.getElementById('sec-all-courses').classList.add('hidden');
+            document.getElementById('sec-student-chat').classList.add('hidden');
+
             if (tab === 'my') {
                 document.getElementById('tab-my').classList.add('active');
-                document.getElementById('tab-all').classList.remove('active');
                 document.getElementById('sec-my-courses').classList.remove('hidden');
-                document.getElementById('sec-all-courses').classList.add('hidden');
-            } else {
+            } else if (tab === 'all') {
                 document.getElementById('tab-all').classList.add('active');
-                document.getElementById('tab-my').classList.remove('active');
                 document.getElementById('sec-all-courses').classList.remove('hidden');
-                document.getElementById('sec-my-courses').classList.add('hidden');
+            } else if (tab === 'chat') {
+                document.getElementById('tab-chat').classList.add('active');
+                document.getElementById('sec-student-chat').classList.remove('hidden');
             }
         }
 
