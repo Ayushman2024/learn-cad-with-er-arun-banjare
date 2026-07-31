@@ -26,7 +26,7 @@
       }
     </script>
 
-    <!-- RAZORPAY CHECKOUT SDK SCRIPT (Async for Performance) -->
+    <!-- RAZORPAY CHECKOUT SDK SCRIPT -->
     <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
 
     <!-- FIREBASE SDK & DATABASE CONFIGURATION -->
@@ -181,15 +181,20 @@
         .lms-btn-free { background: #28a745; }
         .lms-btn-free:hover { background: #218838; }
 
-        /* CHAT STYLES */
-        .chat-box-wrapper { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); padding: 20px; display: flex; flex-direction: column; height: 500px; }
-        .chat-messages-area { flex: 1; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; overflow-y: auto; background: #f8fafc; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
-        .chat-msg { max-width: 75%; padding: 10px 14px; border-radius: 10px; font-size: 0.9rem; word-break: break-word; }
+        /* SIDE FLOATING LIVE CHAT WIDGET FOR STUDENTS */
+        .student-chat-widget { position: fixed; bottom: 30px; left: 30px; z-index: 9999; }
+        .student-chat-fab { width: 60px; height: 60px; background-color: #0056b3; border: none; border-radius: 50%; box-shadow: 0 4px 15px rgba(0, 86, 179, 0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; font-size: 26px; transition: transform 0.3s ease; }
+        .student-chat-fab:hover { transform: scale(1.1); }
+        .student-chat-popup { position: absolute; bottom: 75px; left: 0; width: 330px; height: 420px; background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #cbd5e1; }
+        .student-chat-popup.hidden { display: none !important; }
+        .student-chat-header { background: #0056b3; color: white; padding: 12px 15px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+        .student-chat-body { flex: 1; padding: 12px; overflow-y: auto; background: #f8fafc; display: flex; flex-direction: column; gap: 8px; }
+        .student-chat-footer { padding: 10px; background: white; border-top: 1px solid #e2e8f0; display: flex; gap: 8px; }
+        .student-chat-footer input { flex: 1; padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 6px; outline: none; font-size: 0.9rem; }
+        .student-chat-footer button { padding: 8px 15px; background: #0056b3; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .chat-msg { max-width: 80%; padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; word-break: break-word; }
         .chat-msg.student { background: #0056b3; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
         .chat-msg.admin { background: #e2e8f0; color: #1e293b; align-self: flex-start; border-bottom-left-radius: 2px; }
-        .chat-input-row { display: flex; gap: 10px; }
-        .chat-input-row input { flex: 1; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; outline: none; font-size: 0.95rem; }
-        .chat-input-row button { padding: 0 25px; background: #28a745; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 99999; }
         .modal-box { background: white; width: 90%; max-width: 800px; border-radius: 12px; padding: 25px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; }
@@ -520,7 +525,6 @@
             <div class="tab-menu">
                 <button class="tab-btn active" id="tab-my" onclick="switchStudentTab('my')">📚 My Enrolled Content</button>
                 <button class="tab-btn" id="tab-all" onclick="switchStudentTab('all')">🌐 Explore All Courses & Notes</button>
-                <button class="tab-btn" id="tab-chat" onclick="switchStudentTab('chat')">💬 Live Support / Chat with Admin</button>
             </div>
 
             <div id="sec-my-courses">
@@ -532,18 +536,23 @@
                 <h2 style="margin-bottom:20px; font-size:1.4rem; color:#0f172a;">Unlock Courses & Polytechnic Notes via Razorpay</h2>
                 <div class="lms-courses-grid" id="student-all-grid"></div>
             </div>
+        </div>
 
-            <div id="sec-student-chat" class="hidden">
-                <h2 style="margin-bottom:20px; font-size:1.4rem; color:#0f172a;">Admin Help & Support Chat</h2>
-                <div class="chat-box-wrapper">
-                    <div class="chat-messages-area" id="student-chat-messages">
-                        <div style="text-align: center; color: #888; margin-top: auto; margin-bottom: auto;">Yahan aap apni samasya (jaise payment ya course access) message ke roop mein bhej sakte hain. Admin turant reply karenge!</div>
-                    </div>
-                    <form class="chat-input-row" onsubmit="sendStudentChatMessage(event)">
-                        <input type="text" id="student-msg-input" placeholder="Apna message yahan type karein..." required autocomplete="off">
-                        <button type="submit">Send</button>
-                    </form>
+        <!-- SIDE FLOATING LIVE CHAT WIDGET FOR STUDENTS -->
+        <div class="student-chat-widget" id="studentChatWidgetContainer" style="display: none;">
+            <button class="student-chat-fab" onclick="toggleStudentChatBox()" aria-label="Live Chat">💬</button>
+            <div class="student-chat-popup hidden" id="studentChatPopupBox">
+                <div class="student-chat-header">
+                    <span>Admin Help & Support</span>
+                    <button onclick="toggleStudentChatBox()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&times;</button>
                 </div>
+                <div class="student-chat-body" id="student-chat-messages">
+                    <div style="text-align: center; color: #888; font-size: 0.85rem; margin-top: auto; margin-bottom: auto;">Apni samasya yahan message ke roop mein bhejein. Admin turant reply karenge!</div>
+                </div>
+                <form class="student-chat-footer" onsubmit="sendStudentChatMessage(event)">
+                    <input type="text" id="student-msg-input" placeholder="Type message..." required autocomplete="off">
+                    <button type="submit">Send</button>
+                </form>
             </div>
         </div>
     </div>
@@ -609,7 +618,7 @@
         <p style="font-size: 12px; color: #ffc107; font-weight: 500; margin-top: 5px;">Designed & Developed by Er. Arun Banjare</p>
     </footer>
 
-    <!-- CORE JAVASCRIPT & LIVE CHAT INTEGRATION -->
+    <!-- CORE JAVASCRIPT & SIDE CHAT LOGIC -->
     <script>
         function sanitizeInput(str) {
             if (typeof str !== 'string') return str;
@@ -692,6 +701,7 @@
                                     document.getElementById('student-dashboard').classList.remove('hidden');
                                     document.getElementById('welcome-user').innerText = "Welcome, " + currentStudentUser.username + "!";
                                     loadStudentDashboardData();
+                                    document.getElementById('studentChatWidgetContainer').style.display = 'block';
                                     initStudentLiveChat();
                                 });
                             }
@@ -700,6 +710,7 @@
                             document.getElementById('student-dashboard').classList.add('hidden');
                             document.getElementById('main-website').classList.remove('hidden');
                             document.getElementById('auth').classList.remove('hidden');
+                            document.getElementById('studentChatWidgetContainer').style.display = 'none';
                         }
                     });
                 }
@@ -878,6 +889,7 @@
             document.getElementById('auth').classList.add('hidden');
             document.getElementById('student-dashboard').classList.add('hidden');
             document.getElementById('admin-panel').classList.remove('hidden');
+            document.getElementById('studentChatWidgetContainer').style.display = 'none';
             window.scrollTo(0,0);
             loadAdminData();
         }
@@ -890,6 +902,7 @@
                 document.getElementById('student-dashboard').classList.add('hidden');
                 document.getElementById('main-website').classList.remove('hidden');
                 document.getElementById('auth').classList.remove('hidden');
+                document.getElementById('studentChatWidgetContainer').style.display = 'none';
                 window.scrollTo(0,0);
             });
         }
@@ -983,14 +996,18 @@
             }
         }
 
-        /* LIVE SUPPORT CHAT LOGIC */
+        /* SIDE FLOATING LIVE CHAT LOGIC */
+        function toggleStudentChatBox() {
+            document.getElementById('studentChatPopupBox').classList.toggle('hidden');
+        }
+
         function initStudentLiveChat() {
             if (!currentStudentUser || !currentStudentUser.id) return;
             const chatRef = window.firebaseRef(window.firebaseDB, 'supports/' + currentStudentUser.id);
             window.firebaseOnValue(chatRef, (snapshot) => {
                 const messagesArea = document.getElementById('student-chat-messages');
                 if (!snapshot.exists()) {
-                    messagesArea.innerHTML = `<div style="text-align: center; color: #888; margin-top: auto; margin-bottom: auto;">Abhi koi message nahi hai. Apni samasya yahan type karein!</div>`;
+                    messagesArea.innerHTML = `<div style="text-align: center; color: #888; font-size: 0.85rem; margin-top: auto; margin-bottom: auto;">Apni samasya yahan message ke roop mein bhejein. Admin turant reply karenge!</div>`;
                     return;
                 }
                 const msgs = snapshot.val();
@@ -999,7 +1016,7 @@
                     const m = msgs[mKey];
                     const msgClass = m.sender === 'admin' ? 'admin' : 'student';
                     html += `<div class="chat-msg ${msgClass}">
-                        <div style="font-size: 11px; opacity: 0.8; margin-bottom: 2px;"><b>${m.senderName}</b></div>
+                        <div style="font-size: 10px; opacity: 0.8; margin-bottom: 2px;"><b>${m.senderName}</b></div>
                         <div>${m.text}</div>
                     </div>`;
                 });
@@ -1052,10 +1069,10 @@
         function openAdminChatForStudent(studentUid, studentName) {
             const container = document.getElementById('admin-active-chat-box');
             container.innerHTML = `<div style="font-weight: 600; color: #0056b3; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #e2e8f0;">Chat with: ${studentName}</div>
-                <div class="chat-messages-area" id="admin-chat-msgs-area" style="height: 350px;"></div>
-                <form class="chat-input-row" onsubmit="sendAdminChatMessage(event, '${studentUid}', '${studentName}')">
-                    <input type="text" id="admin-msg-input" placeholder="Admin reply yahan type karein..." required autocomplete="off">
-                    <button type="submit">Reply</button>
+                <div class="chat-messages-area" id="admin-chat-msgs-area" style="height: 350px; overflow-y: auto; background: #f8fafc; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;"></div>
+                <form class="chat-input-row" onsubmit="sendAdminChatMessage(event, '${studentUid}', '${studentName}')" style="display: flex; gap: 10px;">
+                    <input type="text" id="admin-msg-input" placeholder="Admin reply yahan type karein..." required autocomplete="off" style="flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; outline: none;">
+                    <button type="submit" style="padding: 0 20px; background: #28a745; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">Reply</button>
                 </form>`;
 
             const chatRef = window.firebaseRef(window.firebaseDB, 'supports/' + studentUid);
@@ -1072,7 +1089,7 @@
                     const m = msgs[mKey];
                     const msgClass = m.sender === 'admin' ? 'student' : 'admin';
                     html += `<div class="chat-msg ${msgClass}">
-                        <div style="font-size: 11px; opacity: 0.8; margin-bottom: 2px;"><b>${m.senderName}</b></div>
+                        <div style="font-size: 10px; opacity: 0.8; margin-bottom: 2px;"><b>${m.senderName}</b></div>
                         <div>${m.text}</div>
                     </div>`;
                 });
@@ -1133,6 +1150,7 @@
                         document.getElementById('student-dashboard').classList.remove('hidden');
                         document.getElementById('welcome-user').innerText = "Welcome, " + currentStudentUser.username + "!";
                         loadStudentDashboardData();
+                        document.getElementById('studentChatWidgetContainer').style.display = 'block';
                         initStudentLiveChat();
                     });
                 }
@@ -1148,6 +1166,7 @@
                 document.getElementById('admin-panel').classList.add('hidden');
                 document.getElementById('main-website').classList.remove('hidden');
                 document.getElementById('auth').classList.remove('hidden');
+                document.getElementById('studentChatWidgetContainer').style.display = 'none';
             });
         }
 
@@ -1171,23 +1190,16 @@
         }
 
         function switchStudentTab(tab) {
-            document.getElementById('tab-my').classList.remove('active');
-            document.getElementById('tab-all').classList.remove('active');
-            document.getElementById('tab-chat').classList.remove('active');
-
-            document.getElementById('sec-my-courses').classList.add('hidden');
-            document.getElementById('sec-all-courses').classList.add('hidden');
-            document.getElementById('sec-student-chat').classList.add('hidden');
-
             if (tab === 'my') {
                 document.getElementById('tab-my').classList.add('active');
+                document.getElementById('tab-all').classList.remove('active');
                 document.getElementById('sec-my-courses').classList.remove('hidden');
-            } else if (tab === 'all') {
+                document.getElementById('sec-all-courses').classList.add('hidden');
+            } else {
                 document.getElementById('tab-all').classList.add('active');
+                document.getElementById('tab-my').classList.remove('active');
                 document.getElementById('sec-all-courses').classList.remove('hidden');
-            } else if (tab === 'chat') {
-                document.getElementById('tab-chat').classList.add('active');
-                document.getElementById('sec-student-chat').classList.remove('hidden');
+                document.getElementById('sec-my-courses').classList.add('hidden');
             }
         }
 
