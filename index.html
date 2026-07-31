@@ -549,7 +549,8 @@
                 <div class="student-chat-body" id="student-chat-messages">
                     <div style="text-align: center; color: #888; font-size: 0.85rem; margin-top: auto; margin-bottom: auto;">Apni samasya yahan message ke roop mein bhejein. Admin turant reply karenge!</div>
                 </div>
-                <form class="student-chat-footer" onsubmit="sendStudentChatMessage(event)">
+                <!-- 💡 Fixed Student Chat Form with onsubmit -->
+                <form class="student-chat-footer" id="student-chat-form">
                     <input type="text" id="student-msg-input" placeholder="Type message..." required autocomplete="off">
                     <button type="submit">Send</button>
                 </form>
@@ -703,6 +704,12 @@
                                     loadStudentDashboardData();
                                     document.getElementById('studentChatWidgetContainer').style.display = 'block';
                                     initStudentLiveChat();
+                                    
+                                    // Attach submit event listener to student chat form dynamically
+                                    const chatForm = document.getElementById('student-chat-form');
+                                    if (chatForm) {
+                                        chatForm.onsubmit = sendStudentChatMessage;
+                                    }
                                 });
                             }
                         } else {
@@ -1028,6 +1035,7 @@
         function sendStudentChatMessage(e) {
             e.preventDefault();
             const input = document.getElementById('student-msg-input');
+            if (!input) return;
             const text = sanitizeInput(input.value);
             if (!text || !currentStudentUser) return;
 
@@ -1038,6 +1046,8 @@
                 timestamp: new Date().toISOString()
             }).then(() => {
                 input.value = "";
+            }).catch((err) => {
+                alert("Message send nahi ho paya: " + err.message);
             });
         }
 
@@ -1101,6 +1111,7 @@
         function sendAdminChatMessage(e, studentUid, studentName) {
             e.preventDefault();
             const input = document.getElementById('admin-msg-input');
+            if (!input) return;
             const text = sanitizeInput(input.value);
             if (!text) return;
 
@@ -1152,6 +1163,11 @@
                         loadStudentDashboardData();
                         document.getElementById('studentChatWidgetContainer').style.display = 'block';
                         initStudentLiveChat();
+                        
+                        const chatForm = document.getElementById('student-chat-form');
+                        if (chatForm) {
+                            chatForm.onsubmit = sendStudentChatMessage;
+                        }
                     });
                 }
             }).catch((error) => alert("Login Error: " + error.message));
