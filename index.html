@@ -70,7 +70,7 @@
 
     <style>
         * {box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
-        body {background-color: #f4f6f9; color: #333; line-height: 1.6; }
+        body {background-color: #f8fafc; color: #333; line-height: 1.6; }
 
         header {display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background: #0056b3; color: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .logo {display: flex; align-items: center; }
@@ -169,19 +169,34 @@
         .btn-app { background: #28a745; color: white; padding: 6px 12px; border-radius: 4px; border: none; font-weight: 600; cursor: pointer; font-size: 0.8rem; }
         .btn-app:hover { background: #218838; }
 
-        /* LMS STUDENT DASHBOARD STYLES */
-        .lms-container { padding: 30px 5%; background: #f8fafc; min-height: 100vh; }
-        .tab-menu { display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; flex-wrap: wrap; }
-        .tab-btn { padding: 10px 20px; font-weight: 600; cursor: pointer; border: none; background: none; color: #64748b; font-size: 1rem; border-bottom: 3px solid transparent; transition: 0.3s; }
-        .tab-btn.active { color: #0056b3; border-bottom-color: #0056b3; }
-        .lms-courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
-        .lms-card { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.06); display: flex; flex-direction: column; position: relative; border: 1px solid #e2e8f0; }
-        .lms-badge { position: absolute; top: 12px; left: 12px; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; color: white; background: #28a745; z-index: 5; }
+        /* CADDAPP STYLE STUDENT DASHBOARD STYLES */
+        .cadd-dashboard-header { background: #ffffff; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; padding: 12px 40px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .cadd-logo-area { display: flex; align-items: center; gap: 12px; }
+        .cadd-logo-area img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #0056b3; }
+        .cadd-nav-menu { display: flex; gap: 35px; align-items: center; }
+        .cadd-nav-item { text-decoration: none; color: #475569; font-weight: 600; font-size: 0.95rem; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; transition: 0.2s; border-bottom: 3px solid transparent; padding-bottom: 4px; }
+        .cadd-nav-item.active, .cadd-nav-item:hover { color: #0056b3; border-bottom-color: #0056b3; }
+        .cadd-user-actions { display: flex; align-items: center; gap: 15px; }
+        
+        .cadd-main-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .cadd-search-bar { width: 100%; padding: 14px 20px 14px 45px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; outline: none; background: #ffffff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%2364748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>') no-repeat 15px center; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .cadd-search-bar:focus { border-color: #0056b3; box-shadow: 0 0 0 3px rgba(0,86,179,0.1); }
+        
+        .cadd-filter-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
+        .cadd-filter-pills { display: flex; gap: 10px; }
+        .cadd-pill { padding: 8px 18px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: 1px solid #cbd5e1; background: white; color: #475569; transition: 0.2s; }
+        .cadd-pill.active { background: #0f172a; color: white; border-color: #0f172a; }
+
+        .lms-courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+        .lms-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 18px rgba(0,0,0,0.06); display: flex; flex-direction: column; position: relative; border: 1px solid #e2e8f0; transition: 0.3s; }
+        .lms-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .lms-badge { position: absolute; top: 12px; left: 12px; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; color: white; background: #28a745; z-index: 5; }
         .badge-free { background: #17a2b8; }
-        .lms-thumb { height: 150px; background: linear-gradient(135deg, #0056b3 0%, #002244 100%); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; padding: 15px; text-align: center; font-size: 1.1rem; }
+        .lms-thumb { height: 160px; background: linear-gradient(135deg, #0056b3 0%, #002244 100%); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; padding: 0; text-align: center; font-size: 1.15rem; overflow: hidden; }
+        .lms-thumb img { width: 100%; height: 100%; object-fit: cover; }
         .lms-details { padding: 20px; display: flex; flex-direction: column; flex: 1; }
-        .lms-details h3 { font-size: 1.1rem; color: #1e293b; font-weight: 600; margin-bottom: 10px; }
-        .lms-btn-action { background: #0056b3; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-top: auto; width: 100%; text-align: center; text-decoration: none; }
+        .lms-details h3 { font-size: 1.15rem; color: #1e293b; font-weight: 600; margin-bottom: 8px; }
+        .lms-btn-action { background: #0056b3; color: white; border: none; padding: 11px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-top: auto; width: 100%; text-align: center; text-decoration: none; font-size: 0.95rem; }
         .lms-btn-action:hover { background: #004085; }
         .lms-btn-free { background: #28a745; }
         .lms-btn-free:hover { background: #218838; }
@@ -207,27 +222,14 @@
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000; margin-top: 15px; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        .wa-widget-container {position: fixed; bottom: 30px; right: 30px; z-index: 9999; }
-        .wa-floating-btn {width: 60px; height: 60px; background-color: #25D366; border: none; border-radius: 50%; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease; animation: waBounce 2s infinite alternate; }
-        .wa-floating-btn:hover {transform: scale(1.1); }
-        .wa-svg-icon {width: 34px; height: 34px; fill: #ffffff; }
-        .wa-popup-box {position: absolute; bottom: 80px; right: 0; width: 320px; background-color: #1a1a1a; border: 1px solid #2d2d2d; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); overflow: hidden; }
-        .wa-popup-box.hidden {display: none !important; }
-        .wa-close-btn {position: absolute; top: 12px; right: 15px; background: none; border: none; color: #888; font-size: 24px; cursor: pointer; }
-        .wa-popup-header {padding: 25px 20px 10px 20px; text-align: center; }
-        .wa-header-icon-bg {width: 60px; height: 60px; background-color: rgba(37, 211, 102, 0.15); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
-        .wa-header-svg {width: 36px; height: 36px; fill: #25D366; }
-        .wa-popup-body {padding: 0 24px 30px 24px; text-align: center; }
-        .wa-popup-body h3 {color: #ffffff; font-size: 1.25rem; margin-bottom: 8px; }
-        .wa-popup-body p {color: #aaaaaa; font-size: 0.9rem; margin-bottom: 20px; }
-        .wa-chat-btn {display: flex; align-items: center; justify-content: center; background-color: #25D366; color: white; text-decoration: none; padding: 12px 20px; border-radius: 8px; font-weight: 600; }
-        @keyframes waBounce {0% { transform: translateY(0); } 100% { transform: translateY(-6px); } }
         .hidden { display: none !important; }
 
         @media (max-width: 768px) {
             .slider-container { height: 300px; }
             .courses-grid { flex-direction: column; align-items: center; }
             .admin-table { display: block; overflow-x: auto; }
+            .cadd-dashboard-header { padding: 12px 15px; }
+            .cadd-nav-menu { gap: 15px; }
         }
     </style>
 </head>
@@ -464,7 +466,7 @@
 
             <div id="asec-courses" class="hidden">
                 <div class="admin-card-box">
-                    <h3>➕ Add New Course or Polytechnic Notes</h3>
+                    <h3>➕ Add New Course or Polytechnic Notes (With Thumbnail)</h3>
                     <form onsubmit="handleCreateCourse(event)">
                         <div class="admin-form-grid">
                             <input type="text" id="adm-c-title" placeholder="Course Title" required>
@@ -474,6 +476,7 @@
                                 <option value="CAD Training">CAD Training Course</option>
                             </select>
                         </div>
+                        <input type="url" id="adm-c-thumb" placeholder="Course Thumbnail Image URL (e.g. https://... or image link)" required style="width:100%; margin-bottom:12px; padding:10px; border:1px solid #ccc; border-radius:6px;">
                         <textarea id="adm-c-desc" placeholder="Details/Features" rows="2" style="width:100%; margin-bottom:12px; padding:8px;"></textarea>
                         <button type="submit" class="btn" style="background: #0056b3;">Create Course / Notes</button>
                     </form>
@@ -540,29 +543,47 @@
         </div>
     </div>
 
-    <!-- STUDENT DASHBOARD -->
+    <!-- STUDENT DASHBOARD (CADDAPP STYLE HEADER & NAV) -->
     <div id="student-dashboard" class="hidden">
-        <header style="background: #002244;">
-            <div class="logo">
+        <header class="cadd-dashboard-header">
+            <div class="cadd-logo-area">
                 <img src="LOGO1.PNG.png" alt="Dashboard Logo" loading="lazy">
-                <h2 id="welcome-user">Welcome, Student!</h2>
+                <h2 id="welcome-user" style="font-size: 1.1rem; color: #1e293b;">Welcome, Student!</h2>
             </div>
-            <button onclick="handleLogout()" class="btn2" style="margin: 0; padding: 8px 20px; font-size: 0.9rem;">Logout Portal</button>
+            
+            <div class="cadd-nav-menu">
+                <a class="cadd-nav-item active" id="cnav-my" onclick="switchStudentTab('my')">
+                    <span>🎓 My Zone</span>
+                </a>
+                <a class="cadd-nav-item" id="cnav-all" onclick="switchStudentTab('all')">
+                    <span>🌐 Explore Courses</span>
+                </a>
+            </div>
+
+            <div class="cadd-user-actions">
+                <button onclick="handleLogout()" class="btn2" style="margin: 0; padding: 7px 16px; font-size: 0.85rem;">Logout</button>
+            </div>
         </header>
 
-        <div class="lms-container">
-            <div class="tab-menu">
-                <button class="tab-btn active" id="tab-my" onclick="switchStudentTab('my')">📚 My Enrolled Content</button>
-                <button class="tab-btn" id="tab-all" onclick="switchStudentTab('all')">🌐 Explore All Courses & Notes</button>
+        <div class="cadd-main-container">
+            <!-- Search & Filter Bar -->
+            <input type="text" class="cadd-search-bar" id="student-search-input" placeholder="Search all courses..." onkeyup="filterStudentCourses()">
+            
+            <div class="cadd-filter-row">
+                <div class="cadd-filter-pills">
+                    <button class="cadd-pill active" id="cpill-all" onclick="filterStudentPill('all')">All Courses</button>
+                    <button class="cadd-pill" id="cpill-free" onclick="filterStudentPill('free')">Free Notes</button>
+                    <button class="cadd-pill" id="cpill-paid" onclick="filterStudentPill('paid')">Paid Courses</button>
+                </div>
             </div>
 
             <div id="sec-my-courses">
-                <h2 style="margin-bottom:20px; font-size:1.4rem; color:#0f172a;">Your Active Learning & Study Materials</h2>
+                <h2 style="margin-bottom:20px; font-size:1.3rem; color:#0f172a;">Your Enrolled Learning Zone</h2>
                 <div class="lms-courses-grid" id="student-enrolled-grid"></div>
             </div>
 
             <div id="sec-all-courses" class="hidden">
-                <h2 style="margin-bottom:20px; font-size:1.4rem; color:#0f172a;">Unlock Courses & Polytechnic Notes via Razorpay</h2>
+                <h2 style="margin-bottom:20px; font-size:1.3rem; color:#0f172a;">Unlock Courses & Polytechnic Notes via Razorpay</h2>
                 <div class="lms-courses-grid" id="student-all-grid"></div>
             </div>
         </div>
@@ -616,7 +637,7 @@
         </div>
     </div>
 
-    <!-- FOOTER (No WhatsApp widget when logged in) -->
+    <!-- FOOTER -->
     <footer>
         <div style="text-align: center; margin: 20px auto 15px auto; padding: 12px 20px; background-color: #ffffff; border-radius: 8px; border: 1px solid #dee2e6; max-width: 300px;">
             <p style="margin: 0; font-size: 15px; color: #212529;">
@@ -656,6 +677,7 @@
         let slideInterval = setInterval(nextSlide, 4000);
         let currentStudentUser = null;
         let globalCoursesData = {};
+        let currentStudentTabActive = 'my';
 
         // 💡 Live Razorpay Key ID
         const RAZORPAY_KEY_ID = "rzp_live_TJZTFyvVjOndr5";
@@ -752,10 +774,10 @@
                 window.firebaseGet(window.firebaseChild(dbRef, 'courses')).then(snapshot => {
                     if (!snapshot.exists()) {
                         const defaultCourses = {
-                            "c1": { title: "AutoCAD 2D Course", price: 1000, category: "CAD Training", desc: "Basic to Advanced Practical Drawings & PDF Notes" },
-                            "c2": { title: "AutoCAD 2D + 3D Course", price: 1500, category: "CAD Training", desc: "Complete 2D + 3D Real House Plan Practice" },
-                            "c3": { title: "Revit Architecture", price: 1500, category: "CAD Training", desc: "Complete 3D Modeling, Vastu Layouts & Rendering" },
-                            "c4": { title: "Polytechnic 2nd Sem Civil Notes", price: 0, category: "Polytechnic Notes", desc: "Handcrafted PDF Notes for Applied Mechanics & Construction" }
+                            "c1": { title: "AutoCAD 2D Course", price: 1000, category: "CAD Training", desc: "Basic to Advanced Practical Drawings & PDF Notes", thumb: "logo3.png" },
+                            "c2": { title: "AutoCAD 2D + 3D Course", price: 1500, category: "CAD Training", desc: "Complete 2D + 3D Real House Plan Practice", thumb: "logo4.png" },
+                            "c3": { title: "Revit Architecture", price: 1500, category: "CAD Training", desc: "Complete 3D Modeling, Vastu Layouts & Rendering", thumb: "logo5.png" },
+                            "c4": { title: "Polytechnic 2nd Sem Civil Notes", price: 0, category: "Polytechnic Notes", desc: "Handcrafted PDF Notes for Applied Mechanics & Construction", thumb: "blueprint.png.png" }
                         };
                         window.firebaseSet(window.firebaseRef(window.firebaseDB, 'courses'), defaultCourses).then(() => loadMainCourses());
                     } else {
@@ -830,11 +852,12 @@
             const title = sanitizeInput(document.getElementById('adm-c-title').value);
             const price = parseInt(document.getElementById('adm-c-price').value.trim());
             const category = document.getElementById('adm-c-category').value;
+            const thumb = sanitizeInput(document.getElementById('adm-c-thumb').value.trim());
             const desc = sanitizeInput(document.getElementById('adm-c-desc').value);
 
             if (window.firebaseDB && window.firebasePush && window.firebaseRef) {
                 window.firebasePush(window.firebaseRef(window.firebaseDB, 'courses'), {
-                    title, price, category, desc, createdAt: new Date().toISOString()
+                    title, price, category, thumb, desc, createdAt: new Date().toISOString()
                 }).then(() => {
                     alert("Course created successfully!");
                     loadMainCourses();
@@ -1229,17 +1252,69 @@
         }
 
         function switchStudentTab(tab) {
+            currentStudentTabActive = tab;
             if (tab === 'my') {
-                document.getElementById('tab-my').classList.add('active');
-                document.getElementById('tab-all').classList.remove('active');
+                document.getElementById('cnav-my').classList.add('active');
+                document.getElementById('cnav-all').classList.remove('active');
                 document.getElementById('sec-my-courses').classList.remove('hidden');
                 document.getElementById('sec-all-courses').classList.add('hidden');
             } else {
-                document.getElementById('tab-all').classList.add('active');
-                document.getElementById('tab-my').classList.remove('active');
+                document.getElementById('cnav-all').classList.add('active');
+                document.getElementById('cnav-my').classList.remove('active');
                 document.getElementById('sec-all-courses').classList.remove('hidden');
                 document.getElementById('sec-my-courses').classList.add('hidden');
             }
+            loadStudentDashboardData();
+        }
+
+        function filterStudentPill(type) {
+            document.getElementById('cpill-all').classList.remove('active');
+            document.getElementById('cpill-free').classList.remove('active');
+            document.getElementById('cpill-paid').classList.remove('active');
+            document.getElementById('cpill-' + type).classList.add('active');
+            
+            switchStudentTab('all');
+            
+            const dbRef = window.firebaseRef(window.firebaseDB);
+            window.firebaseGet(window.firebaseChild(dbRef, 'user_enrollments/' + currentStudentUser.id)).then(snapshot => {
+                const enrolledIds = snapshot.exists() ? snapshot.val() : {};
+                let allCardsHtml = "";
+
+                Object.keys(globalCoursesData).forEach(cId => {
+                    const c = globalCoursesData[cId];
+                    const isFree = c.price == 0;
+
+                    if (type === 'free' && !isFree) return;
+                    if (type === 'paid' && isFree) return;
+
+                    const btnText = isFree ? "Enroll for FREE (₹0)" : `Pay via Razorpay (₹${c.price})`;
+                    const thumbHtml = c.thumb ? `<img src="${c.thumb}" alt="${c.title}">` : c.title;
+
+                    allCardsHtml += `<div class="lms-card" data-title="${c.title.toLowerCase()}">
+                        <div class="lms-badge badge-free">${isFree ? 'FREE NOTES' : 'PREMIUM'}</div>
+                        <div class="lms-thumb">${thumbHtml}</div>
+                        <div class="lms-details">
+                            <h3>${c.title}</h3>
+                            <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">${c.desc || ''}</p>
+                            <button class="lms-btn-action lms-btn-free" onclick="startRazorpayPayment('${cId}')">${btnText}</button>
+                        </div>
+                    </div>`;
+                });
+
+                if (allCardsHtml === "") allCardsHtml = `<p style="color:#666; font-size:1.05rem;">No courses found matching filter.</p>`;
+                document.getElementById('student-all-grid').innerHTML = allCardsHtml;
+            });
+        }
+
+        function filterStudentCourses() {
+            const query = document.getElementById('student-search-input').value.toLowerCase();
+            const activeGridId = currentStudentTabActive === 'my' ? 'student-enrolled-grid' : 'student-all-grid';
+            const cards = document.querySelectorAll('#' + activeGridId + ' .lms-card');
+
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title') || '';
+                card.style.display = title.includes(query) ? "" : "none";
+            });
         }
 
         function loadStudentDashboardData() {
@@ -1254,32 +1329,34 @@
                 Object.keys(globalCoursesData).forEach(cId => {
                     const c = globalCoursesData[cId];
                     const isEnrolled = enrolledIds[cId] ? true : false;
+                    const isFree = c.price == 0;
+                    const thumbHtml = c.thumb ? `<img src="${c.thumb}" alt="${c.title}">` : c.title;
 
                     if (isEnrolled) {
-                        myCardsHtml += `<div class="lms-card">
+                        myCardsHtml += `<div class="lms-card" data-title="${c.title.toLowerCase()}">
                             <div class="lms-badge">✅ Active Access</div>
-                            <div class="lms-thumb">${c.title}</div>
+                            <div class="lms-thumb">${thumbHtml}</div>
                             <div class="lms-details">
                                 <h3>${c.title}</h3>
                                 <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">${c.desc || ''}</p>
                                 <button class="lms-btn-action" onclick="openCourseMaterials('${cId}', '${c.title}')">Open Units & Lectures →</button>
                             </div>
                         </div>`;
-                    } else {
-                        const btnText = c.price == 0 ? "Enroll for FREE (₹0)" : `Pay via Razorpay (₹${c.price})`;
-                        allCardsHtml += `<div class="lms-card">
-                            <div class="lms-badge badge-free">${c.price == 0 ? 'FREE NOTES' : 'PREMIUM'}</div>
-                            <div class="lms-thumb">${c.title}</div>
-                            <div class="lms-details">
-                                <h3>${c.title}</h3>
-                                <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">${c.desc || ''}</p>
-                                <button class="lms-btn-action lms-btn-free" onclick="startRazorpayPayment('${cId}')">${btnText}</button>
-                            </div>
-                        </div>`;
                     }
+
+                    const btnText = isFree ? "Enroll for FREE (₹0)" : `Pay via Razorpay (₹${c.price})`;
+                    allCardsHtml += `<div class="lms-card" data-title="${c.title.toLowerCase()}">
+                        <div class="lms-badge badge-free">${isFree ? 'FREE NOTES' : 'PREMIUM'}</div>
+                        <div class="lms-thumb">${thumbHtml}</div>
+                        <div class="lms-details">
+                            <h3>${c.title}</h3>
+                            <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">${c.desc || ''}</p>
+                            <button class="lms-btn-action lms-btn-free" onclick="startRazorpayPayment('${cId}')">${btnText}</button>
+                        </div>
+                    </div>`;
                 });
 
-                if (myCardsHtml === "") myCardsHtml = `<p style="color:#666; font-size:1.05rem;">Aapne abhi tak koi course unlock nahi kiya hai.</p>`;
+                if (myCardsHtml === "") myCardsHtml = `<p style="color:#666; font-size:1.05rem;">Aapne abhi tak koi course unlock nahi kiya hai. Explore Courses par click karein.</p>`;
 
                 document.getElementById('student-enrolled-grid').innerHTML = myCardsHtml;
                 document.getElementById('student-all-grid').innerHTML = allCardsHtml;
@@ -1327,7 +1404,6 @@
                             paidAt: new Date().toISOString()
                         });
                         
-                        // Show Digital Invoice
                         showDigitalInvoice(currentStudentUser.username || 'Student', course.title, course.price, paymentId, paidDate);
                         loadStudentDashboardData();
                         switchStudentTab('my');
@@ -1371,7 +1447,6 @@
                     const materials = snapshot.val();
                     let unitsMap = {};
 
-                    // Group materials by Unit
                     Object.keys(materials).forEach(mId => {
                         const m = materials[mId];
                         const unitName = m.unit || 'Unit 1';
@@ -1396,7 +1471,6 @@
                                     <div><button onclick="playInAppVideo('${m.link}', '${m.title}')" class="btn" style="padding:6px 15px; font-size:0.85rem;">Play</button>${deleteBtnHtml}</div>
                                 </div>`;
                             } else {
-                                // Secure In-App PDF Viewer (No direct download link exposed)
                                 listHtml += `<div style="padding:10px; border:1px solid #e2e8f0; border-radius:6px; display:flex; justify-content:space-between; align-items:center; background:#f8fafc;">
                                     <div><b>📄 ${m.title}</b> <span style="font-size:11px; color:#28a745; background:#e6f4ea; padding:2px 6px; border-radius:4px; margin-left:6px;">In-App Secure View</span></div>
                                     <div><button onclick="openSecurePdfViewer('${m.link}', '${m.title}')" class="btn" style="padding:6px 15px; font-size:0.85rem; background:#17a2b8;">Read in Site</button>${deleteBtnHtml}</div>
@@ -1417,7 +1491,6 @@
         }
 
         function openSecurePdfViewer(pdfUrl, title) {
-            // Renders PDF inside secure website iframe reader (preventing direct mobile gallery saving)
             document.getElementById('modal-title').innerText = "Secure Reader: " + title;
             document.getElementById('modal-body').innerHTML = `<div style="text-align:right; margin-bottom:5px;"><small style="color:#d9534f; font-weight:600;">⚠️ Note: These notes are protected and viewable strictly inside this portal.</small></div><div class="video-container"><iframe src="${pdfUrl}" style="border:0;"></iframe></div>`;
         }
@@ -1435,9 +1508,6 @@
             document.getElementById('media-modal').classList.add('hidden');
             document.getElementById('modal-body').innerHTML = "";
         }
-
-        function toggleWhatsAppChat() { document.getElementById('waPopupBox').classList.toggle('hidden'); }
-        function closeWhatsAppChat() { document.getElementById('waPopupBox').classList.add('hidden'); }
     </script>
 </body>
 </html>
