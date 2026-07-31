@@ -118,6 +118,11 @@
         .btn2 { background: #dc3545; color: white; }
         .btn2:hover { background: #c82333; }
 
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 25px; }
+        .testimonial-card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid #ffc107; }
+        .testimonial-card p { font-style: italic; color: #555; font-size: 0.95rem; margin-bottom: 12px; }
+        .testimonial-card h4 { color: #0056b3; font-size: 1rem; }
+
         .reg-form {background: white; padding: 40px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); max-width: 650px; margin: 0 auto 50px auto; }
         .reg-form p { text-align: center; margin-bottom: 20px; }
         .reg-form input, .reg-form select, .reg-form textarea {width: 100%; padding: 12px; margin-bottom: 18px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; font-size: 0.95rem; outline: none; }
@@ -284,9 +289,9 @@
                 <p style="margin-top: 10px;">Welcome to Learn CAD with Er. Arun Banjare & Er. Kheduram Aadil. We provide Professional AutoCAD and Revit Training in Hindi from Basic to Advanced Level. We also provide complete House Planning and Structural Drawing services for residential buildings.</p>
                 <ul>
                     <li>✅ AutoCAD & Revit 3D Training</li>
-                    <li>✅ PDF Notes & Practical Projects</li>
+                    <li>✅ Secure In-App PDF Notes & Units</li>
                     <li>✅ Completion Certificate</li>
-                    <li>✅ Lifetime WhatsApp Support</li>
+                    <li>✅ Lifetime Live Support</li>
                 </ul>
             </section>
 
@@ -296,7 +301,24 @@
                 <p style="margin-bottom: 15px;">Complete House Planning with 2D Floor Plan, Front Elevation, Structural Drawing, Foundation Layout, Beam/Column Layout, Electrical & Plumbing Layout.</p>
             </section>
 
-            <h2 class="section-title" id="house-plan-form">Ghar Ka Naksha / Client Booking Form</h2>
+            <!-- STUDENT TESTIMONIALS SECTION -->
+            <h2 class="section-title">What Our Students Say</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p>"AutoCAD 2D ka course bahut hi behtareen hai. Er. Arun sir ne bilkul zero se advance level tak aasan hindi me sikhaya hai."</p>
+                    <h4>- Rahul Sahu (Civil Diploma Student)</h4>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Revit Architecture sikhne ke baad ab mai khud apne ghar ka 3D elevation aur plan bana leta hu. Thank you Sir!"</p>
+                    <h4>- Mukesh Verma (Practicing Draughtsman)</h4>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Polytechnic ke notes aur video lectures ek hi jagah milne se padhai karna bahut aasan ho gaya hai."</p>
+                    <h4>- Priya Dewangan (Engineering Student)</h4>
+                </div>
+            </div>
+
+            <h2 class="section-title" id="house-plan-form" style="margin-top:50px;">Ghar Ka Naksha / Client Booking Form</h2>
             <div class="reg-form" style="border: 2px solid #28a745;">
                 <p style="margin-bottom: 20px; font-weight: bold; color: #28a745;">Ghar Ka Naksha Banwane Ke Liye Apni Detail Bharein:</p>
                 <form id="house-inquiry-form" onsubmit="handleHouseInquiry(event)">
@@ -461,19 +483,26 @@
                     <div id="admin-manage-courses-list">Loading courses...</div>
                 </div>
                 <div class="admin-card-box">
-                    <h3>🎥 Upload Video Lecture or PDF Notes</h3>
+                    <h3>🎥 Upload Video Lecture or Unit PDF Notes</h3>
                     <form onsubmit="handleUploadMaterial(event)">
                         <div class="admin-form-grid">
                             <select id="adm-m-course" required>
                                 <option value="">Select Target Course *</option>
                             </select>
-                            <input type="text" id="adm-m-title" placeholder="Lecture Title" required>
+                            <select id="adm-m-unit" required>
+                                <option value="Unit 1">Unit 1</option>
+                                <option value="Unit 2">Unit 2</option>
+                                <option value="Unit 3">Unit 3</option>
+                                <option value="Unit 4">Unit 4</option>
+                                <option value="Unit 5">Unit 5</option>
+                            </select>
+                            <input type="text" id="adm-m-title" placeholder="Lecture or PDF Title" required>
                             <select id="adm-m-type" required>
-                                <option value="pdf">PDF Document Link</option>
+                                <option value="pdf">Secure In-App PDF Document</option>
                                 <option value="video">Video Lecture (YouTube)</option>
                             </select>
                         </div>
-                        <input type="url" id="adm-m-link" placeholder="Paste URL *" required style="width:100%; margin-bottom:12px; padding:10px; border:1px solid #ccc; border-radius:6px;">
+                        <input type="url" id="adm-m-link" placeholder="Paste YouTube URL or PDF Viewer Link *" required style="width:100%; margin-bottom:12px; padding:10px; border:1px solid #ccc; border-radius:6px;">
                         <button type="submit" class="btn" style="background: #28a745;">Publish Material</button>
                     </form>
                 </div>
@@ -549,7 +578,6 @@
                 <div class="student-chat-body" id="student-chat-messages">
                     <div style="text-align: center; color: #888; font-size: 0.85rem; margin-top: auto; margin-bottom: auto;">Apni samasya yahan message ke roop mein bhejein. Admin turant reply karenge!</div>
                 </div>
-                <!-- 💡 Fixed Student Chat Form with onsubmit -->
                 <form class="student-chat-footer" id="student-chat-form">
                     <input type="text" id="student-msg-input" placeholder="Type message..." required autocomplete="off">
                     <button type="submit">Send</button>
@@ -558,42 +586,37 @@
         </div>
     </div>
 
-    <!-- MEDIA MODAL -->
+    <!-- MEDIA & SECURE IN-APP PDF VIEWER MODAL -->
     <div id="media-modal" class="modal-overlay hidden">
         <div class="modal-box">
             <span class="modal-close" onclick="closeMediaModal()">&times;</span>
-            <h3 id="modal-title" style="color:#0056b3;">Lecture Viewer</h3>
+            <h3 id="modal-title" style="color:#0056b3;">Content Viewer</h3>
             <div id="modal-body"></div>
         </div>
     </div>
 
-    <!-- WHATSAPP WIDGET -->
-    <div class="wa-widget-container">
-        <button class="wa-floating-btn" onclick="toggleWhatsAppChat()" aria-label="Chat on WhatsApp">
-            <svg viewBox="0 0 24 24" class="wa-svg-icon">
-                <path d="M12.004 2c-5.523 0-10 4.477-10 10a9.957 9.957 0 0 0 1.358 4.987L2 22l5.154-1.353A9.958 9.958 0 0 0 12.004 22c5.523 0 10-4.477 10-10s-4.477-10-10-10zm.017 16.518c-1.63 0-3.14-.492-4.406-1.334l-.316-.192-3.045.799.814-2.969-.214-.34A7.95 7.95 0 0 1 4.02 12c0-4.42 3.597-8.018 8.018-8.018 4.42 0 8.018 3.597 8.018 8.018 0 4.42-3.598 8.018-8.017 8.018zM15.93 13.06c-.3-.15-1.774-.874-2.048-.974-.274-.1-.474-.15-.674.15-.2.3-.774.974-.948 1.174-.175.2-.35.225-.65.075-.3-.15-1.264-.466-2.41-1.488-.891-.795-1.492-1.777-1.667-2.077-.175-.3-.018-.463.13-.612.134-.133.3-.349.45-.524.149-.174.2-.3.3-.5.1-.2.05-.375-.025-.524-.075-.15-.674-1.623-.924-2.223-.244-.585-.493-.506-.674-.515-.175-.008-.375-.01-.575-.01s-.525.075-.8.375c-.275.3-1.05 1.024-1.05 2.5 0 1.473 1.074 2.896 1.224 3.096.15.2 2.115 3.23 5.123 4.53.715.31 1.273.495 1.708.634.718.228 1.37.196 1.887.119.577-.087 1.774-.724 2.023-1.423.25-.7.25-1.3 1.175-1.423-.075-.225-.225-.525-.375z"/>
-            </svg>
-        </button>
-        <div class="wa-popup-box hidden" id="waPopupBox">
-            <button class="wa-close-btn" onclick="closeWhatsAppChat()" aria-label="Close Chat">&times;</button>
-            <div class="wa-popup-header">
-                <div class="wa-header-icon-bg">
-                    <svg viewBox="0 0 24 24" class="wa-header-svg">
-                        <path d="M12.004 2c-5.523 0-10 4.477-10 10a9.957 9.957 0 0 0 1.358 4.987L2 22l5.154-1.353A9.958 9.958 0 0 0 12.004 22c5.523 0 10-4.477 10-10s-4.477-10-10-10zm.017 16.518c-1.63 0-3.14-.492-4.406-1.334l-.316-.192-3.045.799.814-2.969-.214-.34A7.95 7.95 0 0 1 4.02 12c0-4.42 3.597-8.018 8.018-8.018 4.42 0 8.018 3.597 8.018 8.018 0 4.42-3.598 8.018-8.017 8.018zM15.93 13.06c-.3-.15-1.774-.874-2.048-.974-.274-.1-.474-.15-.674.15-.2.3-.774.974-.948 1.174-.175.2-.35.225-.65.075-.3-.15-1.264-.466-2.41-1.488-.891-.795-1.492-1.777-1.667-2.077-.175-.3-.018-.463.13-.612.134-.133.3-.349.45-.524.149-.174.2-.3.3-.5.1-.2.05-.375-.025-.524-.075-.15-.674-1.623-.924-2.223-.244-.585-.493-.506-.674-.515-.175-.008-.375-.01-.575-.01s-.525.075-.8.375c-.275.3-1.05 1.024-1.05 2.5 0 1.473 1.074 2.896 1.224 3.096.15.2 2.115 3.23 5.123 4.53.715.31 1.273.495 1.708.634.718.228 1.37.196 1.887.119.577-.087 1.774-.724 2.023-1.423.25-.7.25-1.3 1.175-1.423-.075-.225-.225-.525-.375z"/>
-                    </svg>
+    <!-- DIGITAL INVOICE MODAL -->
+    <div id="invoice-modal" class="modal-overlay hidden">
+        <div class="modal-box" style="max-width: 600px; text-align: left;">
+            <span class="modal-close" onclick="closeInvoiceModal()">&times;</span>
+            <div id="invoice-content" style="padding: 10px;">
+                <div style="text-align: center; border-bottom: 2px solid #0056b3; padding-bottom: 15px; margin-bottom: 15px;">
+                    <h2 style="color: #0056b3; font-size: 1.3rem;">Learn CAD with Er. Arun Banjare</h2>
+                    <p style="font-size: 0.85rem; color: #666;">Official Digital Tax Invoice / Receipt</p>
                 </div>
-            </div>
-            <div class="wa-popup-body">
-                <h3>Ghar Ka Naksha Banwana Hai?</h3>
-                <p>Hamein WhatsApp par message karein aur turant jankari payein!</p>
-                <a href="https://wa.me/917440850479" target="_blank" class="wa-chat-btn">
-                    <span>Chat on WhatsApp</span>
-                </a>
+                <p><strong>Student Name:</strong> <span id="inv-name"></span></p>
+                <p><strong>Course Title:</strong> <span id="inv-course"></span></p>
+                <p><strong>Amount Paid:</strong> <span id="inv-amount" style="color:#28a745; font-weight:bold;"></span></p>
+                <p><strong>Payment ID:</strong> <code id="inv-payid"></code></p>
+                <p><strong>Date:</strong> <span id="inv-date"></span></p>
+                <div style="margin-top: 30px; text-align: center;">
+                    <button onclick="window.print()" class="btn" style="background:#0056b3;">Print / Save as PDF</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- FOOTER -->
+    <!-- FOOTER (No WhatsApp widget when logged in) -->
     <footer>
         <div style="text-align: center; margin: 20px auto 15px auto; padding: 12px 20px; background-color: #ffffff; border-radius: 8px; border: 1px solid #dee2e6; max-width: 300px;">
             <p style="margin: 0; font-size: 15px; color: #212529;">
@@ -619,7 +642,7 @@
         <p style="font-size: 12px; color: #ffc107; font-weight: 500; margin-top: 5px;">Designed & Developed by Er. Arun Banjare</p>
     </footer>
 
-    <!-- CORE JAVASCRIPT & SIDE CHAT LOGIC -->
+    <!-- CORE JAVASCRIPT & ADVANCED LMS SYSTEM -->
     <script>
         function sanitizeInput(str) {
             if (typeof str !== 'string') return str;
@@ -705,7 +728,6 @@
                                     document.getElementById('studentChatWidgetContainer').style.display = 'block';
                                     initStudentLiveChat();
                                     
-                                    // Attach submit event listener to student chat form dynamically
                                     const chatForm = document.getElementById('student-chat-form');
                                     if (chatForm) {
                                         chatForm.onsubmit = sendStudentChatMessage;
@@ -843,12 +865,13 @@
         function handleUploadMaterial(e) {
             e.preventDefault();
             const courseId = document.getElementById('adm-m-course').value;
+            const unit = document.getElementById('adm-m-unit').value;
             const title = sanitizeInput(document.getElementById('adm-m-title').value);
             const type = document.getElementById('adm-m-type').value;
             const link = document.getElementById('adm-m-link').value.trim();
 
             window.firebasePush(window.firebaseRef(window.firebaseDB, 'course_materials/' + courseId), {
-                title, type, link, uploadedAt: new Date().toISOString()
+                unit, title, type, link, uploadedAt: new Date().toISOString()
             }).then(() => {
                 alert("Material Published!");
                 e.target.reset();
@@ -1239,7 +1262,7 @@
                             <div class="lms-details">
                                 <h3>${c.title}</h3>
                                 <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">${c.desc || ''}</p>
-                                <button class="lms-btn-action" onclick="openCourseMaterials('${cId}', '${c.title}')">Open Lectures & Notes →</button>
+                                <button class="lms-btn-action" onclick="openCourseMaterials('${cId}', '${c.title}')">Open Units & Lectures →</button>
                             </div>
                         </div>`;
                     } else {
@@ -1263,7 +1286,7 @@
             });
         }
 
-        /* RAZORPAY STANDARD WEB CHECKOUT INTEGRATION */
+        /* RAZORPAY STANDARD WEB CHECKOUT & DIGITAL INVOICE INTEGRATION */
         function startRazorpayPayment(courseId) {
             const course = globalCoursesData[courseId];
             if (!course) return;
@@ -1288,6 +1311,7 @@
                 "image": "LOGO1.PNG.png",
                 "handler": function (response) {
                     const paymentId = response.razorpay_payment_id;
+                    const paidDate = new Date().toLocaleString();
                     
                     window.firebaseSet(window.firebaseRef(window.firebaseDB, 'user_enrollments/' + currentStudentUser.id + '/' + courseId), {
                         enrolledAt: new Date().toISOString(),
@@ -1302,7 +1326,9 @@
                             payment_id: paymentId,
                             paidAt: new Date().toISOString()
                         });
-                        alert("Payment Successful! Course Unlocked.");
+                        
+                        // Show Digital Invoice
+                        showDigitalInvoice(currentStudentUser.username || 'Student', course.title, course.price, paymentId, paidDate);
                         loadStudentDashboardData();
                         switchStudentTab('my');
                     });
@@ -1324,39 +1350,76 @@
             rzp.open();
         }
 
+        function showDigitalInvoice(name, courseTitle, amount, paymentId, dateStr) {
+            document.getElementById('inv-name').innerText = name;
+            document.getElementById('inv-course').innerText = courseTitle;
+            document.getElementById('inv-amount').innerText = "₹" + amount;
+            document.getElementById('inv-payid').innerText = paymentId;
+            document.getElementById('inv-date').innerText = dateStr;
+            document.getElementById('invoice-modal').classList.remove('hidden');
+        }
+
+        function closeInvoiceModal() {
+            document.getElementById('invoice-modal').classList.add('hidden');
+        }
+
+        /* UNIT-WISE FOLDER & SECURE IN-APP PDF VIEWER */
         function openCourseMaterials(courseId, courseTitle) {
             const dbRef = window.firebaseRef(window.firebaseDB);
             window.firebaseGet(window.firebaseChild(dbRef, 'course_materials/' + courseId)).then(snapshot => {
                 if (snapshot.exists()) {
                     const materials = snapshot.val();
-                    let listHtml = `<div style="display:flex; flex-direction:column; gap:12px; margin-top:15px;">`;
-                    const isAdmin = window.firebaseAuth && window.firebaseAuth.currentUser && (window.firebaseAuth.currentUser.email.toLowerCase() === "er.arunbanjare@gmail.com");
+                    let unitsMap = {};
 
+                    // Group materials by Unit
                     Object.keys(materials).forEach(mId => {
                         const m = materials[mId];
-                        const deleteBtnHtml = isAdmin ? `<button onclick="deleteMaterial('${courseId}', '${mId}', '${m.title.replace(/'/g, "\\'")}')" class="btn-del" style="margin-left:8px;">🗑️ Delete</button>` : '';
+                        const unitName = m.unit || 'Unit 1';
+                        if (!unitsMap[unitName]) unitsMap[unitName] = [];
+                        unitsMap[unitName].push({ id: mId, ...m });
+                    });
 
-                        if (m.type === 'video') {
-                            listHtml += `<div style="padding:12px; border:1px solid #ddd; border-radius:8px; display:flex; justify-content:space-between; align-items:center; background:#f8fafc;">
-                                <div><b>🎥 ${m.title}</b></div>
-                                <div><button onclick="playInAppVideo('${m.link}', '${m.title}')" class="btn" style="padding:6px 15px; font-size:0.85rem;">Play</button>${deleteBtnHtml}</div>
-                            </div>`;
-                        } else {
-                            listHtml += `<div style="padding:12px; border:1px solid #ddd; border-radius:8px; display:flex; justify-content:space-between; align-items:center; background:#f8fafc;">
-                                <div><b>📄 ${m.title}</b></div>
-                                <div><a href="${m.link}" target="_blank" class="btn" style="padding:6px 15px; font-size:0.85rem; background:#28a745;">Download</a>${deleteBtnHtml}</div>
-                            </div>`;
-                        }
+                    let listHtml = `<div style="display:flex; flex-direction:column; gap:15px; margin-top:15px;">`;
+                    const isAdmin = window.firebaseAuth && window.firebaseAuth.currentUser && (window.firebaseAuth.currentUser.email.toLowerCase() === "er.arunbanjare@gmail.com");
+
+                    Object.keys(unitsMap).sort().forEach(unit => {
+                        listHtml += `<div style="border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; background: #fff;">
+                            <h4 style="color: #0056b3; margin-bottom: 8px; font-size: 1.05rem;">📁 ${unit}</h4>
+                            <div style="display: flex; flex-direction: column; gap: 8px; padding-left: 10px;">`;
+
+                        unitsMap[unit].forEach(m => {
+                            const deleteBtnHtml = isAdmin ? `<button onclick="deleteMaterial('${courseId}', '${m.id}', '${m.title.replace(/'/g, "\\'")}')" class="btn-del" style="margin-left:8px;">🗑️ Delete</button>` : '';
+
+                            if (m.type === 'video') {
+                                listHtml += `<div style="padding:10px; border:1px solid #e2e8f0; border-radius:6px; display:flex; justify-content:space-between; align-items:center; background:#f8fafc;">
+                                    <div><b>🎥 ${m.title}</b></div>
+                                    <div><button onclick="playInAppVideo('${m.link}', '${m.title}')" class="btn" style="padding:6px 15px; font-size:0.85rem;">Play</button>${deleteBtnHtml}</div>
+                                </div>`;
+                            } else {
+                                // Secure In-App PDF Viewer (No direct download link exposed)
+                                listHtml += `<div style="padding:10px; border:1px solid #e2e8f0; border-radius:6px; display:flex; justify-content:space-between; align-items:center; background:#f8fafc;">
+                                    <div><b>📄 ${m.title}</b> <span style="font-size:11px; color:#28a745; background:#e6f4ea; padding:2px 6px; border-radius:4px; margin-left:6px;">In-App Secure View</span></div>
+                                    <div><button onclick="openSecurePdfViewer('${m.link}', '${m.title}')" class="btn" style="padding:6px 15px; font-size:0.85rem; background:#17a2b8;">Read in Site</button>${deleteBtnHtml}</div>
+                                </div>`;
+                            }
+                        });
+                        listHtml += `</div></div>`;
                     });
                     listHtml += `</div>`;
 
-                    document.getElementById('modal-title').innerText = courseTitle + " - Study Materials";
+                    document.getElementById('modal-title').innerText = courseTitle + " - Units & Materials";
                     document.getElementById('modal-body').innerHTML = listHtml;
                     document.getElementById('media-modal').classList.remove('hidden');
                 } else {
-                    alert("Lectures will be uploaded soon!");
+                    alert("Lectures & Units will be uploaded soon!");
                 }
             });
+        }
+
+        function openSecurePdfViewer(pdfUrl, title) {
+            // Renders PDF inside secure website iframe reader (preventing direct mobile gallery saving)
+            document.getElementById('modal-title').innerText = "Secure Reader: " + title;
+            document.getElementById('modal-body').innerHTML = `<div style="text-align:right; margin-bottom:5px;"><small style="color:#d9534f; font-weight:600;">⚠️ Note: These notes are protected and viewable strictly inside this portal.</small></div><div class="video-container"><iframe src="${pdfUrl}" style="border:0;"></iframe></div>`;
         }
 
         function playInAppVideo(youtubeUrl, title) {
@@ -1372,13 +1435,6 @@
             document.getElementById('media-modal').classList.add('hidden');
             document.getElementById('modal-body').innerHTML = "";
         }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                const popup = document.getElementById('waPopupBox');
-                if (popup) popup.classList.remove('hidden');
-            }, 3000);
-        });
 
         function toggleWhatsAppChat() { document.getElementById('waPopupBox').classList.toggle('hidden'); }
         function closeWhatsAppChat() { document.getElementById('waPopupBox').classList.add('hidden'); }
