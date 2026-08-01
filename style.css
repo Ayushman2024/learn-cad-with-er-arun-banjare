@@ -1,5 +1,5 @@
 /* ==========================================================
-   LEARN CAD WITH CIVIL ENGINEER - DESKTOP WEBSITE STYLESHEET
+   LEARN CAD WITH CIVIL ENGINEER - DESKTOP WEBSITE STYLESHEET (FINAL)
    ========================================================== */
 
 * { 
@@ -796,12 +796,16 @@ nav a:hover {
     text-align: center; 
     font-size: 1.15rem; 
     overflow: hidden; 
+    position: relative; 
 }
 
 .lms-thumb img { 
     width: 100%; 
     height: 100%; 
     object-fit: cover; 
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .lms-details { 
