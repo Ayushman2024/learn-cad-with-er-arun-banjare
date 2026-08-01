@@ -1,14 +1,16 @@
-/* ---------- Google Font ---------- */
+/* ---------- Google Font & Reset ---------- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
 }
 
 body {
-    background: #f5f7fb;
+    background-color: #f5f7fb;
     color: #222;
+    line-height: 1.6;
 }
 
 header {
@@ -29,7 +31,6 @@ header {
     gap: 10px;
 }
 
-/* लोगो का साइज 90px बड़ा किया गया */
 .logo img {
     width: 90px;
     height: 90px;
@@ -41,6 +42,12 @@ header {
 .logo h2 {
     color: #fff;
     font-size: 22px;
+    font-weight: 600;
+}
+
+nav {
+    display: flex;
+    align-items: center;
 }
 
 nav a {
@@ -55,14 +62,18 @@ nav a:hover {
     color: #FFD700;
 }
 
+/* HERO SECTION (Fixed at Top) */
 .hero {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 80px 8%;
+    padding: 40px 8%;
     background: linear-gradient(135deg, #1565c0, #0d47a1);
     color: white;
-    min-height: 90vh;
+    min-height: 80vh;
+    gap: 30px;
+    position: relative;
+    z-index: 3;
 }
 
 .hero-text {
@@ -70,12 +81,13 @@ nav a:hover {
 }
 
 .hero-text h1 {
-    font-size: 52px;
-    margin-bottom: 20px;
+    font-size: 44px;
+    margin-bottom: 15px;
+    font-weight: 700;
 }
 
 .hero-text p {
-    font-size: 20px;
+    font-size: 18px;
     margin-bottom: 20px;
     line-height: 1.7;
 }
@@ -83,55 +95,70 @@ nav a:hover {
 .hero-text h2 {
     margin-bottom: 10px;
     color: #FFD700;
+    font-size: 1.2rem;
 }
 
 .btn {
     display: inline-block;
     background: #25D366;
     color: white;
-    padding: 14px 35px;
+    padding: 12px 30px;
     text-decoration: none;
     border-radius: 8px;
-    margin-top: 25px;
-    font-size: 18px;
+    margin-top: 15px;
+    font-size: 16px;
     font-weight: bold;
     transition: .3s;
+    border: none;
+    cursor: pointer;
 }
 
 .btn:hover {
     background: #1da851;
-    transform: translateY(-3px);
+    transform: translateY(-2px);
 }
 
 .btn2 {
     display: inline-block;
-    background: red;
+    background: #dc3545;
     color: white;
-    padding: 14px 35px;
+    padding: 12px 30px;
     text-decoration: none;
     border-radius: 8px;
-    margin-left: 15px;
-    font-size: 18px;
+    margin-left: 10px;
+    font-size: 16px;
     font-weight: bold;
     transition: .3s;
+    border: none;
+    cursor: pointer;
 }
 
 .btn2:hover {
     background: #b30000;
 }
 
-/* इमेज को फुल दिखाने के लिए object-fit fill किया गया */
 .hero-image img {
-    width: 420px;
+    width: 380px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
     object-fit: fill; 
 }
 
-/* ABOUT SECTION */
-.about {
+/* CONTENT SECTIONS WITH WATERMARK BACKGROUND */
+.about, .course, .service, .registration, .container, .contact {
+    background-image: url('LOGO1.PNG.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: 380px;
+    position: relative;
+    z-index: 2;
+    background-color: rgba(245, 247, 251, 0.94);
     padding: 80px 8%;
-    background: #fff;
+}
+
+.about {
+    background-color: rgba(255, 255, 255, 0.95);
 }
 
 .about-container {
@@ -174,10 +201,8 @@ nav a:hover {
     margin-bottom: 10px;
 }
 
-/* COURSE */
+/* COURSE SECTION */
 .course {
-    padding: 80px 8%;
-    background: #f5f7fb;
     text-align: center;
 }
 
@@ -208,13 +233,14 @@ nav a:hover {
 }
 
 .card h3 {
-    font-size: 28px;
+    font-size: 24px;
     margin-bottom: 15px;
 }
 
 .card h1 {
     color: #1565c0;
     margin-bottom: 20px;
+    font-size: 2rem;
 }
 
 .card ul {
@@ -227,10 +253,8 @@ nav a:hover {
     margin-bottom: 10px;
 }
 
-/* SERVICE */
+/* SERVICE SECTION */
 .service {
-    padding: 80px 8%;
-    background: #ffffff;
     text-align: center;
 }
 
@@ -250,9 +274,8 @@ nav a:hover {
     justify-content: center;
 }
 
+/* REGISTRATION SECTION */
 .registration {
-    padding: 80px 8%;
-    background: #f5f7fb;
     text-align: center;
 }
 
@@ -267,13 +290,15 @@ nav a:hover {
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 8px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.9);
 }
 
 .contact {
-    padding: 80px 8%;
     text-align: center;
     background: #0d47a1;
     color: #fff;
+    background-blend-mode: overlay;
 }
 
 footer {
@@ -281,11 +306,11 @@ footer {
     color: white;
     text-align: center;
     padding: 20px;
+    position: relative;
+    z-index: 2;
 }
 
-/* ==========================================================================
-    NEW FLOATING ANIMATION STYLING (For CAD Drawings & Thumbnails)
-   ========================================================================== */
+/* FLOATING ANIMATION */
 @keyframes floatAnimation {
     0% { transform: translateY(0px); }
     50% { transform: translateY(-12px); }
@@ -299,35 +324,7 @@ footer {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
-/* --- Responsive Media Queries --- */
-@media (max-width: 900px) {
-    header {
-        flex-direction: column;
-    }
-    nav {
-        margin-top: 15px;
-    }
-    .hero {
-        flex-direction: column;
-        text-align: center;
-        padding: 50px 20px;
-    }
-    .hero-image img {
-        width: 280px;
-        margin-top: 40px;
-    }
-    .hero-text h1 {
-        font-size: 36px;
-    }
-    .btn, .btn2 {
-        display: block;
-        margin: 15px auto;
-    }
-}
-
-/* ==========================================================================
-    NEW CUSTOM FLOATING WHATSAPP WIDGET STYLING (caddapp.com Style)
-   ========================================================================== */
+/* WHATSAPP FLOATING WIDGET */
 .wa-widget-container {
     position: fixed;
     bottom: 30px;
@@ -335,7 +332,6 @@ footer {
     z-index: 99999;
 }
 
-/* Floating Round Button Container */
 .wa-floating-btn {
     width: 60px;
     height: 60px;
@@ -362,7 +358,6 @@ footer {
     fill: #ffffff;
 }
 
-/* Premium Dark-Theme Pop-up Panel Container */
 .wa-popup-box {
     position: absolute;
     bottom: 80px;
@@ -373,20 +368,18 @@ footer {
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     overflow: hidden;
-    transition: opacity 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: opacity 0.4s ease, transform 0.4s ease;
     transform-origin: bottom right;
     opacity: 1;
     transform: scale(1);
 }
 
-/* Hidden Class for Animation Triggering */
 .wa-popup-box.hidden {
     display: none !important;
     opacity: 0;
     transform: scale(0.8);
 }
 
-/* Close Box (X) Button */
 .wa-close-btn {
     position: absolute;
     top: 12px;
@@ -404,7 +397,6 @@ footer {
     color: #ffffff;
 }
 
-/* Content Panel Structure Styling */
 .wa-popup-header {
     padding: 25px 20px 10px 20px;
     text-align: center;
@@ -445,7 +437,6 @@ footer {
     margin-bottom: 20px;
 }
 
-/* Large Action Call Redirect Button */
 .wa-chat-btn {
     display: flex;
     align-items: center;
@@ -466,20 +457,51 @@ footer {
     transform: translateY(-2px);
 }
 
-/* Widget Smooth Floating Up-Down Animation Loop */
 @keyframes waBounce {
     0% { transform: translateY(0); }
     100% { transform: translateY(-6px); }
 }
 
-/* Mobile Screens Optimization Viewport Adjustments */
+/* RESPONSIVE MEDIA QUERIES */
+@media (max-width: 900px) {
+    header {
+        flex-direction: column;
+        padding: 15px;
+    }
+    nav {
+        margin-top: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    nav a {
+        margin: 5px 10px;
+    }
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 20px;
+    }
+    .hero-image img {
+        width: 280px;
+        margin-top: 30px;
+    }
+    .hero-text h1 {
+        font-size: 32px;
+    }
+    .btn, .btn2 {
+        display: block;
+        margin: 10px auto;
+        width: 80%;
+    }
+}
+
 @media (max-width: 480px) {
     .wa-widget-container {
         bottom: 20px;
         right: 20px;
     }
     .wa-popup-box {
-        width: 290px;
-        right: 0;
+        width: 280px;
+        right: -10px;
     }
- }
+}
