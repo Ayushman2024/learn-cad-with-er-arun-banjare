@@ -1,5 +1,5 @@
 /* ==========================================================
-   LEARN CAD WITH CIVIL ENGINEER - MASTER JAVASCRIPT
+   LEARN CAD WITH CIVIL ENGINEER - MASTER JAVASCRIPT (FINAL)
    ========================================================== */
 
 // 1. Smooth Scroll for Navigation Links
@@ -238,23 +238,35 @@ function filterAdminTable(inputId, containerId) {
     });
 }
 
-// 11. Admin Course, Coupon & Material Management
+// 11. Admin Course Creation (With Direct Image File Upload Support), Coupons & Materials
 function handleCreateCourse(e) {
     e.preventDefault();
     const title = sanitizeInput(document.getElementById('adm-c-title').value);
     const price = parseInt(document.getElementById('adm-c-price').value.trim());
     const category = document.getElementById('adm-c-category').value;
-    const thumb = sanitizeInput(document.getElementById('adm-c-thumb').value.trim());
     const desc = sanitizeInput(document.getElementById('adm-c-desc').value);
+    const fileInput = document.getElementById('adm-c-thumb-file');
 
-    window.firebasePush(window.firebaseRef(window.firebaseDB, 'courses'), {
-        title, price, category, thumb, desc, createdAt: new Date().toISOString()
-    }).then(() => {
-        alert("Course created successfully!");
-        loadMainCourses();
-        loadAdminData();
-        e.target.reset();
-    });
+    if (fileInput && fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (uploadEvent) {
+            const base64Image = uploadEvent.target.result;
+
+            window.firebasePush(window.firebaseRef(window.firebaseDB, 'courses'), {
+                title, price, category, thumb: base64Image, desc, createdAt: new Date().toISOString()
+            }).then(() => {
+                alert("Course created successfully with Image!");
+                loadMainCourses();
+                loadAdminData();
+                e.target.reset();
+            }).catch(err => {
+                alert("Error saving course: " + err.message);
+            });
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+    } else {
+        alert("Please select a thumbnail image!");
+    }
 }
 
 function handleCreateCoupon(e) {
@@ -979,7 +991,7 @@ function closeInvoiceModal() {
     document.getElementById('invoice-modal').classList.add('hidden');
 }
 
-// 17. Multi-Level Folders & PDF.js Secure Viewer
+// 17. Multi-Level Folders & PDF.js Secure Viewer (Auto-Drive Link Converter)
 function openCourseMaterials(courseId, courseTitle) {
     const dbRef = window.firebaseRef(window.firebaseDB);
     window.firebaseGet(window.firebaseChild(dbRef, 'course_materials/' + courseId)).then(snapshot => {
@@ -1039,7 +1051,6 @@ function openCourseMaterials(courseId, courseTitle) {
     });
 }
 
-// PDF.js Secure Viewer Implementation
 function openSecurePdfViewer(pdfUrl, title) {
     document.getElementById('modal-title').innerText = "Secure Reader: " + title;
     document.getElementById('modal-body').innerHTML = `
@@ -1062,16 +1073,27 @@ let pdfDoc = null, pageNum = 1, pageRendering = false, pageNumPending = null, sc
 
 function loadPdfWithPdfJs(url) {
     if (!window.pdfjsLib) {
-        alert("PDF viewer loading error.");
+        alert("PDF viewer library not loaded. Please refresh the page.");
         return;
     }
-    window.pdfjsLib.getDocument(url).promise.then(function(pdfDoc_){
+    
+    let pdfUrl = url;
+    if (pdfUrl.includes("drive.google.com") && pdfUrl.includes("/file/d/")) {
+        const fileIdMatch = pdfUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+        if (fileIdMatch && fileIdMatch[1]) {
+            pdfUrl = `https://docs.google.com/uc?export=download&id=${fileIdMatch[1]}`;
+        }
+    }
+
+    window.pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc_){
         pdfDoc = pdfDoc_;
+        pageNum = 1;
         const pageInfo = document.getElementById('pdf-page-info');
         if(pageInfo) pageInfo.textContent = `Page ${pageNum} of ${pdfDoc.numPages}`;
         renderPage(pageNum);
     }).catch(function(error) {
-        alert("Could not load PDF securely: " + error.message);
+        console.error("PDF Load Error:", error);
+        alert("PDF Load Error: Link check karein ya direct PDF URL dein.");
     });
 }
 
