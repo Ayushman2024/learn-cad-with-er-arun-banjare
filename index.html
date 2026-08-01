@@ -31,7 +31,7 @@
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
       import { getDatabase, ref, push, get, child, set, remove, onValue } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
-      import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+      import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyAsV-Ey5RSNmQw2UJ4mU5STb9ZcDeIQAn0",
@@ -63,6 +63,9 @@
       window.signOutUser = signOut;
       window.onAuthStateChanged = onAuthStateChanged;
       window.sendPasswordResetEmail = sendPasswordResetEmail;
+      window.updatePassword = updatePassword;
+      window.EmailAuthProvider = EmailAuthProvider;
+      window.reauthenticateWithCredential = reauthenticateWithCredential;
     </script>
 
     <style>
@@ -74,7 +77,7 @@
         .logo img { width: 90px; height: 90px; border-radius: 50%; margin-right: 15px; object-fit: cover; border: 3px white solid; }
         .logo h2 { font-size: 1.4rem; font-weight: 600; }
         nav { display: flex; align-items: center; }
-        nav a { color: white; text-decoration: none; margin-left: 20px; font-weight: 500; font-size: 0.95rem; transition: 0.3s; }
+        nav a { color: white; text-decoration: none; margin-left: 20px; font-weight: 500; font-size: 0.95rem; transition: 0.3s; cursor: pointer; }
         nav a:hover { color: #ffc107; }
         .nav-btn { background: #28a745; padding: 6px 15px; border-radius: 4px; font-weight: 600; cursor: pointer; }
         .nav-btn:hover { background: #218838; color: white; }
@@ -576,6 +579,9 @@
                 <a class="cadd-nav-item" id="cnav-all" onclick="switchStudentTab('all')">
                     <span>🌐 Explore Courses</span>
                 </a>
+                <a class="cadd-nav-item" id="cnav-settings" onclick="switchStudentTab('settings')">
+                    <span>⚙️ Change Password</span>
+                </a>
             </div>
 
             <div class="cadd-user-actions">
@@ -602,6 +608,24 @@
             <div id="sec-all-courses" class="hidden">
                 <h2 style="margin-bottom:20px; font-size:1.3rem; color:#0f172a;">Unlock Courses & Polytechnic Notes via Razorpay</h2>
                 <div class="lms-courses-grid" id="student-all-grid"></div>
+            </div>
+
+            <!-- पासवर्ड बदलने का सेक्शन -->
+            <div id="sec-settings" class="hidden">
+                <div class="reg-form" style="max-width: 500px; margin: 20px auto;">
+                    <h2 style="color: #0056b3; margin-bottom: 20px; font-size: 1.3rem;">Change Your Password</h2>
+                    <form onsubmit="handleStudentPasswordChange(event)">
+                        <div class="input-group" style="text-align: left; margin-bottom: 15px;">
+                            <label style="font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 5px;">Old Password</label>
+                            <input type="password" id="old-pass" placeholder="Enter old password" required style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px;">
+                        </div>
+                        <div class="input-group" style="text-align: left; margin-bottom: 20px;">
+                            <label style="font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 5px;">New Password (Min 6 Characters)</label>
+                            <input type="password" id="new-pass" placeholder="Enter new password" minlength="6" required style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px;">
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%; background: #0056b3;">Update Password</button>
+                    </form>
+                </div>
             </div>
         </div>
 
@@ -1309,18 +1333,49 @@
 
         function switchStudentTab(tab) {
             currentStudentTabActive = tab;
+            document.getElementById('cnav-my').classList.remove('active');
+            document.getElementById('cnav-all').classList.remove('active');
+            document.getElementById('cnav-settings').classList.remove('active');
+
+            document.getElementById('sec-my-courses').classList.add('hidden');
+            document.getElementById('sec-all-courses').classList.add('hidden');
+            document.getElementById('sec-settings').classList.add('hidden');
+
             if (tab === 'my') {
                 document.getElementById('cnav-my').classList.add('active');
-                document.getElementById('cnav-all').classList.remove('active');
                 document.getElementById('sec-my-courses').classList.remove('hidden');
-                document.getElementById('sec-all-courses').classList.add('hidden');
-            } else {
+            } else if (tab === 'all') {
                 document.getElementById('cnav-all').classList.add('active');
-                document.getElementById('cnav-my').classList.remove('active');
                 document.getElementById('sec-all-courses').classList.remove('hidden');
-                document.getElementById('sec-my-courses').classList.add('hidden');
+            } else if (tab === 'settings') {
+                document.getElementById('cnav-settings').classList.add('active');
+                document.getElementById('sec-settings').classList.remove('hidden');
             }
             loadStudentDashboardData();
+        }
+
+        function handleStudentPasswordChange(event) {
+            event.preventDefault();
+            const oldPass = document.getElementById('old-pass').value.trim();
+            const newPass = document.getElementById('new-pass').value.trim();
+            const user = window.firebaseAuth.currentUser;
+
+            if (!user) {
+                alert("Please login again.");
+                return;
+            }
+
+            const credential = window.EmailAuthProvider.credential(user.email, oldPass);
+            window.reauthenticateWithCredential(user, credential).then(() => {
+                window.updatePassword(user, newPass).then(() => {
+                    alert("Password updated successfully!");
+                    event.target.reset();
+                }).catch((error) => {
+                    alert("Error updating password: " + error.message);
+                });
+            }).catch((error) => {
+                alert("Old password is incorrect!");
+            });
         }
 
         function filterStudentPill(type) {
