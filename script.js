@@ -1,5 +1,5 @@
 /* ==========================================================
-   LEARN CAD WITH CIVIL ENGINEER - MASTER JAVASCRIPT (FINAL)
+   LEARN CAD WITH CIVIL ENGINEER - MASTER JAVASCRIPT (OPTIMIZED & FIXED)
    ========================================================== */
 
 // 1. Smooth Scroll for Navigation Links
@@ -10,9 +10,7 @@ document.querySelectorAll('nav a').forEach(link => {
             e.preventDefault();
             const target = document.querySelector(href);
             if(target){
-                target.scrollIntoView({
-                    behavior: 'smooth'
-                });
+                target.scrollIntoView({ behavior: 'smooth' });
             }
         }
     });
@@ -238,7 +236,7 @@ function filterAdminTable(inputId, containerId) {
     });
 }
 
-// 11. Admin Course Creation (With Direct Image File Upload Support), Coupons & Materials
+// 11. Admin Course Creation (With Image Compression), Coupons & Materials
 function handleCreateCourse(e) {
     e.preventDefault();
     const title = sanitizeInput(document.getElementById('adm-c-title').value);
@@ -247,25 +245,65 @@ function handleCreateCourse(e) {
     const desc = sanitizeInput(document.getElementById('adm-c-desc').value);
     const fileInput = document.getElementById('adm-c-thumb-file');
 
-    if (fileInput && fileInput.files && fileInput.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function (uploadEvent) {
-            const base64Image = uploadEvent.target.result;
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerText;
+    submitBtn.innerText = "Creating Course...";
+    submitBtn.disabled = true;
 
-            window.firebasePush(window.firebaseRef(window.firebaseDB, 'courses'), {
-                title, price, category, thumb: base64Image, desc, createdAt: new Date().toISOString()
-            }).then(() => {
-                alert("Course created successfully with Image!");
-                loadMainCourses();
-                loadAdminData();
-                e.target.reset();
-            }).catch(err => {
-                alert("Error saving course: " + err.message);
-            });
+    if (fileInput && fileInput.files && fileInput.files[0]) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = function (uploadEvent) {
+            const img = new Image();
+            img.src = uploadEvent.target.result;
+            
+            img.onload = function () {
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 500;
+                const MAX_HEIGHT = 500;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+
+                window.firebasePush(window.firebaseRef(window.firebaseDB, 'courses'), {
+                    title, price, category, thumb: compressedBase64, desc, createdAt: new Date().toISOString()
+                }).then(() => {
+                    alert("Course created successfully!");
+                    loadMainCourses();
+                    loadAdminData();
+                    e.target.reset();
+                }).catch(err => {
+                    alert("Error saving course: " + err.message);
+                }).finally(() => {
+                    submitBtn.innerText = originalBtnText;
+                    submitBtn.disabled = false;
+                });
+            };
         };
-        reader.readAsDataURL(fileInput.files[0]);
+        reader.readAsDataURL(file);
     } else {
         alert("Please select a thumbnail image!");
+        submitBtn.innerText = originalBtnText;
+        submitBtn.disabled = false;
     }
 }
 
@@ -991,7 +1029,7 @@ function closeInvoiceModal() {
     document.getElementById('invoice-modal').classList.add('hidden');
 }
 
-// 17. Multi-Level Folders & PDF.js Secure Viewer (Auto-Drive Link Converter)
+// 17. Multi-Level Folders & PDF.js Secure Viewer (Fixed CORS for Google Drive)
 function openCourseMaterials(courseId, courseTitle) {
     const dbRef = window.firebaseRef(window.firebaseDB);
     window.firebaseGet(window.firebaseChild(dbRef, 'course_materials/' + courseId)).then(snapshot => {
@@ -1078,10 +1116,11 @@ function loadPdfWithPdfJs(url) {
     }
     
     let pdfUrl = url;
+    // Google Drive CORS Proxy Bypass Integration Added Here
     if (pdfUrl.includes("drive.google.com") && pdfUrl.includes("/file/d/")) {
         const fileIdMatch = pdfUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
         if (fileIdMatch && fileIdMatch[1]) {
-            pdfUrl = `https://docs.google.com/uc?export=download&id=${fileIdMatch[1]}`;
+            pdfUrl = `https://api.allorigins.win/raw?url=` + encodeURIComponent(`https://docs.google.com/uc?export=download&id=${fileIdMatch[1]}`);
         }
     }
 
