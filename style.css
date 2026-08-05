@@ -157,7 +157,7 @@
     .lms-btn-free { background: #28a745; }
     .lms-btn-free:hover { background: #218838; }
 
-    /* --- FIXED COUPON BOX & BUTTON (MOBILE & LAPTOP RESPONSIVE) --- */
+    /* --- 100% BULLETPROOF MOBILE & LAPTOP COUPON BOX FIX --- */
     .coupon-box { 
         display: flex; 
         gap: 6px; 
@@ -189,6 +189,19 @@
     }
     .coupon-box button:hover { 
         background: #e0a800; 
+    }
+
+    /* मोबाइल स्क्रीन के लिए ऑटो स्टैक फिक्स (अगर स्क्रीन छोटी हो तो बटन नीचे आ जाएगा ताकि कटे नहीं) */
+    @media (max-width: 480px) {
+        .coupon-box {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 8px;
+        }
+        .coupon-box input, 
+        .coupon-box button {
+            width: 100%;
+        }
     }
 
     .student-chat-widget { position: fixed; bottom: 30px; left: 30px; z-index: 9999; }
