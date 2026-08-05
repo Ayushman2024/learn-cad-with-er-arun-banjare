@@ -235,7 +235,7 @@
         .lms-btn-free { background: #28a745; }
         .lms-btn-free:hover { background: #218838; }
 
-        /* --- 100% FIXED & BULLETPROOF COUPON BOX FIX --- */
+        /* --- BULLETPROOF COUPON BOX & BUTTON FIX --- */
         .coupon-box { 
             display: flex; 
             gap: 6px; 
@@ -269,7 +269,6 @@
             background: #e0a800; 
         }
 
-        /* मोबाइल स्क्रीन पर बटन छुपने से रोकने के लिए ऑटो-स्टैक नियम */
         @media (max-width: 480px) {
             .coupon-box {
                 flex-direction: column;
@@ -765,7 +764,7 @@
 
     <script>
         /* ==========================================================
-           MASTER JAVASCRIPT (FINAL WITH AUTO-COMPRESSION)
+           MASTER JAVASCRIPT (FINAL UPDATED)
            ========================================================== */
 
         document.querySelectorAll('nav a').forEach(link => {
@@ -782,7 +781,7 @@
         });
 
         window.onload = function(){
-            console.log("Welcome to Learn CAD with Er. Arun Banjare - Secure LMS & Portal Active");
+            console.log("Welcome to Learn CAD with Er. Arun Banjare - LMS & Portal Active");
         };
 
         const buttons = document.querySelectorAll(".btn, .btn2, .auth-btn, .reg-submit");
@@ -873,6 +872,11 @@
                                     if (snapshot.exists()) {
                                         currentStudentUser = snapshot.val();
                                         currentStudentUser.id = user.uid;
+                                        if (currentStudentUser.isBlocked) {
+                                            alert("Your account has been blocked by the administrator.");
+                                            window.signOutUser(window.firebaseAuth);
+                                            return;
+                                        }
                                     } else {
                                         currentStudentUser = { username: user.email.split('@')[0], id: user.uid, email: user.email };
                                     }
@@ -945,7 +949,6 @@
                             <h3>${c.title}</h3>
                             <div class="price">${priceText}</div>
                             <p style="font-size:0.9rem; color:#666; margin-bottom:15px;">${c.desc || ''}</p>
-                            ${c.price > 0 ? `<div class="coupon-box"><input type="text" id="main-coupon-${id}" placeholder="Enter Coupon"><button onclick="applyMainCoupon('${id}', ${c.price})">Apply</button></div>` : ''}
                             <a href="#registration" class="btn">Enroll Now</a>
                         </div>`;
                         regDropdownHtml += `<option value="${c.title} (${priceText})">${c.title} - ${priceText}</option>`;
@@ -961,21 +964,6 @@
                     if (admMCourse) admMCourse.innerHTML = admDropdownHtml;
                 }
             });
-        }
-
-        function applyMainCoupon(courseId, originalPrice) {
-            const input = document.getElementById(`main-coupon-${courseId}`);
-            if (!input) return;
-            const code = input.value.trim().toUpperCase();
-            let disc = 0;
-            Object.keys(globalCouponsData).forEach(k => {
-                if (globalCouponsData[k].code === code) disc = globalCouponsData[k].discount;
-            });
-            if (disc > 0) {
-                alert(`Coupon Applied! Discount: ₹${disc}`);
-            } else {
-                alert("Invalid Coupon Code!");
-            }
         }
 
         function switchAdminTab(tabName) {
@@ -1015,7 +1003,7 @@
             const category = document.getElementById('adm-c-category').value;
             const desc = sanitizeInput(document.getElementById('adm-c-desc').value);
             const fileInput = document.getElementById('adm-c-thumb-file');
-            
+
             const submitBtn = e.target.querySelector('button[type="submit"]');
             const originalBtnText = submitBtn.innerText;
             submitBtn.innerText = "Creating Course...";
@@ -1307,7 +1295,7 @@
                 window.firebaseGet(window.firebaseChild(dbRef, 'users')).then(userSnapshot => {
                     window.firebaseGet(window.firebaseChild(dbRef, 'registrations')).then(regSnapshot => {
                         const listEl = document.getElementById('admin-user-list');
-                        let html = `<table class="admin-table"><tr><th>Name</th><th>Email / Course</th><th>Mobile</th><th>Source</th></tr>`;
+                        let html = `<table class="admin-table"><tr><th>Name</th><th>Email / Course</th><th>Mobile</th><th>Status / Source</th><th>Actions</th></tr>`;
                         let hasData = false;
 
                         if (userSnapshot.exists()) {
@@ -1315,7 +1303,17 @@
                             const usersData = userSnapshot.val();
                             Object.keys(usersData).forEach(key => {
                                 const u = usersData[key];
-                                html += `<tr><td><b>${u.username || 'N/A'}</b></td><td>${u.email || 'N/A'}</td><td>${u.mobile || 'N/A'}</td><td><span style="color:blue;">Portal Account</span></td></tr>`;
+                                const isBlocked = u.isBlocked ? `<span style="color:red; font-weight:bold;">[Blocked]</span>` : `<span style="color:green;">[Active]</span>`;
+                                html += `<tr>
+                                    <td><b>${u.username || 'N/A'}</b></td>
+                                    <td>${u.email || 'N/A'}</td>
+                                    <td>${u.mobile || 'N/A'}</td>
+                                    <td>Portal Account ${isBlocked}</td>
+                                    <td>
+                                        <button class="btn-del" onclick="deleteStudentAccount('${key}', '${u.email || ''}')">🗑️ Delete</button>
+                                        ${u.isBlocked ? `<button class="btn-app" onclick="toggleBlockStudent('${key}', false)" style="background:#17a2b8; margin-left:4px;">🔓 Unblock</button>` : `<button class="btn-del" onclick="toggleBlockStudent('${key}', true)" style="background:#ffc107; color:#333; margin-left:4px;">🔒 Block</button>`}
+                                    </td>
+                                </tr>`;
                             });
                         }
 
@@ -1324,7 +1322,15 @@
                             const regData = regSnapshot.val();
                             Object.keys(regData).forEach(key => {
                                 const r = regData[key];
-                                html += `<tr><td><b>${r.name || 'N/A'}</b></td><td>${r.email || 'N/A'} <br><small style="color:green;">(${r.course || ''})</small></td><td>${r.phone || 'N/A'}</td><td><span style="color:green;">Course Reg Form</span></td></tr>`;
+                                html += `<tr>
+                                    <td><b>${r.name || 'N/A'}</b></td>
+                                    <td>${r.email || 'N/A'} <br><small style="color:green;">(${r.course || ''})</small></td>
+                                    <td>${r.phone || 'N/A'}</td>
+                                    <td>Course Reg Form</td>
+                                    <td>
+                                        <button class="btn-del" onclick="deleteRegistrationForm('${key}')">🗑️ Delete</button>
+                                    </td>
+                                </tr>`;
                             });
                         }
 
@@ -1339,6 +1345,41 @@
             }
         }
 
+        // Student Account Delete Function
+        function deleteStudentAccount(userId, userEmail) {
+            if (confirm(`Are you sure you want to delete user account (${userEmail})?`)) {
+                window.firebaseRemove(window.firebaseRef(window.firebaseDB, 'users/' + userId)).then(() => {
+                    window.firebaseRemove(window.firebaseRef(window.firebaseDB, 'user_enrollments/' + userId));
+                    window.firebaseRemove(window.firebaseRef(window.firebaseDB, 'supports/' + userId));
+                    alert("Student account record deleted from database successfully!");
+                    loadAdminData();
+                }).catch(err => {
+                    alert("Error deleting record: " + err.message);
+                });
+            }
+        }
+
+        // Registration Form Delete Function
+        function deleteRegistrationForm(regId) {
+            if (confirm("Delete this registration form entry?")) {
+                window.firebaseRemove(window.firebaseRef(window.firebaseDB, 'registrations/' + regId)).then(() => {
+                    loadAdminData();
+                });
+            }
+        }
+
+        // Block / Unblock Student Function
+        function toggleBlockStudent(userId, blockStatus) {
+            const actionText = blockStatus ? "block" : "unblock";
+            if (confirm(`Do you want to ${actionText} this student?`)) {
+                window.firebaseSet(window.firebaseRef(window.firebaseDB, 'users/' + userId + '/isBlocked'), blockStatus).then(() => {
+                    alert(`Student successfully ${actionText}ed!`);
+                    loadAdminData();
+                });
+            }
+        }
+
+        // 13. Student Support Live Chat System
         function toggleStudentChatBox() {
             const box = document.getElementById('studentChatPopupBox');
             if(box) box.classList.toggle('hidden');
@@ -1464,6 +1505,7 @@
             });
         }
 
+        // 14. Signup, Login, Logout & Registration Management
         function submitSignup(event) {
             event.preventDefault();
             const name = sanitizeInput(document.getElementById('signup-name').value);
@@ -1492,6 +1534,11 @@
                     showAdminPanel();
                 } else {
                     window.firebaseGet(window.firebaseChild(window.firebaseRef(window.firebaseDB), 'users/' + userCredential.user.uid)).then(snapshot => {
+                        if (snapshot.exists() && snapshot.val().isBlocked) {
+                            alert("Your account has been blocked by the administrator.");
+                            window.signOutUser(window.firebaseAuth);
+                            return;
+                        }
                         currentStudentUser = snapshot.exists() ? snapshot.val() : { username: email.split('@')[0], id: userCredential.user.uid, email };
                         currentStudentUser.id = userCredential.user.uid;
                         document.getElementById('admin-panel').classList.add('hidden');
@@ -1834,8 +1881,8 @@
                                     </div>`;
                                 } else {
                                     listHtml += `<div style="padding:8px; border:1px solid #e2e8f0; border-radius:6px; display:flex; justify-content:space-between; align-items:center; background:#fff;">
-                                        <div><b>📄 ${m.title}</b> <span style="font-size:10px; color:#28a745; background:#e6f4ea; padding:2px 5px; border-radius:3px; margin-left:5px;">Secure View (No Download)</span></div>
-                                        <div><button onclick="openSecurePdfViewer('${m.link}', '${m.title}')" class="btn" style="padding:5px 12px; font-size:0.8rem; background:#17a2b8;">Read PDF</button>${editBtnHtml}${deleteBtnHtml}</div>
+                                        <div><b>📄 ${m.title}</b></div>
+                                        <div><button onclick="openNormalPdfViewer('${m.link}', '${m.title}')" class="btn" style="padding:5px 12px; font-size:0.8rem; background:#17a2b8;">View PDF</button>${editBtnHtml}${deleteBtnHtml}</div>
                                     </div>`;
                                 }
                             });
@@ -1854,91 +1901,23 @@
             });
         }
 
-        function openSecurePdfViewer(pdfUrl, title) {
-            document.getElementById('modal-title').innerText = "Secure Reader: " + title;
-            document.getElementById('modal-body').innerHTML = `
-                <div style="text-align:right; margin-bottom:8px;">
-                    <small style="color:#d9534f; font-weight:600;">⚠️ Protected Notes: Downloading or sharing is disabled.</small>
-                </div>
-                <div id="pdf-viewer-container" style="width: 100%; height: 500px; overflow: auto; background: #525659; text-align: center; border-radius: 8px; padding: 10px;">
-                    <canvas id="pdf-canvas" style="max-width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.3);"></canvas>
-                </div>
-                <div style="text-align: center; margin-top: 10px;">
-                    <button onclick="changePdfPage(-1)" class="btn" style="padding: 6px 15px;">◀ Prev</button>
-                    <span id="pdf-page-info" style="margin: 0 15px; font-weight: bold;">Page 1 of 1</span>
-                    <button onclick="changePdfPage(1)" class="btn" style="padding: 6px 15px;">Next ▶</button>
-                </div>`;
+        function openNormalPdfViewer(pdfUrl, title) {
+            document.getElementById('modal-title').innerText = "PDF Viewer: " + title;
             
-            loadPdfWithPdfJs(pdfUrl);
-        }
-
-        let pdfDoc = null, pageNum = 1, pageRendering = false, pageNumPending = null, scale = 1.3;
-
-        function loadPdfWithPdfJs(url) {
-            if (!window.pdfjsLib) {
-                alert("PDF viewer library not loaded. Please refresh the page.");
-                return;
-            }
-            
-            let pdfUrl = url;
-            if (pdfUrl.includes("drive.google.com") && pdfUrl.includes("/file/d/")) {
-                const fileIdMatch = pdfUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+            let finalUrl = pdfUrl;
+            if (finalUrl.includes("drive.google.com") && finalUrl.includes("/file/d/")) {
+                const fileIdMatch = finalUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
                 if (fileIdMatch && fileIdMatch[1]) {
-                    pdfUrl = `https://docs.google.com/uc?export=download&id=${fileIdMatch[1]}`;
+                    finalUrl = `https://drive.google.com/file/d/${fileIdMatch[1]}/preview`;
                 }
             }
 
-            window.pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc_){
-                pdfDoc = pdfDoc_;
-                pageNum = 1;
-                const pageInfo = document.getElementById('pdf-page-info');
-                if(pageInfo) pageInfo.textContent = `Page ${pageNum} of ${pdfDoc.numPages}`;
-                renderPage(pageNum);
-            }).catch(function(error) {
-                console.error("PDF Load Error:", error);
-                alert("PDF Load Error: Link check karein ya direct PDF URL dein.");
-            });
-        }
-
-        function renderPage(num) {
-            pageRendering = true;
-            pdfDoc.getPage(num).then(function(page) {
-                const canvas = document.getElementById('pdf-canvas');
-                if (!canvas) return;
-                const ctx = canvas.getContext('2d');
-                const viewport = page.getViewport({scale: scale});
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-
-                const renderContext = { canvasContext: ctx, viewport: viewport };
-                const renderTask = page.render(renderContext);
-
-                renderTask.promise.then(function() {
-                    pageRendering = false;
-                    if (pageNumPending !== null) {
-                        renderPage(pageNumPending);
-                        pageNumPending = null;
-                    }
-                });
-            });
-            const pageInfo = document.getElementById('pdf-page-info');
-            if(pageInfo) pageInfo.textContent = `Page ${num} of ${pdfDoc.numPages}`;
-        }
-
-        function queueRenderPage(num) {
-            if (pageRendering) {
-                pageNumPending = num;
-            } else {
-                renderPage(num);
-            }
-        }
-
-        function changePdfPage(dir) {
-            if (!pdfDoc) return;
-            if (dir === -1 && pageNum <= 1) return;
-            if (dir === 1 && pageNum >= pdfDoc.numPages) return;
-            pageNum += dir;
-            queueRenderPage(pageNum);
+            document.getElementById('modal-body').innerHTML = `
+                <div style="width: 100%; height: 500px; background: #fff; border-radius: 8px; overflow: hidden;">
+                    <iframe src="${finalUrl}" width="100%" height="100%" style="border: none;"></iframe>
+                </div>`;
+            
+            document.getElementById('media-modal').classList.remove('hidden');
         }
 
         function playInAppVideo(youtubeUrl, title) {
