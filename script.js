@@ -1,5 +1,5 @@
 /* ==========================================================
-   LEARN CAD WITH CIVIL ENGINEER - MASTER JAVASCRIPT (NORMAL PDF VIEWER)
+   LEARN CAD WITH CIVIL ENGINEER - MASTER JAVASCRIPT (FINAL UPDATED)
    ========================================================== */
 
 // 1. Smooth Scroll for Navigation Links
@@ -115,6 +115,13 @@ window.addEventListener('DOMContentLoaded', () => {
                             if (snapshot.exists()) {
                                 currentStudentUser = snapshot.val();
                                 currentStudentUser.id = user.uid;
+                                
+                                // Check if user is blocked by admin
+                                if (currentStudentUser.isBlocked) {
+                                    alert("Your account has been blocked by the administrator.");
+                                    window.signOutUser(window.firebaseAuth);
+                                    return;
+                                }
                             } else {
                                 currentStudentUser = { username: user.email.split('@')[0], id: user.uid, email: user.email };
                             }
@@ -537,7 +544,7 @@ function loadAdminData() {
         window.firebaseGet(window.firebaseChild(dbRef, 'users')).then(userSnapshot => {
             window.firebaseGet(window.firebaseChild(dbRef, 'registrations')).then(regSnapshot => {
                 const listEl = document.getElementById('admin-user-list');
-                let html = `<table class="admin-table"><tr><th>Name</th><th>Email / Course</th><th>Mobile</th><th>Source</th></tr>`;
+                let html = `<table class="admin-table"><tr><th>Name</th><th>Email / Course</th><th>Mobile</th><th>Status / Source</th><th>Actions</th></tr>`;
                 let hasData = false;
 
                 if (userSnapshot.exists()) {
@@ -545,7 +552,17 @@ function loadAdminData() {
                     const usersData = userSnapshot.val();
                     Object.keys(usersData).forEach(key => {
                         const u = usersData[key];
-                        html += `<tr><td><b>${u.username || 'N/A'}</b></td><td>${u.email || 'N/A'}</td><td>${u.mobile || 'N/A'}</td><td><span style="color:blue;">Portal Account</span></td></tr>`;
+                        const isBlocked = u.isBlocked ? `<span style="color:red; font-weight:bold;">[Blocked]</span>` : `<span style="color:green;">[Active]</span>`;
+                        html += `<tr>
+                            <td><b>${u.username || 'N/A'}</b></td>
+                            <td>${u.email || 'N/A'}</td>
+                            <td>${u.mobile || 'N/A'}</td>
+                            <td>Portal Account ${isBlocked}</td>
+                            <td>
+                                <button class="btn-del" onclick="deleteStudentAccount('${key}', '${u.email || ''}')">🗑️ Delete</button>
+                                ${u.isBlocked ? `<button class="btn-app" onclick="toggleBlockStudent('${key}', false)" style="background:#17a2b8; margin-left:4px;">🔓 Unblock</button>` : `<button class="btn-del" onclick="toggleBlockStudent('${key}', true)" style="background:#ffc107; color:#333; margin-left:4px;">🔒 Block</button>`}
+                            </td>
+                        </tr>`;
                     });
                 }
 
@@ -554,7 +571,15 @@ function loadAdminData() {
                     const regData = regSnapshot.val();
                     Object.keys(regData).forEach(key => {
                         const r = regData[key];
-                        html += `<tr><td><b>${r.name || 'N/A'}</b></td><td>${r.email || 'N/A'} <br><small style="color:green;">(${r.course || ''})</small></td><td>${r.phone || 'N/A'}</td><td><span style="color:green;">Course Reg Form</span></td></tr>`;
+                        html += `<tr>
+                            <td><b>${r.name || 'N/A'}</b></td>
+                            <td>${r.email || 'N/A'} <br><small style="color:green;">(${r.course || ''})</small></td>
+                            <td>${r.phone || 'N/A'}</td>
+                            <td>Course Reg Form</td>
+                            <td>
+                                <button class="btn-del" onclick="deleteRegistrationForm('${key}')">🗑️ Delete</button>
+                            </td>
+                        </tr>`;
                     });
                 }
 
@@ -565,6 +590,40 @@ function loadAdminData() {
                     if(listEl) listEl.innerHTML = `<p style="color:#888;">No registered users found.</p>`;
                 }
             });
+        });
+    }
+}
+
+// Student Account Delete Function
+function deleteStudentAccount(userId, userEmail) {
+    if (confirm(`Are you sure you want to delete user account (${userEmail})?`)) {
+        window.firebaseRemove(window.firebaseRef(window.firebaseDB, 'users/' + userId)).then(() => {
+            window.firebaseRemove(window.firebaseRef(window.firebaseDB, 'user_enrollments/' + userId));
+            window.firebaseRemove(window.firebaseRef(window.firebaseDB, 'supports/' + userId));
+            alert("Student account record deleted from database successfully!");
+            loadAdminData();
+        }).catch(err => {
+            alert("Error deleting record: " + err.message);
+        });
+    }
+}
+
+// Registration Form Delete Function
+function deleteRegistrationForm(regId) {
+    if (confirm("Delete this registration form entry?")) {
+        window.firebaseRemove(window.firebaseRef(window.firebaseDB, 'registrations/' + regId)).then(() => {
+            loadAdminData();
+        });
+    }
+}
+
+// Block / Unblock Student Function
+function toggleBlockStudent(userId, blockStatus) {
+    const actionText = blockStatus ? "block" : "unblock";
+    if (confirm(`Do you want to ${actionText} this student?`)) {
+        window.firebaseSet(window.firebaseRef(window.firebaseDB, 'users/' + userId + '/isBlocked'), blockStatus).then(() => {
+            alert(`Student successfully ${actionText}ed!`);
+            loadAdminData();
         });
     }
 }
@@ -724,6 +783,11 @@ function handleLogin(event) {
             showAdminPanel();
         } else {
             window.firebaseGet(window.firebaseChild(window.firebaseRef(window.firebaseDB), 'users/' + userCredential.user.uid)).then(snapshot => {
+                if (snapshot.exists() && snapshot.val().isBlocked) {
+                    alert("Your account has been blocked by the administrator.");
+                    window.signOutUser(window.firebaseAuth);
+                    return;
+                }
                 currentStudentUser = snapshot.exists() ? snapshot.val() : { username: email.split('@')[0], id: userCredential.user.uid, email };
                 currentStudentUser.id = userCredential.user.uid;
                 document.getElementById('admin-panel').classList.add('hidden');
@@ -1089,12 +1153,10 @@ function openCourseMaterials(courseId, courseTitle) {
     });
 }
 
-// नॉर्मल पीडीएफ व्यूअर फंक्शन (iframe आधारित, जो गूगल ड्राइव लिंक को आसानी से खोल देगा)
 function openNormalPdfViewer(pdfUrl, title) {
     document.getElementById('modal-title').innerText = "PDF Viewer: " + title;
     
     let finalUrl = pdfUrl;
-    // अगर लिंक गूगल ड्राइव का है, तो उसे प्रीव्यू फॉर्मेट में बदल दें
     if (finalUrl.includes("drive.google.com") && finalUrl.includes("/file/d/")) {
         const fileIdMatch = finalUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
         if (fileIdMatch && fileIdMatch[1]) {
