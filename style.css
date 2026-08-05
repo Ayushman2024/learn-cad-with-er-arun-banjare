@@ -1,5 +1,5 @@
 /* ==========================================================
-   LEARN CAD WITH CIVIL ENGINEER - DESKTOP WEBSITE STYLESHEET (FINAL)
+   LEARN CAD WITH CIVIL ENGINEER - DESKTOP & MOBILE WEBSITE STYLESHEET (FINAL FIXED)
    ========================================================== */
 
 * { 
@@ -850,31 +850,37 @@ nav a:hover {
     background: #218838; 
 }
 
+/* --- FIXED COUPON BOX & BUTTON (MOBILE & LAPTOP FRIENDLY) --- */
 .coupon-box { 
     display: flex; 
-    gap: 10px; 
+    gap: 6px; 
     margin: 12px 0; 
+    width: 100%;
+    align-items: center;
 }
 
 .coupon-box input { 
     flex: 1; 
+    min-width: 0;
     padding: 8px; 
     border: 1px solid #cbd5e1; 
     border-radius: 6px; 
-    font-size: 0.9rem; 
+    font-size: 0.85rem; 
     text-transform: uppercase; 
     outline: none; 
+    box-sizing: border-box;
 }
 
 .coupon-box button { 
     background: #ffc107; 
     color: #333; 
     border: none; 
-    padding: 8px 15px; 
+    padding: 8px 12px; 
     border-radius: 6px; 
     font-weight: 600; 
     cursor: pointer; 
-    font-size: 0.9rem; 
+    font-size: 0.85rem; 
+    white-space: nowrap; 
 }
 
 .coupon-box button:hover { 
