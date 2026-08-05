@@ -235,10 +235,52 @@
         .lms-btn-free { background: #28a745; }
         .lms-btn-free:hover { background: #218838; }
 
-        .coupon-box { display: flex; gap: 10px; margin: 12px 0; }
-        .coupon-box input { flex: 1; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; text-transform: uppercase; outline: none; }
-        .coupon-box button { background: #ffc107; color: #333; border: none; padding: 8px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
-        .coupon-box button:hover { background: #e0a800; }
+        /* --- 100% FIXED & BULLETPROOF COUPON BOX FIX --- */
+        .coupon-box { 
+            display: flex; 
+            gap: 6px; 
+            margin: 12px 0; 
+            width: 100%;
+            align-items: center;
+        }
+        .coupon-box input { 
+            flex: 1; 
+            min-width: 0;
+            padding: 8px; 
+            border: 1px solid #cbd5e1; 
+            border-radius: 6px; 
+            font-size: 0.85rem; 
+            text-transform: uppercase; 
+            outline: none; 
+            box-sizing: border-box;
+        }
+        .coupon-box button { 
+            background: #ffc107; 
+            color: #333; 
+            border: none; 
+            padding: 8px 12px; 
+            border-radius: 6px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            font-size: 0.85rem; 
+            white-space: nowrap; 
+        }
+        .coupon-box button:hover { 
+            background: #e0a800; 
+        }
+
+        /* मोबाइल स्क्रीन पर बटन छुपने से रोकने के लिए ऑटो-स्टैक नियम */
+        @media (max-width: 480px) {
+            .coupon-box {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .coupon-box input, 
+            .coupon-box button {
+                width: 100%;
+            }
+        }
 
         .student-chat-widget { position: fixed; bottom: 30px; left: 30px; z-index: 9999; }
         .student-chat-fab { width: 60px; height: 60px; background-color: #0056b3; border: none; border-radius: 50%; box-shadow: 0 4px 15px rgba(0, 86, 179, 0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; font-size: 26px; transition: transform 0.3s ease; }
@@ -903,6 +945,7 @@
                             <h3>${c.title}</h3>
                             <div class="price">${priceText}</div>
                             <p style="font-size:0.9rem; color:#666; margin-bottom:15px;">${c.desc || ''}</p>
+                            ${c.price > 0 ? `<div class="coupon-box"><input type="text" id="main-coupon-${id}" placeholder="Enter Coupon"><button onclick="applyMainCoupon('${id}', ${c.price})">Apply</button></div>` : ''}
                             <a href="#registration" class="btn">Enroll Now</a>
                         </div>`;
                         regDropdownHtml += `<option value="${c.title} (${priceText})">${c.title} - ${priceText}</option>`;
@@ -918,6 +961,21 @@
                     if (admMCourse) admMCourse.innerHTML = admDropdownHtml;
                 }
             });
+        }
+
+        function applyMainCoupon(courseId, originalPrice) {
+            const input = document.getElementById(`main-coupon-${courseId}`);
+            if (!input) return;
+            const code = input.value.trim().toUpperCase();
+            let disc = 0;
+            Object.keys(globalCouponsData).forEach(k => {
+                if (globalCouponsData[k].code === code) disc = globalCouponsData[k].discount;
+            });
+            if (disc > 0) {
+                alert(`Coupon Applied! Discount: ₹${disc}`);
+            } else {
+                alert("Invalid Coupon Code!");
+            }
         }
 
         function switchAdminTab(tabName) {
